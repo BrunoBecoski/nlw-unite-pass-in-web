@@ -1,3 +1,11 @@
+import { Header } from './components/header'
+import { AttendeeList } from './components/attendee-list'
+
 export function App() {
-  return <h1 className="bg-orange-400 h-10 px-3 flex items-center font-medium">Hello NLW Unite</h1>
-}
+  return (
+    <div className="max-w-[1216px] mx-auto flex flex-col gap-5">
+      <Header />
+      <AttendeeList />
+    </div>
+  )
+}  
