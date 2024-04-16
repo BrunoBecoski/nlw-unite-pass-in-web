@@ -8,7 +8,7 @@ export function Header() {
       <img src={nlwUniteIcon} alt="NLW Unite" />
  
       <nav className="flex items-center gap-5">
-        <NavLink href="/events">Eventos</NavLink>
+        <NavLink href="/eventos">Eventos</NavLink>
         <NavLink href="/participantes">Participantes</NavLink>
       </nav>
     </div>
