@@ -1,15 +1,17 @@
+import { useState } from 'react'
+
 import { Header } from './components/header'
 import { AttendeeList } from './components/attendee-list'
 import { EventList } from './components/event-list'
 
 export function App() {
-  const url = new URL(window.location.href)
+  const [page, setPage] = useState('events')
 
   return (
     <div className="max-w-[1216px] mx-auto flex flex-col gap-5">
-      <Header />
-      {url.pathname === '/participantes' && <AttendeeList />}
-      {url.pathname === '/eventos' && <EventList />}
+      <Header setPage={setPage} />
+      {page === 'attendees' &&   <AttendeeList />}
+      {page === 'events' && <EventList />}
     </div>
   )
 }  
