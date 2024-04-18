@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 interface UrlProviderProps {
   children: ReactNode
@@ -6,12 +6,20 @@ interface UrlProviderProps {
 
 type UrlProviderState = {
   pathname: string
-  setPathname: (pathname: string) => void
+  updatePathname: (newPathname: string) => void
+  pageIndex: number
+  updatePageIndex: (newPageIndex: number) => void
+  search: string
+  updateSearch: (newSearch: string) => void
 }
 
 const initialState: UrlProviderState = {
   pathname: '/',
-  setPathname: () => null,
+  updatePathname: () => null,
+  pageIndex: 1,
+  updatePageIndex: () => null,
+  search: '',
+  updateSearch: () => null
 }
 
 const UrlProviderContext = createContext<UrlProviderState>(initialState)
@@ -20,16 +28,61 @@ export function UrlProvider({
   children,
   ...props
 }: UrlProviderProps) {
-  const [pathname, setPathname] = useState(window.location.pathname)
+  
+  const [url, setUrl] = useState(new URL(window.location.toString()))
+  const [pathname, setPathname] = useState(url.pathname)
+  const [pageIndex, setPageIndex] = useState(Number(url.searchParams.get('page')) || 1)
+  const [search, setSearch] = useState(url.searchParams.get('search') || '')
+
+  function updateUrl(newUrl: URL) {
+    setUrl(newUrl)
+    window.history.pushState({}, '', newUrl)
+  }
+
+  function updatePathname(newPathname: string) {
+    console.log(newPathname)
+    setPathname(newPathname)
+    setSearch('')
+    setPageIndex(1)
+
+    const newUrl = new URL(url)
+    newUrl.searchParams.delete('page')
+    newUrl.searchParams.delete('search')
+    newUrl.pathname = newPathname
+
+    updateUrl(newUrl)  
+  }
+
+
+  function updatePageIndex(newPageIndex: number) {
+    setPageIndex(newPageIndex)
+
+    const newUrl = new URL(url)
+    newUrl.searchParams.set('page', newPageIndex.toString())
+
+    updateUrl(newUrl)
+  }
+
+  function updateSearch(newSearch: string) {
+    setSearch(newSearch)
+    setPageIndex(1)
+
+    const newUrl = new URL(url)
+
+    newUrl.searchParams.set('search', newSearch)
+    newUrl.searchParams.set('page', '1'),
+
+    updateUrl(newUrl)
+  }
 
   const value = {
     pathname,
-    setPathname,
+    updatePathname,
+    pageIndex,
+    updatePageIndex,
+    search,
+    updateSearch
   }
-
-  useEffect(() => {
-    window.history.pushState({}, '', new URL(pathname, window.location.href))  
-  }, [pathname])
 
   return (
     <UrlProviderContext.Provider value={value} {...props}>

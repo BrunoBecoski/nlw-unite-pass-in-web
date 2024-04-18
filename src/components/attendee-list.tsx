@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal, Search } from 'lucide-react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -10,6 +10,7 @@ import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
 import { TableCell } from './table/table-cell'
 import { TableRow } from './table/table-row'
+import { useUrl } from '../contexts/url-provider'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -24,36 +25,18 @@ interface Attendee {
 
 const eventId = 'cb9108f2-8d99-4d30-bfa1-bb6e3bb41da0'
 
-export function AttendeeList() {
-  const [search, setSearch] = useState(() => {
-    const url = new URL(window.location.toString())
-
-    if (url.searchParams.has('search')) {
-      return url.searchParams.get('search') ?? ''
-    }
-
-    return ''
-  })
-
-  const [page, setPage] = useState(() => {
-    const url = new URL(window.location.toString())
-
-    if (url.searchParams.has('page')) {
-      return Number(url.searchParams.get('page'))
-    }
-
-    return 1
-  })
-  
+export function AttendeeList() { 
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<Attendee[]>([])
 
   const totalPages = Math.ceil(total / 10)
 
+  const { pageIndex, updatePageIndex, search, updateSearch } = useUrl()
+
   useEffect(() => {
     const url = new URL(`http://localhost:3333/events/${eventId}/attendees`)
 
-    url.searchParams.set('pageIndex', String(page - 1))
+    url.searchParams.set('pageIndex', String(pageIndex))
 
     if (search.length > 0) {
       url.searchParams.set('query', search)
@@ -65,48 +48,22 @@ export function AttendeeList() {
         setAttendees(data.attendees)
         setTotal(data.total)
       })
-  }, [page, search])
-
-
-  function setCurrentSearch(search: string) {
-    const url = new URL(window.location.toString())
-
-    url.searchParams.set('search', search)
-
-    window.history.pushState({}, '', url)
-
-    setSearch(search)
-  }
-
-  function setCurrentPage(page: number) {
-    const url = new URL(window.location.toString())
-    
-    url.searchParams.set('page', String(page))
-
-    window.history.pushState({}, '', url)
-
-    setPage(page)
-  }
-
-  function onSearchInputChanged(event: ChangeEvent<HTMLInputElement>) {
-    setCurrentSearch(event.target.value)
-    setCurrentPage(1)
-  }
+  }, [pageIndex, search])
 
   function goToFirstPage() {
-    setCurrentPage(1)
+    updatePageIndex(1)
   }
   
   function goToPreviousPage() {
-    setCurrentPage(page - 1)
+    updatePageIndex(pageIndex - 1)
   }
 
   function goToNextPage() {
-    setCurrentPage(page + 1)
+    updatePageIndex(pageIndex + 1)
   }
 
   function goToLastPage() {
-    setCurrentPage(totalPages)
+    updatePageIndex(totalPages)
   }
 
   return (
@@ -119,7 +76,7 @@ export function AttendeeList() {
           <input 
             className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
             placeholder="Buscar participante..."
-            onChange={onSearchInputChanged}
+            onChange={(event) => updateSearch(event.target.value)}
             value={search}
           />
         </div>
@@ -180,20 +137,20 @@ export function AttendeeList() {
               </TableCell>
               <TableCell className="text-right" colSpan={3}>
                 <div className="inline-flex items-center gap-8">
-                  <span>Página {page} de {totalPages}</span>
+                  <span>Página {pageIndex} de {totalPages}</span>
 
                   <div className="flex gap-1.5">
                     <IconButton 
                       title="Ir para a primeira página"
                       onClick={goToFirstPage}  
-                      disabled={page === 1}
+                      disabled={pageIndex === 1}
                     >
                       <ChevronsLeft className="size-4" />
                     </IconButton>
 
                     <IconButton 
                       onClick={goToPreviousPage}
-                      disabled={page === 1}
+                      disabled={pageIndex === 1}
                       title="Ir para a página anterior"
                     >
                       <ChevronLeft className="size-4" />
@@ -202,14 +159,14 @@ export function AttendeeList() {
                     <IconButton
                       onClick={goToNextPage}
                       title="Ir para a próxima página"
-                      disabled={page === totalPages}
+                      disabled={pageIndex >= totalPages}
                     >
                       <ChevronRight className="size-4" />
                     </IconButton>
 
                     <IconButton 
                       onClick={goToLastPage}
-                      disabled={page === totalPages}
+                      disabled={pageIndex >= totalPages}
                       title="Ir para a última página"
                     >
                       <ChevronsRight className="size-4" />

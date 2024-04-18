@@ -2,9 +2,10 @@ import { ComponentProps, ReactNode, useEffect, useRef } from 'react'
 
 interface NavLinkProps extends ComponentProps<'a'> {
   children: ReactNode
+  selected: boolean
 }
 
-export function NavLink({ children, ...props }: NavLinkProps) {
+export function NavLink({ children, selected, ...props }: NavLinkProps) {
   const anchorRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
@@ -14,7 +15,14 @@ export function NavLink({ children, ...props }: NavLinkProps) {
   }, [anchorRef])
 
   return (
-    <a className="font-medium text-sm" ref={anchorRef} {...props}>
+    <a 
+      className={`shadow-white
+        font-medium text-sm border-b
+        ${selected ? 'border-orange-400' : 'border-transparent'}
+      `} 
+      ref={anchorRef} 
+      {...props}
+    >
       {children}
     </a>
   )
