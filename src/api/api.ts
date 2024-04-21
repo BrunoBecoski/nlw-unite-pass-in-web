@@ -1,3 +1,5 @@
+import { CreateUrl } from './createUrl'
+
 interface getEventsProps {
   pageIndex?: number
   search?: string
@@ -10,8 +12,6 @@ interface getEventAttendeesProps {
 }
 
 export class Api {
-  private host = ('http://localhost:3333')
-
   constructor() {
     this.getEvents = this.getEvents.bind(this)
     this.getEventAttendees = this.getEventAttendees.bind(this)
@@ -19,37 +19,25 @@ export class Api {
   }
 
   async getEvents({ pageIndex, search }: getEventsProps = {}) {
-    const url = new URL(this.host)
+    const url = new CreateUrl()
+    url.setPathname = '/events'
+    url.setPageIndex = String(pageIndex)
+    url.setSearch = search
 
-    url.pathname = '/events'
-
-    if (pageIndex) {
-      url.searchParams.set('pageIndex', String(pageIndex))
-    }
-
-    if (search) {
-      url.searchParams.set('query', search)
-    }
-
-    const events = await this.fetchGet(url)
+    const events = await this.fetchGet(url.getUrl)
 
     return events
   }
 
   async getEventAttendees({ eventId, pageIndex, search }: getEventAttendeesProps) {
-    const url = new URL(this.host)
+    
+    const url = new CreateUrl()
 
-    url.pathname = `/events/${eventId}/attendees`
-
-    if (pageIndex) {
-      url.searchParams.set('pageIndex', String(pageIndex))
-    }
-
-    if (search) {
-      url.searchParams.set('query', search)
-    }
-
-    const eventAttendees = await this.fetchGet(url)
+    url.setPathname = `/events/${eventId}/attendees`
+    url.setPageIndex = String(pageIndex)
+    url.setSearch = search
+    
+    const eventAttendees = await this.fetchGet(url.getUrl)
 
     return eventAttendees
   }
