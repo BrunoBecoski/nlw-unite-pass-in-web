@@ -5,12 +5,13 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
+import { useUrl } from '../contexts/url-provider'
+import { Api } from '../api/api'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
 import { TableCell } from './table/table-cell'
 import { TableRow } from './table/table-row'
-import { useUrl } from '../contexts/url-provider'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -26,29 +27,24 @@ interface Attendee {
 const eventId = 'cb9108f2-8d99-4d30-bfa1-bb6e3bb41da0'
 
 export function AttendeeList() { 
+  const { pageIndex, updatePageIndex, search, updateSearch } = useUrl()
+  const { getEventAttendees } = new Api()
+
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<Attendee[]>([])
 
   const totalPages = Math.ceil(total / 10)
 
-  const { pageIndex, updatePageIndex, search, updateSearch } = useUrl()
-
   useEffect(() => {
-    const url = new URL(`http://localhost:3333/events/${eventId}/attendees`)
-
-    url.searchParams.set('pageIndex', String(pageIndex))
-
-    if (search.length > 0) {
-      url.searchParams.set('query', search)
+    async function fetch() {
+      const data = await getEventAttendees({ eventId, pageIndex, search })
+      setAttendees(data.attendees)
+      setTotal(data.total)
     }
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        setAttendees(data.attendees)
-        setTotal(data.total)
-      })
+    fetch()
   }, [pageIndex, search])
+
 
   function goToFirstPage() {
     updatePageIndex(1)

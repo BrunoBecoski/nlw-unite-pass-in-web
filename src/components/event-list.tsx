@@ -5,6 +5,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useUrl } from '../contexts/url-provider'
+import { Api } from '../api/api'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -30,6 +31,7 @@ interface Event {
 
 export function EventList() {
   const { pageIndex, updatePageIndex, search, updateSearch } = useUrl()
+  const { getEvents } = new Api()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<Event[]>([])
@@ -37,22 +39,14 @@ export function EventList() {
   const totalPages = Math.ceil(total / 10)
 
   useEffect(() => {
-    const url = new URL(`http://localhost:3333/events`)
-
-    url.searchParams.set('pageIndex', String(pageIndex))
-
-    if (search.length > 0) {
-      url.searchParams.set('query', search)
+    async function fetch() {
+      const data = await getEvents({ pageIndex, search })
+      setEvents(data.events)
+      setTotal(data.total)
     }
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        setEvents(data.events)
-        setTotal(data.total)
-      })
+    fetch()
   }, [pageIndex, search])
-
 
   function goToFirstPage() {
     updatePageIndex(1)
@@ -78,7 +72,7 @@ export function EventList() {
         <div className="px-3 w-72 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3 has-[:focus]:border-orange-400">
           <Search className="size-4 text-emerald-300" />
           <input 
-            className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
+             className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
             placeholder="Buscar evento..."
             onChange={(event) => updateSearch(event.target.value)}
             value={search}

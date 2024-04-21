@@ -40,7 +40,6 @@ export function UrlProvider({
   }
 
   function updatePathname(newPathname: string) {
-    console.log(newPathname)
     setPathname(newPathname)
     setSearch('')
     setPageIndex(1)
