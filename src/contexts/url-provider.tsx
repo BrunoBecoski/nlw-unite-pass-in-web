@@ -11,6 +11,8 @@ type UrlProviderState = {
   updatePageIndex: (newPageIndex: number) => void
   search: string
   updateSearch: (newSearch: string) => void
+  event: Event
+  updateEvent: (event: Event) => void
 }
 
 const initialState: UrlProviderState = {
@@ -19,7 +21,14 @@ const initialState: UrlProviderState = {
   pageIndex: 1,
   updatePageIndex: () => null,
   search: '',
-  updateSearch: () => null
+  updateSearch: () => null,
+  event: { id: 'cb9108f2-8d99-4d30-bfa1-bb6e3bb41da0', slug: 'unite-summit' },
+  updateEvent: () => null,
+}
+
+interface Event {
+  id: string
+  slug: string
 }
 
 const UrlProviderContext = createContext<UrlProviderState>(initialState)
@@ -28,11 +37,24 @@ export function UrlProvider({
   children,
   ...props
 }: UrlProviderProps) {
-  
   const [url, setUrl] = useState(new URL(window.location.toString()))
   const [pathname, setPathname] = useState(url.pathname)
   const [pageIndex, setPageIndex] = useState(Number(url.searchParams.get('page')) || 1)
   const [search, setSearch] = useState(url.searchParams.get('search') || '')
+  const [event, setEvent] = useState({} as Event)
+
+  function updateEvent(event: Event) {
+    setSearch('')
+    setPageIndex(1)
+    setEvent(event)
+
+    const newUrl = url
+    newUrl.searchParams.delete('page')
+    newUrl.searchParams.delete('search')
+    newUrl.pathname = `/evento/${event.slug}/participantes`
+
+    updateUrl(newUrl)
+  }
 
   function updateUrl(newUrl: URL) {
     setUrl(newUrl)
@@ -80,7 +102,9 @@ export function UrlProvider({
     pageIndex,
     updatePageIndex,
     search,
-    updateSearch
+    updateSearch,
+    event,
+    updateEvent,
   }
 
   return (

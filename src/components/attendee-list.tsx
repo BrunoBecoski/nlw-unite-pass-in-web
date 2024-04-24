@@ -6,7 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
 import { useUrl } from '../contexts/url-provider'
-import { Api } from '../api/api'
+import { Api } from '../classes/api'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -26,10 +26,8 @@ interface Attendee {
   checkedInAt: string | null
 }
 
-const eventId = 'cb9108f2-8d99-4d30-bfa1-bb6e3bb41da0'
-
 export function AttendeeList() { 
-  const { pageIndex, search } = useUrl()
+  const { pageIndex, search, event } = useUrl()
   const { getEventAttendees } = new Api()
 
   const [total, setTotal] = useState(0)
@@ -37,7 +35,7 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEventAttendees({ eventId, pageIndex, search })
+      const data = await getEventAttendees({ eventId: event.id, pageIndex, search })
       setAttendees(data.attendees)
       setTotal(data.total)
     }

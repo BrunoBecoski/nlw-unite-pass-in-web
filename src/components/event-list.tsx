@@ -5,7 +5,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useUrl } from '../contexts/url-provider'
-import { Api } from '../api/api'
+import { Api } from '../classes/api'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -32,11 +32,15 @@ interface Event {
 }
 
 export function EventList() {
-  const { pageIndex, search } = useUrl()
+  const { pageIndex, search, updateEvent} = useUrl()
   const { getEvents } = new Api()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<Event[]>([])
+
+  function handleShowAttendees(event: Event) {
+    updateEvent(event)
+  }
 
   useEffect(() => {
     async function fetch() {
@@ -69,7 +73,7 @@ export function EventList() {
         <tbody>
           {events.map((event) => {
             return (
-            <TableRow key={event.id}>
+            <TableRow key={event.id} onClick={() => handleShowAttendees(event)}>
               <TableCell>
                 <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
               </TableCell>
