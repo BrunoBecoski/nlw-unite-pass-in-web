@@ -27,17 +27,20 @@ interface Attendee {
 }
 
 export function AttendeeList() { 
-  const { pageIndex, search, event } = useUrl()
+  const { pageIndex, search, eventSlug } = useUrl()
   const { getEventAttendees } = new Api()
 
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<Attendee[]>([])
+  const [eventTitle, setEventTitle] = useState('')
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEventAttendees({ eventId: event.id, pageIndex, search })
+      const data = await getEventAttendees({ eventSlug, pageIndex, search })
+
       setAttendees(data.attendees)
       setTotal(data.total)
+      setEventTitle(data.eventTitle)
     }
 
     fetch()
@@ -46,7 +49,7 @@ export function AttendeeList() {
   return (
     <div className="flex flex-col gap-4">
       <TableSearch
-        title="participantes"
+        title={eventTitle}
       />
 
       <Table>

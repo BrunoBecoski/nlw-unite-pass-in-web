@@ -32,14 +32,14 @@ interface Event {
 }
 
 export function EventList() {
-  const { pageIndex, search, updateEvent} = useUrl()
+  const { pageIndex, search, updateEventSlug} = useUrl()
   const { getEvents } = new Api()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<Event[]>([])
 
-  function handleShowAttendees(event: Event) {
-    updateEvent(event)
+  function handleShowAttendees(eventSlug: string) {
+    updateEventSlug(eventSlug)
   }
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export function EventList() {
         <tbody>
           {events.map((event) => {
             return (
-            <TableRow key={event.id} onClick={() => handleShowAttendees(event)}>
+            <TableRow key={event.id} onClick={() => handleShowAttendees(event.slug)}>
               <TableCell>
                 <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
               </TableCell>

@@ -6,7 +6,7 @@ interface getEventsProps {
 }
 
 interface getEventAttendeesProps {
-  eventId: string
+  eventSlug: string
   pageIndex?: number
   search?: string
 }
@@ -29,11 +29,11 @@ export class Api {
     return events
   }
 
-  async getEventAttendees({ eventId, pageIndex, search }: getEventAttendeesProps) {
+  async getEventAttendees({ eventSlug, pageIndex, search }: getEventAttendeesProps) {
     
     const url = new CreateUrl()
 
-    url.setPathname = `/events/${eventId}/attendees`
+    url.setPathname = `/events/${eventSlug}/attendees`
     url.setPageIndex = String(pageIndex)
     url.setSearch = search
     
