@@ -5,7 +5,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useUrl } from '../contexts/url-provider'
-import { Api } from '../classes/api'
+import { CallApi } from '../classes/callApi'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -33,7 +33,7 @@ interface Event {
 
 export function EventList() {
   const { pageIndex, search, updateEventSlug} = useUrl()
-  const { getEvents } = new Api()
+  const { getEvents } = new CallApi()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<Event[]>([])
