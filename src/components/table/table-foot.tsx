@@ -13,7 +13,7 @@ export function TableFoot({
   length,
   total,
 }: TableFootProps) {
-  const { pageIndex, updatePageIndex } = useUrl()
+  const { params, updatePageIndex } = useUrl()
 
   const totalPages = Math.ceil(total / 10)
 
@@ -22,11 +22,11 @@ export function TableFoot({
   }
 
   function goToPreviousPage() {
-    updatePageIndex(pageIndex - 1)
+    updatePageIndex(params.pageIndex - 1)
   }
 
   function goToNextPage() {
-    updatePageIndex(pageIndex + 1)
+    updatePageIndex(params.pageIndex + 1)
   }
 
   function goToLastPage() {
@@ -42,13 +42,13 @@ export function TableFoot({
 
         <TableCell className="text-right" colSpan={3}>
           <div className="inline-flex items-center gap-8">
-            <span>Página {pageIndex} de {totalPages}</span>
+            <span>Página {params.pageIndex} de {totalPages}</span>
 
             <div className="flex gap-1.5">
               <IconButton 
                 title="Ir para a primeira página"
                 onClick={goToFirstPage}
-                disabled={pageIndex === 1}
+                disabled={params.pageIndex === 1}
               >
                 <ChevronsLeft className="size-4" />
               </IconButton>
@@ -56,7 +56,7 @@ export function TableFoot({
               <IconButton
                 title="Ir para a página anterior"
                 onClick={goToPreviousPage}
-                disabled={pageIndex === 1}
+                disabled={params.pageIndex === 1}
               >
                 <ChevronLeft className="size-4" />
               </IconButton>
@@ -64,7 +64,7 @@ export function TableFoot({
               <IconButton
                 title="Ir para a próxima página"
                 onClick={goToNextPage}
-                disabled={pageIndex >= totalPages}
+                disabled={params.pageIndex >= totalPages}
               >
                 <ChevronRight className="size-4" />
               </IconButton>
@@ -72,7 +72,7 @@ export function TableFoot({
               <IconButton
                 title="Ir para a última página"
                 onClick={goToLastPage}
-                disabled={pageIndex >= totalPages}
+                disabled={params.pageIndex >= totalPages}
               >
                 <ChevronsRight className="size-4" />
               </IconButton>

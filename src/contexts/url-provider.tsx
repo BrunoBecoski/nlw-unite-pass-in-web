@@ -4,26 +4,30 @@ interface UrlProviderProps {
   children: ReactNode
 }
 
+interface ParamsProps {
+  pageIndex: number
+  search: string
+}
+
 type UrlProviderState = {
   pathname: string
+  slug: string
+  params: ParamsProps
   updatePathname: (newPathname: string) => void
-  pageIndex: number
   updatePageIndex: (newPageIndex: number) => void
-  search: string
   updateSearch: (newSearch: string) => void
-  eventSlug: string
-  updateEventSlug: (eventSlug: string) => void
+  updateSlug: (slug: string) => void
 }
 
 const initialState: UrlProviderState = {
   pathname: '/',
+  slug: '',
+  params: { pageIndex: 0, search: '' },
   updatePathname: () => null,
-  pageIndex: 1,
+  updateSlug: () => null,
   updatePageIndex: () => null,
-  search: '',
   updateSearch: () => null,
-  eventSlug: '',
-  updateEventSlug: () => null,
+
 }
 
 const UrlProviderContext = createContext<UrlProviderState>(initialState)
@@ -32,16 +36,21 @@ export function UrlProvider({
   children,
   ...props
 }: UrlProviderProps) {
-  const [url, setUrl] = useState(new URL(window.location.toString()))
-  const [pathname, setPathname] = useState(url.pathname)
-  const [pageIndex, setPageIndex] = useState(Number(url.searchParams.get('page')) || 1)
-  const [search, setSearch] = useState(url.searchParams.get('search') || '')
-  const [eventSlug, setEventSlug] = useState('')
+  const [url, setUrl] = useState(new URL(window.location.href))
 
-  function updateEventSlug(eventSlug: string) {
-    setSearch('')
-    setPageIndex(1)
-    setEventSlug(eventSlug)
+  const [pathname, setPathname] = useState('/')
+  const [slug, setSlug] = useState('')
+  const [params, setParams] = useState({
+    pageIndex: 1,
+    search: '',
+  } as ParamsProps)
+
+  function updateSlug(eventSlug: string) {
+    setParams({
+      pageIndex: 1,
+      search: '',
+    })
+    setSlug(eventSlug)
     setPathname(`/evento/${eventSlug}/participantes`)
 
     const newUrl = url
@@ -59,8 +68,10 @@ export function UrlProvider({
 
   function updatePathname(newPathname: string) {
     setPathname(newPathname)
-    setSearch('')
-    setPageIndex(1)
+    setParams({
+      pageIndex: 1,
+      search: '',
+    })
 
     const newUrl = new URL(url)
     newUrl.searchParams.delete('page')
@@ -72,7 +83,10 @@ export function UrlProvider({
 
 
   function updatePageIndex(newPageIndex: number) {
-    setPageIndex(newPageIndex)
+    setParams({
+      pageIndex: newPageIndex,
+      search: params.search,
+    })
 
     const newUrl = new URL(url)
     newUrl.searchParams.set('page', newPageIndex.toString())
@@ -81,8 +95,11 @@ export function UrlProvider({
   }
 
   function updateSearch(newSearch: string) {
-    setSearch(newSearch)
-    setPageIndex(1)
+    setParams({
+      search: newSearch,
+      pageIndex: 1,
+    
+    })
 
     const newUrl = new URL(url)
 
@@ -93,14 +110,14 @@ export function UrlProvider({
   }
 
   const value = {
+    url,
     pathname,
+    params,
+    slug,
     updatePathname,
-    pageIndex,
+    updateSlug,
     updatePageIndex,
-    search,
     updateSearch,
-    eventSlug,
-    updateEventSlug,
   }
 
   return (
