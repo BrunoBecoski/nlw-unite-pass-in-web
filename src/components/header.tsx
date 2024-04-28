@@ -4,7 +4,7 @@ import { NavLink } from './nav-link';
 import nlwUniteIcon from '../assets/nlw-unite-icon.svg';
 
 export function Header() {
-  const { pathname, updatePathname } = useUrl()
+  const { pathname, setPathname } = useUrl()
 
   return (
     <div className="flex items-center gap-5 py-2">
@@ -12,14 +12,14 @@ export function Header() {
  
       <nav className="flex items-center gap-5">
         <NavLink 
-          onClick={() => updatePathname('/eventos')}
+          onClick={() => setPathname('/eventos')}
           href="/eventos"
           selected={pathname === '/eventos'}
         >
           Eventos
         </NavLink>
         <NavLink
-          onClick={() => updatePathname('/participantes')}
+          onClick={() => setPathname('/participantes')}
           href="/participantes"
           selected={pathname === '/participantes'}
         >

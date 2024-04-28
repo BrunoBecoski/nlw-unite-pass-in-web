@@ -27,7 +27,7 @@ interface Attendee {
 }
 
 export function AttendeeList() { 
-  const { slug, params } = useUrl()
+  const { slug, pageIndex, search } = useUrl()
   const { getEventAttendees } = new CallApi()
 
   const [total, setTotal] = useState(0)
@@ -36,7 +36,7 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEventAttendees({ eventSlug: slug, ...params })
+      const data = await getEventAttendees({ slug, pageIndex, search })
 
       setAttendees(data.attendees)
       setTotal(data.total)
@@ -44,7 +44,7 @@ export function AttendeeList() {
     }
 
     fetch()
-  }, [slug, params])
+  }, [slug, pageIndex, search])
 
   return (
     <div className="flex flex-col gap-4">

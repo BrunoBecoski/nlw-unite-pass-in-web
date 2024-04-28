@@ -6,7 +6,7 @@ interface getEventsProps {
 }
 
 interface getEventAttendeesProps {
-  eventSlug: string
+  slug: string
   pageIndex?: number
   search?: string
 }
@@ -30,11 +30,11 @@ export class CallApi {
     return events
   }
 
-  async getEventAttendees({ eventSlug, pageIndex = 1, search = '' }: getEventAttendeesProps) {
+  async getEventAttendees({ slug, pageIndex = 1, search = '' }: getEventAttendeesProps) {
     
     const request = new CreateRequest()
 
-    request.setPathname = `/events/${eventSlug}/attendees`
+    request.setPathname = `/events/${slug}/attendees`
     request.setPageIndex = String(pageIndex)
     request.setSearch = search
     

@@ -32,25 +32,25 @@ interface Event {
 }
 
 export function EventList() {
-  const { params, updateSlug} = useUrl()
+  const { pageIndex, search, setSlug} = useUrl()
   const { getEvents } = new CallApi()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<Event[]>([])
 
-  function handleShowAttendees(eventSlug: string) {
-    updateSlug(eventSlug)
+  function handleShowAttendees(slug: string) {
+    setSlug(slug)
   }
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEvents(params)
+      const data = await getEvents({ pageIndex, search })
       setEvents(data.events)
       setTotal(data.total)
     }
 
     fetch()
-  }, [params])
+  }, [pageIndex, search])
 
   return (
     <div className="flex flex-col gap-4">

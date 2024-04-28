@@ -1,11 +1,11 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 interface UrlProviderProps {
   children: ReactNode
 }
 
 interface UrlInfoProps {
-  pathname: string[]
+  pathname: string
   slug: string
   pageIndex: number
   search: string
@@ -14,7 +14,7 @@ interface UrlInfoProps {
 type UrlProviderState = {
   slug: string,
   setSlug: (slug: string) => void,
-  pathname: string[],
+  pathname: string,
   setPathname: (pathname: string) => void,
   pageIndex: number,
   setPageIndex: (pageIndex: number) => void,
@@ -25,7 +25,7 @@ type UrlProviderState = {
 const initialState: UrlProviderState = {
   slug: '',
   setSlug: () => null,
-  pathname: [''],
+  pathname: '/',
   setPathname: () => null,
   pageIndex: 0,
   setPageIndex: () => null,
@@ -42,12 +42,41 @@ export function UrlProvider({
   const [url, setUrl] = useState(new URL(window.location.href))
   const [urlInfo, setUrlInfo] = useState({} as UrlInfoProps)
 
-  function setPathname(pathname: string) {
-    const formattedPathname = pathname.substring(1).split('/')
+  useEffect(() => {
 
+    const params = new URL(window.location.href)
+
+    const pathname = params.pathname
+    const pageIndex = Number(params.searchParams.get('pageIndex'))
+    const search = String(params.searchParams.get('search'))
+    const slug = String(params.pathname.substring(1).split('/')[1])
+
+    setUrlInfo({
+      pathname,
+      pageIndex,
+      search,
+      slug,
+    })
+  }, [])
+
+  useEffect(() => {
+    const newUrl = url
+
+    newUrl.pathname = urlInfo.pathname,
+    newUrl.searchParams.set('pageIndex', String(urlInfo.pageIndex))
+    newUrl.searchParams.set('search', String(urlInfo.search))
+
+    setUrl(newUrl)
+  }, [urlInfo])
+
+  useEffect(() => {
+    window.history.pushState({}, '',  url)
+  }, [url])
+
+  function setPathname(pathname: string) {
     setUrlInfo({ 
       ...urlInfo,
-      pathname: formattedPathname,
+      pathname,
      })
   }
 
@@ -77,7 +106,7 @@ export function UrlProvider({
     urlInfo,
     slug: urlInfo.slug,
     setSlug,
-    pathname: urlInfo.pathname ? urlInfo.pathname : [''],
+    pathname: urlInfo.pathname,
     setPathname,
     pageIndex: urlInfo.pageIndex,
     setPageIndex,
