@@ -1,35 +1,33 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from 'react'
+
+import { CreateUrl } from '../classes/createUrl'
 
 interface UrlProviderProps {
   children: ReactNode
 }
 
-interface UrlInfoProps {
-  pathname: string
-  slug: string
-  pageIndex: number
-  search: string
+interface paramsProps {
+  pathname?: string
+  slug?: string
+  pageIndex?: number
+  search?: string
 }
 
 type UrlProviderState = {
-  slug: string,
-  setSlug: (slug: string) => void,
-  pathname: string,
+  pathname?: string,
   setPathname: (pathname: string) => void,
-  pageIndex: number,
+  slug?: string,
+  setSlug: (slug: string) => void,
+  pageIndex?: number,
   setPageIndex: (pageIndex: number) => void,
-  search: string,
+  search?: string,
   setSearch: (search: string) => void,
 }
 
 const initialState: UrlProviderState = {
-  slug: '',
   setSlug: () => null,
-  pathname: '/',
   setPathname: () => null,
-  pageIndex: 0,
   setPageIndex: () => null,
-  search: '',
   setSearch: () => null,
 }
 
@@ -39,78 +37,48 @@ export function UrlProvider({
   children,
   ...props
 }: UrlProviderProps) {
-  const [url, setUrl] = useState(new URL(window.location.href))
-  const [urlInfo, setUrlInfo] = useState({} as UrlInfoProps)
-
-  useEffect(() => {
-
-    const params = new URL(window.location.href)
-
-    const pathname = params.pathname
-    const pageIndex = Number(params.searchParams.get('pageIndex'))
-    const search = String(params.searchParams.get('search'))
-    const slug = String(params.pathname.substring(1).split('/')[1])
-
-    setUrlInfo({
-      pathname,
-      pageIndex,
-      search,
-      slug,
-    })
-  }, [])
-
-  useEffect(() => {
-    const newUrl = url
-
-    newUrl.pathname = urlInfo.pathname,
-    newUrl.searchParams.set('pageIndex', String(urlInfo.pageIndex))
-    newUrl.searchParams.set('search', String(urlInfo.search))
-
-    setUrl(newUrl)
-  }, [urlInfo])
-
-  useEffect(() => {
-    window.history.pushState({}, '',  url)
-  }, [url])
+  const [params, setParams] = useState({} as paramsProps)
 
   function setPathname(pathname: string) {
-    setUrlInfo({ 
-      ...urlInfo,
+    console.log(params)
+    setParams({ 
+      ...params,
       pathname,
-     })
+    })
+    console.log(params)
   }
 
   function setSlug(slug: string) {
-    setUrlInfo({ 
-      ...urlInfo,
+    setParams({ 
+      ...params,
       slug,
     })
   }
 
   function setPageIndex(pageIndex: number) {
-    setUrlInfo({
-      ...urlInfo,
+    setParams({
+      ...params,
       pageIndex,
     })
   }
 
   function setSearch(search: string) {
-    setUrlInfo({
-      ...urlInfo,
+    setParams({
+      ...params,
       search,
     })
   }
 
   
   const value = {
-    urlInfo,
-    slug: urlInfo.slug,
+    params,
+    slug: params.slug,
     setSlug,
-    pathname: urlInfo.pathname,
+    pathname: params.pathname,
     setPathname,
-    pageIndex: urlInfo.pageIndex,
+    pageIndex: params.pageIndex,
     setPageIndex,
-    search: urlInfo.search,
+    search: params.search,
     setSearch,
   }
 
