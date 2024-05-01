@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
 import { CreateUrl } from '../classes/createUrl'
 
@@ -6,7 +6,7 @@ interface UrlProviderProps {
   children: ReactNode
 }
 
-interface paramsProps {
+interface ParamsProps {
   pathname?: string
   slug?: string
   pageIndex?: number
@@ -15,16 +15,18 @@ interface paramsProps {
 
 type UrlProviderState = {
   pathname?: string,
-  setPathname: (pathname: string) => void,
   slug?: string,
-  setSlug: (slug: string) => void,
   pageIndex?: number,
-  setPageIndex: (pageIndex: number) => void,
   search?: string,
+  setParams: (params: ParamsProps) => void,
+  setPathname: (pathname: string) => void,
+  setSlug: (slug: string) => void,
+  setPageIndex: (pageIndex: number) => void,
   setSearch: (search: string) => void,
 }
 
 const initialState: UrlProviderState = {
+  setParams: () => null,
   setSlug: () => null,
   setPathname: () => null,
   setPageIndex: () => null,
@@ -37,15 +39,23 @@ export function UrlProvider({
   children,
   ...props
 }: UrlProviderProps) {
-  const [params, setParams] = useState({} as paramsProps)
+  const [params, setParams] = useState({} as ParamsProps)
+
+  useEffect(() => {
+    const url = new CreateUrl()
+
+    if (params.pathname) {
+      url.setPathname = String(params.pathname)
+    }
+
+    history.pushState({}, '', url.getUrl)
+  }, [params])
 
   function setPathname(pathname: string) {
-    console.log(params)
     setParams({ 
       ...params,
       pathname,
     })
-    console.log(params)
   }
 
   function setSlug(slug: string) {
@@ -71,6 +81,7 @@ export function UrlProvider({
 
   
   const value = {
+    setParams,
     params,
     slug: params.slug,
     setSlug,

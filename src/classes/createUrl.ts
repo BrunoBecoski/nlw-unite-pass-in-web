@@ -1,19 +1,31 @@
 export class CreateUrl {
-  private _url = new URL(window.location.origin)
+  private _url = new URL(window.location.href)
 
-  set pathname(pathname: string) {
+  set setPathname(pathname: string) {
     this._url.pathname = pathname
   }
 
-  set pageIndex(pageIndex: string) {
+  get getPathname() {
+    return this._url.pathname
+  }
+
+  set setPageIndex(pageIndex: string) {
     this._url.searchParams.set('pageIndex', pageIndex)
   }
 
-  set search(search: string) {
+  get getPageIndex() {
+    return this._url.searchParams.get('pageIndex')
+  }
+
+  set setSearch(search: string) {
     this._url.searchParams.set('search', search)
   }
 
-  get url() {
+  get getSearch() {
+    return this._url.searchParams.get('search')
+  }
+
+  get getUrl() {
     return this._url
   }
 }

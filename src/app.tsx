@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { CreateUrl } from './classes/createUrl'
 import { useUrl } from './contexts/url-provider'
 import { Header } from './components/header'
 import { AttendeeList } from './components/attendee-list'
@@ -9,7 +10,10 @@ export function App() {
   const { pathname, slug, setPathname } = useUrl()
 
   useEffect(() => {
-    setPathname(window.location.pathname)
+    const url = new CreateUrl()
+
+    setPathname(url.getPathname)
+
   }, [])
 
   return (
