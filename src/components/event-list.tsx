@@ -45,6 +45,7 @@ export function EventList() {
   useEffect(() => {
     async function fetch() {
       const data = await getEvents({ pageIndex, search })
+
       setEvents(data.events)
       setTotal(data.total)
     }

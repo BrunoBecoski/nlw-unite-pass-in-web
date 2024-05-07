@@ -39,13 +39,49 @@ export function UrlProvider({
   children,
   ...props
 }: UrlProviderProps) {
-  const [params, setParams] = useState({} as ParamsProps)
+  const [params, setParams] = useState<ParamsProps>(initialValues())
+
+  function initialValues() {
+    const url = new CreateUrl()
+
+    const initialPathname = url.getPathname
+    const initialPageIndex = Number(url.getPageIndex)
+    const initialSearch = url.getSearch
+
+    let initialValue: ParamsProps = {
+      pathname: initialPathname
+    }
+
+    if (initialPageIndex !== null && initialPageIndex > 0) {
+      initialValue.pageIndex = initialPageIndex
+    } else {
+      initialValue.pageIndex = 1
+    }
+
+    if (initialSearch != null) {
+      initialValue.search = initialSearch
+    }
+
+    return initialValue
+  }
 
   useEffect(() => {
     const url = new CreateUrl()
 
-    if (params.pathname) {
-      url.setPathname = String(params.pathname)
+    const pathname = params.pathname
+    const pageIndex = params.pageIndex
+    const search = params.search
+
+    if (pathname != undefined) {
+      url.setPathname = pathname
+    }
+    
+    if (pageIndex != undefined && pageIndex != 0) {
+      url.setPageIndex = pageIndex.toString()
+    }
+    
+    if (search != undefined) {
+      url.setSearch = search
     }
 
     history.pushState({}, '', url.getUrl)
