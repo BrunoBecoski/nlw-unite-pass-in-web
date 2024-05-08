@@ -10,7 +10,11 @@ export class CreateUrl {
   }
 
   set setPageIndex(pageIndex: string) {
-    this._url.searchParams.set('pageIndex', pageIndex)
+    if (pageIndex === '1') {
+      this._url.searchParams.delete('pageIndex')
+    } else {
+      this._url.searchParams.set('pageIndex', pageIndex)
+    }
   }
 
   get getPageIndex() {
@@ -18,7 +22,11 @@ export class CreateUrl {
   }
 
   set setSearch(search: string) {
-    this._url.searchParams.set('search', search)
+    if (search.length === 0) {
+      this._url.searchParams.delete('search')
+    } else {
+      this._url.searchParams.set('search', search)
+    }
   }
 
   get getSearch() {
