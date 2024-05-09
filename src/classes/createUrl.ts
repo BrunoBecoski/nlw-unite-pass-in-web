@@ -10,11 +10,7 @@ export class CreateUrl {
   }
 
   set setPageIndex(pageIndex: string) {
-    if (pageIndex === '1') {
-      this._url.searchParams.delete('pageIndex')
-    } else {
-      this._url.searchParams.set('pageIndex', pageIndex)
-    }
+    this._url.searchParams.set('pageIndex', pageIndex)
   }
 
   get getPageIndex() {

@@ -52,6 +52,12 @@ export function UrlProvider({
       pathname: initialPathname
     }
 
+    const initialSlug = getSlug(initialPathname)
+
+    if (initialSlug !== null) {
+      initialValue.slug = initialSlug
+    }
+
     if (initialPageIndex !== null && initialPageIndex > 0) {
       initialValue.pageIndex = initialPageIndex
     } else {
@@ -63,6 +69,16 @@ export function UrlProvider({
     }
 
     return initialValue
+  }
+
+  function getSlug(pathname: string) {
+    const array = pathname.substring(1).split('/');
+
+    if (array[0] === 'evento' && array[2] === 'participantes') {
+      return array[1]
+    }
+
+    return null
   }
 
   useEffect(() => {

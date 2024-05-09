@@ -32,14 +32,17 @@ interface Event {
 }
 
 export function EventList() {
-  const { pageIndex, search, setSlug} = useUrl()
+  const { pageIndex, search, setParams} = useUrl()
   const { getEvents } = new CallApi()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<Event[]>([])
 
   function handleShowAttendees(slug: string) {
-    setSlug(slug)
+    setParams({
+      pathname: `evento/${slug}/participantes`,
+      slug,
+    })
   }
 
   useEffect(() => {

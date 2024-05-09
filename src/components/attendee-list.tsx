@@ -36,11 +36,13 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEventAttendees({ slug, pageIndex, search })
-
-      setAttendees(data.attendees)
-      setTotal(data.total)
-      setEventTitle(data.eventTitle)
+      if (slug) {
+        const data = await getEventAttendees({ slug, pageIndex, search })
+  
+        setAttendees(data.attendees)
+        setTotal(data.total)
+        setEventTitle(data.eventTitle)
+      }
     }
 
     fetch()

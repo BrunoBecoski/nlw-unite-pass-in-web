@@ -14,4 +14,4 @@ export function App() {
       {pathname === '/eventos' && <EventList />}
     </div>
   )
-}  
+}
