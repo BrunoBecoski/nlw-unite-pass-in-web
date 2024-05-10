@@ -1,10 +1,10 @@
-import { useUrl } from '../contexts/url-provider';
+import { useRouter } from '../contexts/router-provider';
 import { NavLink } from './nav-link';
 
 import nlwUniteIcon from '../assets/nlw-unite-icon.svg';
 
 export function Header() {
-  const { pathname, setPathname } = useUrl()
+  const { route, setRoute } = useRouter()
 
   return (
     <div className="flex items-center gap-5 py-2">
@@ -12,16 +12,16 @@ export function Header() {
  
       <nav className="flex items-center gap-5">
         <NavLink 
-          onClick={() => setPathname('/eventos')}
+          onClick={() => setRoute('/eventos')}
           href="/eventos"
-          selected={pathname === '/eventos'}
+          selected={route === '/eventos'}
         >
           Eventos
         </NavLink>
         <NavLink
-          onClick={() => setPathname('/participantes')}
+          onClick={() => setRoute('/evento/unite-summit/participantes')}
           href="/participantes"
-          selected={pathname === '/participantes'}
+          selected={route === '/evento/unite-summit/participantes'}
         >
           Participantes
         </NavLink>
