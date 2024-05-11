@@ -2,10 +2,10 @@ import { ComponentProps, ReactNode, useEffect, useRef } from 'react'
 
 interface NavLinkProps extends ComponentProps<'a'> {
   children: ReactNode
-  selected: boolean
+  selected?: boolean
 }
 
-export function NavLink({ children, selected, ...props }: NavLinkProps) {
+export function NavLink({ children, selected = false, ...props }: NavLinkProps) {
   const anchorRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
