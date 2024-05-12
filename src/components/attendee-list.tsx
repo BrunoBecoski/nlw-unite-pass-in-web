@@ -5,7 +5,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
-import { useUrl } from '../contexts/url-provider'
+import { useRouter } from '../contexts/router-provider'
 import { CallApi } from '../classes/callApi'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
@@ -27,7 +27,7 @@ interface Attendee {
 }
 
 export function AttendeeList() { 
-  const { slug, pageIndex, search } = useUrl()
+  const { slug, pageIndex, search } = useRouter()
   const { getEventAttendees } = new CallApi()
 
   const [total, setTotal] = useState(0)

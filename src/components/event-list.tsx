@@ -5,7 +5,6 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useRouter } from '../contexts/router-provider'
-import { useUrl } from '../contexts/url-provider'
 import { CallApi } from '../classes/callApi'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
@@ -33,8 +32,7 @@ interface Event {
 }
 
 export function EventList() {
-  const { pageIndex, search } = useUrl()
-  const { toEventSlugAttendee } = useRouter()
+  const { pageIndex, search, toEventSlugAttendee } = useRouter()
   const { getEvents } = new CallApi()
 
   const [total, setTotal] = useState(0)
@@ -73,7 +71,7 @@ export function EventList() {
         <tbody>
           {events.map((event) => {
             return (
-            <TableRow key={event.id} onClick={toEventSlugAttendee}>
+            <TableRow key={event.id} onClick={() => toEventSlugAttendee(event.slug)}>
               <TableCell>
                 <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
               </TableCell>

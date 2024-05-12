@@ -1,13 +1,13 @@
 import { Search } from 'lucide-react'
 
-import { useUrl } from '../../contexts/url-provider'
+import { useRouter } from '../../contexts/router-provider'
 
 interface TableSearchProps {
   title: string
 }
 
 export function TableSearch({ title }: TableSearchProps) {
-  const { search, setSearch } = useUrl()
+  const { search } = useRouter()
   
   return (
     <div className="flex gap-3 items-center">
@@ -18,7 +18,7 @@ export function TableSearch({ title }: TableSearchProps) {
         <input
           className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
           placeholder={`Buscar ${title}...`}
-          onChange={(event) => setSearch(event.target.value)}
+          // onChange={(event) => setSearch(event.target.value)}
           value={search}
         />
       </div>

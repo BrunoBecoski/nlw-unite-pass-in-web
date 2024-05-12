@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 
-import { useUrl } from '../../contexts/url-provider'
+import { useRouter } from '../../contexts/router-provider'
 import { IconButton } from '../icon-button'
 import { TableCell } from './table-cell'
 
@@ -13,24 +13,24 @@ export function TableFoot({
   length,
   total,
 }: TableFootProps) {
-  const { pageIndex, setPageIndex } = useUrl()
+  const { pageIndex } = useRouter()
 
   const totalPages = Math.ceil(total / 10)
 
   function goToFirstPage() {
-    setPageIndex(1)
+    // setPageIndex(1)
   }
 
   function goToPreviousPage() {
-    setPageIndex(pageIndex - 1)
+    // setPageIndex(pageIndex - 1)
   }
 
   function goToNextPage() {
-    setPageIndex(pageIndex + 1)
+    // setPageIndex(pageIndex + 1)
   }
 
   function goToLastPage() {
-    setPageIndex(totalPages)
+    // setPageIndex(totalPages)
   }
 
   return (
