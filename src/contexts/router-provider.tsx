@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
 import { CreateUrl } from '../classes/createUrl'
 
@@ -11,6 +11,8 @@ type RouterProviderState = {
   slug: string,
   pageIndex: number,
   search: string,
+  setPageIndex: (pageIndex: number) => void,
+  setSearch: (search: string) => void,
   toHome: () => void,
   toEvents: () => void,
   toEventSlugAttendee: (slug: string) => void,
@@ -21,48 +23,16 @@ const initialState: RouterProviderState = {
   slug: '',
   pageIndex: 1,
   search: '',
+  setPageIndex: () => null,
+  setSearch: () => null,
   toHome: () => null,
   toEvents: () => null,
   toEventSlugAttendee: () => null,
 }
 
-type Routes = 'home' | 'events' | 'eventSlugAttendee'
-
-type ParamsProps = {
-  pathname: string
-  slug?: string
-  pageIndex?: number
-  search?: string
-}
+type Routes = 'home' | 'events' | 'eventSlugAttendees'
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
-
-function setInitialParams() {
-  const url = new CreateUrl()
-
-  const pathname = url.getPathname
-  const pageIndex = Number(url.getPageIndex)
-  const search = url.getSearch
-  const slug = getSlug(pathname)
-
-  let params: ParamsProps = {
-    pathname: pathname,
-  }
-
-  if (slug != null) {
-    params.slug = slug
-  }
-
-  if (pageIndex != null) {
-    params.pageIndex = pageIndex
-  }
-
-  if (search != null) {
-    params.search = search
-  }
-
-  return params
-}
 
 function getSlug(pathname: string) {
   const array = pathname.substring(1).split('/')
@@ -71,15 +41,35 @@ function getSlug(pathname: string) {
     return array[1]
   }
 
-  return null
+  return ''
 }
 
 export function RouterProvider({
   children,
   ...props
 }: RouterProviderProps) {
-  const [currentRoute, setCurrentRoute] = useState<Routes>('home')
-  const [params, setParams] = useState<ParamsProps>(setInitialParams())
+  const url = new CreateUrl()
+
+  const [currentRoute, setCurrentRoute] = useState<Routes>('home') 
+  const [pathname, setPathname] = useState(url.getPathname)
+  const [slug, setSlug] = useState(getSlug(url.getPathname))
+  const [pageIndex, setPageIndex] = useState(url.getPageIndex ? Number(url.getPageIndex) : 1)
+  const [search, setSearch] = useState(url.getSearch ? url.getSearch : '')
+
+  useEffect(() => {
+    if (pathname === '/') {
+      setCurrentRoute('home')
+    }
+
+    if (pathname === '/eventos') {
+      setCurrentRoute('events')
+    }
+
+    if (pathname === `/evento/${slug}/participantes`) {
+      setCurrentRoute('eventSlugAttendees')
+    }
+  }, [pathname])
+
 
   function toHome() {
     const url = new CreateUrl()
@@ -87,9 +77,7 @@ export function RouterProvider({
     url.setPathname = '/'
     
     setCurrentRoute('home')
-    setParams({
-      pathname: '/',
-    })
+    setPathname(url.getPathname)
     history.pushState({}, '', url.getUrl)
   }
 
@@ -99,9 +87,9 @@ export function RouterProvider({
     url.setPathname = '/eventos'
 
     setCurrentRoute('events')
-    setParams({
-      pathname: '/eventos',
-    })
+    setPathname(url.getPathname)
+    setPageIndex(1)
+    setSearch('')
     history.pushState({}, '', url.getUrl)
   }
 
@@ -110,21 +98,24 @@ export function RouterProvider({
 
     const pathname = `/evento/${slug}/participantes`
 
-
     url.setPathname = pathname
 
-    setCurrentRoute('eventSlugAttendee')
-    setParams({
-      pathname,
-    })
+    setCurrentRoute('eventSlugAttendees')
+    setPathname(url.getPathname)
+    setSlug(slug)
+    setPageIndex(1)
+    setSearch('')
+
     history.pushState({}, '', url.getUrl)
   }
 
   const value: RouterProviderState = {
     currentRoute,
-    slug: params.slug ? params.slug : '',
-    pageIndex: params.pageIndex ? params.pageIndex : 1,
-    search: params.search ? params.search : '',
+    slug,
+    pageIndex,
+    search,
+    setPageIndex,
+    setSearch,
     toHome,
     toEvents,
     toEventSlugAttendee,

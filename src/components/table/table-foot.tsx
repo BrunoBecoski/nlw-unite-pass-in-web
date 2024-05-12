@@ -13,24 +13,24 @@ export function TableFoot({
   length,
   total,
 }: TableFootProps) {
-  const { pageIndex } = useRouter()
+  const { pageIndex, setPageIndex } = useRouter()
 
   const totalPages = Math.ceil(total / 10)
 
   function goToFirstPage() {
-    // setPageIndex(1)
+    setPageIndex(1)
   }
 
   function goToPreviousPage() {
-    // setPageIndex(pageIndex - 1)
+    setPageIndex(pageIndex - 1)
   }
 
   function goToNextPage() {
-    // setPageIndex(pageIndex + 1)
+    setPageIndex(pageIndex + 1)
   }
 
   function goToLastPage() {
-    // setPageIndex(totalPages)
+    setPageIndex(totalPages)
   }
 
   return (
