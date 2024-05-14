@@ -56,20 +56,6 @@ export function RouterProvider({
   const [pageIndex, setPageIndex] = useState(url.getPageIndex ? Number(url.getPageIndex) : 1)
   const [search, setSearch] = useState(url.getSearch ? url.getSearch : '')
 
-  useEffect(() => {
-    if (pathname === '/') {
-      setCurrentRoute('home')
-    }
-
-    if (pathname === '/eventos') {
-      setCurrentRoute('events')
-    }
-
-    if (pathname === `/evento/${slug}/participantes`) {
-      setCurrentRoute('eventSlugAttendees')
-    }
-  }, [pathname])
-
 
   function toHome() {
     const url = new CreateUrl()
@@ -120,6 +106,46 @@ export function RouterProvider({
     toEvents,
     toEventSlugAttendee,
   }
+
+  window.addEventListener("popstate", () => {
+    const url = new CreateUrl()
+
+    setPathname(url.getPathname)
+    setPageIndex(url.getPageIndex ? Number(url.getPageIndex) : 1)
+    setSearch(url.getSearch ? url.getSearch : '')
+    setSlug(getSlug(url.getPathname))
+  });
+
+  useEffect(() => {
+    if (pathname === '/') {
+      setCurrentRoute('home')
+    }
+
+    if (pathname === '/eventos') {
+      setCurrentRoute('events')
+    }
+
+    if (pathname === `/evento/${slug}/participantes`) {
+      setCurrentRoute('eventSlugAttendees')
+    }
+  }, [pathname])
+
+  useEffect(() => {
+    const url = new CreateUrl()
+
+    url.setPageIndex = String(pageIndex)
+
+    window.history.pushState({}, '', url.getUrl)
+
+  }, [pageIndex])
+
+  useEffect(() => {
+    const url = new CreateUrl()
+    
+    url.setSearch = search
+
+    window.history.pushState({}, '', url.getUrl) 
+  }, [search])
 
   return (
     <RouterProviderContext.Provider value={value} {...props}>
