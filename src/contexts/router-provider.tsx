@@ -53,9 +53,8 @@ export function RouterProvider({
   const [currentRoute, setCurrentRoute] = useState<Routes>('home') 
   const [pathname, setPathname] = useState(url.getPathname)
   const [slug, setSlug] = useState(getSlug(url.getPathname))
-  const [pageIndex, setPageIndex] = useState(url.getPageIndex ? Number(url.getPageIndex) : 1)
-  const [search, setSearch] = useState(url.getSearch ? url.getSearch : '')
-
+  const [pageIndex, setPageIndex] = useState(url.getPageIndex ? Number(url.getPageIndex) : undefined)
+  const [search, setSearch] = useState(url.getSearch ? url.getSearch : undefined)
 
   function toHome() {
     const url = new CreateUrl()
@@ -74,8 +73,8 @@ export function RouterProvider({
 
     setCurrentRoute('events')
     setPathname(url.getPathname)
-    setPageIndex(1)
-    setSearch('')
+    setPageIndex(undefined)
+    setSearch(undefined)
     history.pushState({}, '', url.getUrl)
   }
 
@@ -97,9 +96,9 @@ export function RouterProvider({
 
   const value: RouterProviderState = {
     currentRoute,
-    slug,
-    pageIndex,
-    search,
+    slug: slug != undefined ? slug : '',
+    pageIndex: pageIndex != undefined ? pageIndex : 1,
+    search: search != undefined ? search : '',
     setPageIndex,
     setSearch,
     toHome,
@@ -131,20 +130,23 @@ export function RouterProvider({
   }, [pathname])
 
   useEffect(() => {
-    const url = new CreateUrl()
-
-    url.setPageIndex = String(pageIndex)
-
-    window.history.pushState({}, '', url.getUrl)
-
+    if (pageIndex != undefined) {
+      const url = new CreateUrl()
+      
+      url.setPageIndex = String(pageIndex)
+      
+      window.history.pushState({}, '', url.getUrl)
+    }
   }, [pageIndex])
 
   useEffect(() => {
-    const url = new CreateUrl()
-    
-    url.setSearch = search
+    if (search != undefined) {
+      const url = new CreateUrl()
 
-    window.history.pushState({}, '', url.getUrl) 
+      url.setSearch = search
+
+      window.history.pushState({}, '', url.getUrl) 
+    }
   }, [search])
 
   return (

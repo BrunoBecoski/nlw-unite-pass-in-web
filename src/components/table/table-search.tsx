@@ -1,14 +1,12 @@
 import { Search } from 'lucide-react'
 
-import { useRouter } from '../../contexts/router-provider'
-
 interface TableSearchProps {
   title: string
+  search: string
+  setSearch: (search: string) => void
 }
 
-export function TableSearch({ title }: TableSearchProps) {
-  const { search, setSearch } = useRouter()
-  
+export function TableSearch({ title, search, setSearch }: TableSearchProps) {
   return (
     <div className="flex gap-3 items-center">
       <h1 className="text-2 xl font-bold first-letter:uppercase">{title}</h1>

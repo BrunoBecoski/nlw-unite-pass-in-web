@@ -27,7 +27,7 @@ interface Attendee {
 }
 
 export function AttendeeList() { 
-  const { slug, pageIndex, search } = useRouter()
+  const { slug, pageIndex, setPageIndex, search, setSearch } = useRouter()
   const { getEventAttendees } = new CallApi()
 
   const [total, setTotal] = useState(0)
@@ -36,13 +36,11 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      if (slug) {
-        const data = await getEventAttendees({ slug, pageIndex, search })
-  
-        setAttendees(data.attendees)
-        setTotal(data.total)
-        setEventTitle(data.eventTitle)
-      }
+      const data = await getEventAttendees({ slug, pageIndex, search })
+
+      setAttendees(data.attendees)
+      setTotal(data.total)
+      setEventTitle(data.eventTitle)
     }
 
     fetch()
@@ -52,6 +50,8 @@ export function AttendeeList() {
     <div className="flex flex-col gap-4">
       <TableSearch
         title={eventTitle}
+        search={search}
+        setSearch={setSearch}
       />
 
       <Table>
@@ -105,6 +105,8 @@ export function AttendeeList() {
         <TableFoot
           length={attendees.length}
           total={total}
+          pageIndex={pageIndex}
+          setPageIndex={setPageIndex}
         />
       </Table>
     </div>

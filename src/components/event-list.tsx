@@ -32,7 +32,7 @@ interface Event {
 }
 
 export function EventList() {
-  const { pageIndex, search, toEventSlugAttendee } = useRouter()
+  const { pageIndex, setPageIndex, search, setSearch, toEventSlugAttendee } = useRouter()
   const { getEvents } = new CallApi()
 
   const [total, setTotal] = useState(0)
@@ -41,10 +41,12 @@ export function EventList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEvents({ pageIndex, search })
-
-      setEvents(data.events)
-      setTotal(data.total)
+      if (pageIndex != null && search != null) {
+        const data = await getEvents({ pageIndex, search })
+        
+        setEvents(data.events)
+        setTotal(data.total)
+      }
     }
 
     fetch()
@@ -52,7 +54,11 @@ export function EventList() {
 
   return (
     <div className="flex flex-col gap-4">
-      <TableSearch title="eventos" />
+      <TableSearch 
+        title="eventos"
+        search={search}
+        setSearch={setSearch}
+      />
 
       <Table>
         <thead>
@@ -109,6 +115,8 @@ export function EventList() {
         <TableFoot
           length={events.length}
           total={total}
+          pageIndex={pageIndex}
+          setPageIndex={setPageIndex}
         />
       </Table>
     </div>
