@@ -11,7 +11,7 @@ export function App() {
       <Header />
 
       {currentRoute === 'events' && <EventList />}
-      {currentRoute === 'eventSlugAttendees' && <AttendeeList />}
+      {currentRoute === 'attendees' && <AttendeeList />}
     </div>
   )
 }

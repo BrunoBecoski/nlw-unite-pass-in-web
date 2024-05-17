@@ -4,7 +4,7 @@ import { NavLink } from './nav-link';
 import nlwUniteIcon from '../assets/nlw-unite-icon.svg';
 
 export function Header() {
-  const { currentRoute, toHome, toEvents } = useRouter()
+  const { currentRoute, toHome, toEvents, toAttendees } = useRouter()
 
   return (
     <div className="flex items-center gap-5 py-2">
@@ -26,6 +26,8 @@ export function Header() {
 
         <NavLink
           href="/participantes"
+          onClick={toAttendees}
+          selected={currentRoute === 'attendees'}
         >
           Participantes
         </NavLink>

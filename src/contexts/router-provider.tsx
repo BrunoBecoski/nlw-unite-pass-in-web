@@ -15,6 +15,7 @@ type RouterProviderState = {
   setSearch: (search: string) => void,
   toHome: () => void,
   toEvents: () => void,
+  toAttendees: () => void,
   toEventSlugAttendee: (slug: string) => void,
 }
 
@@ -27,10 +28,11 @@ const initialState: RouterProviderState = {
   setSearch: () => null,
   toHome: () => null,
   toEvents: () => null,
+  toAttendees: () => null,
   toEventSlugAttendee: () => null,
 }
 
-type Routes = 'home' | 'events' | 'eventSlugAttendees'
+type Routes = 'home' | 'events' | 'attendees' | 'eventSlugAttendees'
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
 
@@ -78,6 +80,18 @@ export function RouterProvider({
     history.pushState({}, '', url.getUrl)
   }
 
+  function toAttendees() {
+    const url = new CreateUrl()
+    url.setPathname = '/participantes'
+
+    setCurrentRoute('attendees')
+    setPathname(url.getPathname)
+    setPageIndex(undefined)
+    setSearch(undefined)
+
+    history.pushState({}, '', url.getUrl)
+  }
+
   function toEventSlugAttendee(slug: string) {
     const url = new CreateUrl()
 
@@ -103,6 +117,7 @@ export function RouterProvider({
     setSearch,
     toHome,
     toEvents,
+    toAttendees,
     toEventSlugAttendee,
   }
 

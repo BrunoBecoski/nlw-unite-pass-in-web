@@ -41,12 +41,10 @@ export function EventList() {
 
   useEffect(() => {
     async function fetch() {
-      if (pageIndex != null && search != null) {
-        const data = await getEvents({ pageIndex, search })
-        
-        setEvents(data.events)
-        setTotal(data.total)
-      }
+      const data = await getEvents({ pageIndex, search })
+      
+      setEvents(data.events)
+      setTotal(data.total)
     }
 
     fetch()

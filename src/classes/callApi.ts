@@ -5,6 +5,11 @@ interface getEventsProps {
   search?: string
 }
 
+interface getAttendeesProps {
+  pageIndex?: number
+  search?: string
+}
+
 interface getEventAttendeesProps {
   slug: string
   pageIndex?: number
@@ -12,12 +17,6 @@ interface getEventAttendeesProps {
 }
 
 export class CallApi {
-  constructor() {
-    this.getEvents = this.getEvents.bind(this)
-    this.getEventAttendees = this.getEventAttendees.bind(this)
-    this.fetchApi = this.fetchApi.bind(this)
-  }
-
   async getEvents({ pageIndex = 1, search = '' }: getEventsProps = {}) {
     const request = new CreateRequest()
     request.setPathname = '/events'
@@ -25,9 +24,31 @@ export class CallApi {
     request.setSearch = search
     request.setMethod = 'GET'
 
-    const events = await this.fetchApi(request.info)
+    const { info } = request
+    const { url, init } = info
+  
+    const events =  fetch(url, init)
+      .then(response => response.json())
+      .catch(error => console.log(error))
 
     return events
+  }
+
+  async getAttendees({ pageIndex = 1, search = ''}: getAttendeesProps = {}) {
+    const request = new CreateRequest()
+    request.setPathname = '/attendees'
+    request.setPageIndex = pageIndex.toString()
+    request.setSearch = search
+    request.setMethod = 'GET'
+
+    const { info } = request
+    const { url, init } = info
+  
+    const attendees =  fetch(url, init)
+      .then(response => response.json())
+      .catch(error => console.log(error))
+
+    return attendees
   }
 
   async getEventAttendees({ slug, pageIndex = 1, search = '' }: getEventAttendeesProps) {
@@ -38,17 +59,14 @@ export class CallApi {
     request.setPageIndex = String(pageIndex)
     request.setSearch = search
     
-    const eventAttendees = await this.fetchApi(request.info)
+    const { info } = request
+    const { url, init } = info
+
+    const eventAttendees =  fetch(url, init)
+      .then(response => response.json())
+      .catch(error => console.log(error))
 
     return eventAttendees
-  }
-
-  private async fetchApi(info: { url: URL; init: RequestInit }) {
-    const response =  fetch(info.url, info.init)
-      .then(response => response.json())
-      .catch(error => console.log(error)) 
-
-    return response
   }
 }
 

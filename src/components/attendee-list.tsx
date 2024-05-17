@@ -27,29 +27,27 @@ interface Attendee {
 }
 
 export function AttendeeList() { 
-  const { slug, pageIndex, setPageIndex, search, setSearch } = useRouter()
-  const { getEventAttendees } = new CallApi()
+  const { pageIndex, setPageIndex, search, setSearch } = useRouter()
+  const { getAttendees } = new CallApi()
 
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<Attendee[]>([])
-  const [eventTitle, setEventTitle] = useState('')
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEventAttendees({ slug, pageIndex, search })
+      const data = await getAttendees({ pageIndex, search })
 
       setAttendees(data.attendees)
       setTotal(data.total)
-      setEventTitle(data.eventTitle)
     }
 
     fetch()
-  }, [slug, pageIndex, search])
+  }, [pageIndex, search])
 
   return (
     <div className="flex flex-col gap-4">
       <TableSearch
-        title={eventTitle}
+        title="participantes"
         search={search}
         setSearch={setSearch}
       />
