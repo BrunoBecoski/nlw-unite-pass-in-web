@@ -6,7 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
 import { useRouter } from '../contexts/router-provider'
-import { CallApi } from '../classes/callApi'
+import { AttendeeTypes, RequestApi } from '../classes/requestApi'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -18,24 +18,16 @@ import { TableSearch } from './table/table-search'
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
-interface Attendee {
-  id: string
-  name: string
-  email:string
-  createdAt: string
-  checkedInAt: string | null
-}
-
 export function AttendeeList() { 
   const { pageIndex, setPageIndex, search, setSearch } = useRouter()
-  const { getAttendees } = new CallApi()
+  const { getAttendees } = new RequestApi({ pageIndex, search })
 
   const [total, setTotal] = useState(0)
-  const [attendees, setAttendees] = useState<Attendee[]>([])
+  const [attendees, setAttendees] = useState<AttendeeTypes[]>([])
 
   useEffect(() => {
     async function fetch() {
-      const data = await getAttendees({ pageIndex, search })
+      const data = await getAttendees()
 
       setAttendees(data.attendees)
       setTotal(data.total)
@@ -81,13 +73,13 @@ export function AttendeeList() {
                 </div>
               </TableCell>
               <TableCell>
-                {dayjs().to(attendee.createdAt)}
+                {/* {dayjs().to(attendee.createdAt)} */}
               </TableCell>
               <TableCell >
-                {attendee.checkedInAt === null
+                {/* {attendee.checkedInAt === null
                   ? <span className="text-zinc-400">Não fez check-in</span>
                   : dayjs().to(attendee.checkedInAt)
-                }
+                } */}
               </TableCell>
               <TableCell>
                 <IconButton transparent>
