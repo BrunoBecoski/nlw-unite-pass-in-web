@@ -2,7 +2,7 @@ import { Search } from 'lucide-react'
 
 interface TableSearchProps {
   title: string
-  search: string
+  search?: string
   setSearch: (search: string) => void
 }
 

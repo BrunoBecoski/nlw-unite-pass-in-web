@@ -1,20 +1,48 @@
+interface CreateUrlProps {
+  pathname?: string
+  pageIndex?: number
+  search?: string
+}
+
 export class CreateUrl {
   private _url = new URL(window.location.href)
+
+  constructor ({ pathname, pageIndex, search }: CreateUrlProps) {
+    if (pathname != undefined) {
+      this._url.pathname = pathname
+    } else {
+      this._url.pathname = '/'
+    }
+    
+    if (pageIndex != undefined) {
+      this._url.searchParams.set('page', pageIndex.toString())  
+    }
+
+    if (search != undefined) {
+      this._url.searchParams.set
+    }
+  }
 
   set setPathname(pathname: string) {
     this._url.pathname = pathname
   }
 
-  get getPathname() {
+  get pathname() {
     return this._url.pathname
   }
 
-  set setPageIndex(pageIndex: string) {
-    this._url.searchParams.set('pageIndex', pageIndex)
+  set setPageIndex(pageIndex: number) {
+    this._url.searchParams.set('page', pageIndex.toString())
   }
 
-  get getPageIndex() {
-    return this._url.searchParams.get('pageIndex')
+  get pageIndex() {
+    const pageIndex = this._url.searchParams.get('page')
+
+    if (pageIndex != null) {
+      return Number(pageIndex)
+    } else {
+      return undefined
+    }
   }
 
   set setSearch(search: string) {
@@ -25,11 +53,17 @@ export class CreateUrl {
     }
   }
 
-  get getSearch() {
-    return this._url.searchParams.get('search')
+  get search() {
+    const search = this._url.searchParams.get('search')
+
+    if (search != null) {
+      return search
+    } else {
+      return undefined
+    }
   }
 
-  get getUrl() {
+  get url() {
     return this._url
   }
 }

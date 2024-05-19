@@ -8,28 +8,26 @@ interface RouterProviderProps {
 
 type RouterProviderState = {
   currentRoute: Routes,
-  slug: string,
-  pageIndex: number,
-  search: string,
+  slug?: string,
+  pageIndex?: number,
+  search?: string,
   setPageIndex: (pageIndex: number) => void,
   setSearch: (search: string) => void,
   toHome: () => void,
   toEvents: () => void,
   toAttendees: () => void,
-  toEventSlugAttendee: (slug: string) => void,
 }
 
 const initialState: RouterProviderState = {
   currentRoute: 'home',
-  slug: '',
-  pageIndex: 1,
-  search: '',
+  slug: undefined,
+  pageIndex: undefined,
+  search: undefined,
   setPageIndex: () => null,
   setSearch: () => null,
   toHome: () => null,
   toEvents: () => null,
   toAttendees: () => null,
-  toEventSlugAttendee: () => null,
 }
 
 type Routes = 'home' | 'events' | 'attendees' | 'eventSlugAttendees'
@@ -43,124 +41,87 @@ function getSlug(pathname: string) {
     return array[1]
   }
 
-  return ''
+  return undefined
 }
 
 export function RouterProvider({
   children,
   ...props
 }: RouterProviderProps) {
-  const url = new CreateUrl()
+  const url = new CreateUrl({})
 
   const [currentRoute, setCurrentRoute] = useState<Routes>('home') 
-  const [pathname, setPathname] = useState(url.getPathname)
-  const [slug, setSlug] = useState(getSlug(url.getPathname))
-  const [pageIndex, setPageIndex] = useState(url.getPageIndex ? Number(url.getPageIndex) : undefined)
-  const [search, setSearch] = useState(url.getSearch ? url.getSearch : undefined)
+  const [pathname, setPathname] = useState(url.pathname)
+  const [slug, setSlug] = useState(getSlug(url.pathname))
+  const [pageIndex, setPageIndex] = useState(url.pageIndex)
+  const [search, setSearch] = useState(url.search)
 
   function toHome() {
-    const url = new CreateUrl()
-
-    url.setPathname = '/'
+    const { url, pathname } = new CreateUrl({
+      pathname: '/'
+    })
     
     setCurrentRoute('home')
-    setPathname(url.getPathname)
-    history.pushState({}, '', url.getUrl)
+    setPathname(pathname)
+    history.pushState({}, '', url)
   }
 
   function toEvents() {
-    const url = new CreateUrl()
-
-    url.setPathname = '/eventos'
+    const { url, pathname } = new CreateUrl({
+      pathname: '/eventos'
+    })
 
     setCurrentRoute('events')
-    setPathname(url.getPathname)
+    setPathname(pathname)
     setPageIndex(undefined)
     setSearch(undefined)
-    history.pushState({}, '', url.getUrl)
+    history.pushState({}, '', url)
   }
 
   function toAttendees() {
-    const url = new CreateUrl()
-    url.setPathname = '/participantes'
+    const { url, pathname } = new CreateUrl({
+      pathname:  '/participantes'
+    })
 
     setCurrentRoute('attendees')
-    setPathname(url.getPathname)
+    setPathname(pathname)
     setPageIndex(undefined)
     setSearch(undefined)
 
-    history.pushState({}, '', url.getUrl)
-  }
-
-  function toEventSlugAttendee(slug: string) {
-    const url = new CreateUrl()
-
-    const pathname = `/evento/${slug}/participantes`
-
-    url.setPathname = pathname
-
-    setCurrentRoute('eventSlugAttendees')
-    setPathname(url.getPathname)
-    setSlug(slug)
-    setPageIndex(1)
-    setSearch('')
-
-    history.pushState({}, '', url.getUrl)
+    history.pushState({}, '', url)
   }
 
   const value: RouterProviderState = {
     currentRoute,
-    slug: slug != undefined ? slug : '',
-    pageIndex: pageIndex != undefined ? pageIndex : 1,
-    search: search != undefined ? search : '',
+    slug,
+    pageIndex,
+    search,
     setPageIndex,
     setSearch,
     toHome,
     toEvents,
     toAttendees,
-    toEventSlugAttendee,
   }
-
-  window.addEventListener("popstate", () => {
-    const url = new CreateUrl()
-
-    setPathname(url.getPathname)
-    setPageIndex(url.getPageIndex ? Number(url.getPageIndex) : 1)
-    setSearch(url.getSearch ? url.getSearch : '')
-    setSlug(getSlug(url.getPathname))
-  });
-
-  useEffect(() => {
-    if (pathname === '/') {
-      setCurrentRoute('home')
-    }
-
-    if (pathname === '/eventos') {
-      setCurrentRoute('events')
-    }
-
-    if (pathname === `/evento/${slug}/participantes`) {
-      setCurrentRoute('eventSlugAttendees')
-    }
-  }, [pathname])
 
   useEffect(() => {
     if (pageIndex != undefined) {
-      const url = new CreateUrl()
-      
-      url.setPageIndex = String(pageIndex)
-      
-      window.history.pushState({}, '', url.getUrl)
+      const { url } = new CreateUrl({
+        pathname,
+        pageIndex,
+      })
+            
+      window.history.pushState({}, '', url)
     }
   }, [pageIndex])
 
   useEffect(() => {
     if (search != undefined) {
-      const url = new CreateUrl()
+      const { url } = new CreateUrl({
+        pathname,
+        search,
+      })
 
-      url.setSearch = search
-
-      window.history.pushState({}, '', url.getUrl) 
+      window.history.pushState({}, '', url) 
     }
   }, [search])
 

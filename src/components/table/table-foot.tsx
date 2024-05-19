@@ -6,7 +6,7 @@ import { TableCell } from './table-cell'
 interface TableFootProps {
   length: number
   total: number
-  pageIndex: number
+  pageIndex?: number
   setPageIndex: (pageIndex: number) => void
 }
 
@@ -16,18 +16,19 @@ export function TableFoot({
   pageIndex,
   setPageIndex
 }: TableFootProps) {
-  const totalPages = Math.ceil(total / 10)
 
+  const totalPages = Math.ceil(total / 10)
+  
   function goToFirstPage() {
     setPageIndex(1)
   }
-
+  
   function goToPreviousPage() {
-    setPageIndex(pageIndex - 1)
+    setPageIndex((pageIndex ? pageIndex : 1) - 1)
   }
-
+  
   function goToNextPage() {
-    setPageIndex(pageIndex + 1)
+    setPageIndex((pageIndex ? pageIndex : 1) + 1)
   }
 
   function goToLastPage() {
@@ -43,7 +44,7 @@ export function TableFoot({
 
         <TableCell className="text-right" colSpan={3}>
           <div className="inline-flex items-center gap-8">
-            <span>Página {pageIndex} de {totalPages}</span>
+            <span>Página {pageIndex ? pageIndex : 1} de {totalPages}</span>
 
             <div className="flex gap-1.5">
               <IconButton 
@@ -65,7 +66,7 @@ export function TableFoot({
               <IconButton
                 title="Ir para a próxima página"
                 onClick={goToNextPage}
-                disabled={pageIndex >= totalPages}
+                disabled={(pageIndex ? pageIndex : 1)  >= totalPages}
               >
                 <ChevronRight className="size-4" />
               </IconButton>
@@ -73,7 +74,7 @@ export function TableFoot({
               <IconButton
                 title="Ir para a última página"
                 onClick={goToLastPage}
-                disabled={pageIndex >= totalPages}
+                disabled={(pageIndex ? pageIndex : 1) >= totalPages}
               >
                 <ChevronsRight className="size-4" />
               </IconButton>

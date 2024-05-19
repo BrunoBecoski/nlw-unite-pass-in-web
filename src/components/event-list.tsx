@@ -18,7 +18,7 @@ dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export function EventList() {
-  const { pageIndex, setPageIndex, search, setSearch, toEventSlugAttendee } = useRouter()
+  const { pageIndex, setPageIndex, search, setSearch } = useRouter()
   const { getEvents } = new RequestApi({})
 
   const [total, setTotal] = useState(0)
@@ -60,7 +60,7 @@ export function EventList() {
         <tbody>
           {events.map((event) => {
             return (
-            <TableRow key={event.id} onClick={() => toEventSlugAttendee(event.slug)}>
+            <TableRow key={event.id}>
               <TableCell>
                 <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
               </TableCell>
