@@ -10,8 +10,6 @@ export class CreateUrl {
   constructor ({ pathname, pageIndex, search }: CreateUrlProps) {
     if (pathname != undefined) {
       this._url.pathname = pathname
-    } else {
-      this._url.pathname = '/'
     }
     
     if (pageIndex != undefined) {
@@ -27,12 +25,20 @@ export class CreateUrl {
     this._url.pathname = pathname
   }
 
-  get pathname() {
-    return this._url.pathname
-  }
-
   set setPageIndex(pageIndex: number) {
     this._url.searchParams.set('page', pageIndex.toString())
+  }
+
+  set setSearch(search: string) {
+    if (search.length === 0) {
+      this._url.searchParams.delete('search')
+    } else {
+      this._url.searchParams.set('search', search)
+    }
+  }
+
+  get pathname() {
+    return this._url.pathname
   }
 
   get pageIndex() {
@@ -42,14 +48,6 @@ export class CreateUrl {
       return Number(pageIndex)
     } else {
       return undefined
-    }
-  }
-
-  set setSearch(search: string) {
-    if (search.length === 0) {
-      this._url.searchParams.delete('search')
-    } else {
-      this._url.searchParams.set('search', search)
     }
   }
 

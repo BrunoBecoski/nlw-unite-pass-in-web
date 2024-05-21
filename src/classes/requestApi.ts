@@ -53,8 +53,6 @@ export class RequestApi {
       search: this._search,
     })
 
-    console.log(this._pageIndex)
-
     const events: GetEventsResponse = await fetch(url, init)
       .then(response => response.json())
       .catch(error => console.log(error))

@@ -8,7 +8,6 @@ interface RouterProviderProps {
 
 type RouterProviderState = {
   currentRoute: Routes,
-  slug?: string,
   pageIndex?: number,
   search?: string,
   setPageIndex: (pageIndex: number) => void,
@@ -20,7 +19,6 @@ type RouterProviderState = {
 
 const initialState: RouterProviderState = {
   currentRoute: 'home',
-  slug: undefined,
   pageIndex: undefined,
   search: undefined,
   setPageIndex: () => null,
@@ -34,14 +32,20 @@ type Routes = 'home' | 'events' | 'attendees' | 'eventSlugAttendees'
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
 
-function getSlug(pathname: string) {
-  const array = pathname.substring(1).split('/')
+function getCurrentRoute(pathname: string): Routes {
+  switch (pathname) {
+    case '/':
+      return 'home'
 
-  if (array[0] === 'evento' && array[2] === 'participantes') {
-    return array[1]
+    case '/eventos':
+      return 'events'
+    
+    case '/participantes':
+      return 'attendees'
+  
+    default:
+      return 'home';
   }
-
-  return undefined
 }
 
 export function RouterProvider({
@@ -50,9 +54,8 @@ export function RouterProvider({
 }: RouterProviderProps) {
   const url = new CreateUrl({})
 
-  const [currentRoute, setCurrentRoute] = useState<Routes>('home') 
+  const [currentRoute, setCurrentRoute] = useState<Routes>(getCurrentRoute(url.pathname)) 
   const [pathname, setPathname] = useState(url.pathname)
-  const [slug, setSlug] = useState(getSlug(url.pathname))
   const [pageIndex, setPageIndex] = useState(url.pageIndex)
   const [search, setSearch] = useState(url.search)
 
@@ -60,9 +63,13 @@ export function RouterProvider({
     const { url, pathname } = new CreateUrl({
       pathname: '/'
     })
+
+    reset()
     
-    setCurrentRoute('home')
+    setCurrentRoute(getCurrentRoute(pathname))
     setPathname(pathname)
+
+    setPageIndex(undefined)
     history.pushState({}, '', url)
   }
 
@@ -71,10 +78,11 @@ export function RouterProvider({
       pathname: '/eventos'
     })
 
-    setCurrentRoute('events')
+    reset()
+
+    setCurrentRoute(getCurrentRoute(pathname))
     setPathname(pathname)
-    setPageIndex(undefined)
-    setSearch(undefined)
+
     history.pushState({}, '', url)
   }
 
@@ -83,17 +91,23 @@ export function RouterProvider({
       pathname:  '/participantes'
     })
 
-    setCurrentRoute('attendees')
+    reset()
+
+    setCurrentRoute(getCurrentRoute(pathname))
     setPathname(pathname)
-    setPageIndex(undefined)
-    setSearch(undefined)
 
     history.pushState({}, '', url)
   }
 
+  function reset() {
+    setCurrentRoute('home')
+    setPathname('/')
+    setPageIndex(undefined)
+    setSearch(undefined)
+  }
+
   const value: RouterProviderState = {
     currentRoute,
-    slug,
     pageIndex,
     search,
     setPageIndex,
