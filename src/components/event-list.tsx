@@ -5,7 +5,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useRouter } from '../contexts/router-provider'
-import { EventTypes, RequestApi } from '../classes/requestApi'
+import { EventTypes, FetchEvents } from '../fetches'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -19,14 +19,13 @@ dayjs.locale('pt-br')
 
 export function EventList() {
   const { pageIndex, setPageIndex, search, setSearch } = useRouter()
-  const { getEvents } = new RequestApi({})
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<EventTypes[]>([])
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEvents()
+      const data = await FetchEvents({ pageIndex, search })
       
       setEvents(data.events)
       setTotal(data.total)
