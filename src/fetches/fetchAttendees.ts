@@ -1,4 +1,4 @@
-import { CreateRequest } from '../classes/createRequest'
+import { FetchApi } from './fetchApi'
 import { AttendeeTypes } from './index'
 
 interface RequestProps {
@@ -12,16 +12,22 @@ interface ResponseProps {
 }
 
 export async function FetchAttendees({ pageIndex, search }: RequestProps): Promise<ResponseProps> {
-  const { url, init } = new CreateRequest({
+  const response = await FetchApi({  
     pathname: '/attendees',
     method: 'GET',
     pageIndex,
-    search,
+    search, 
   })
-
-  const response: ResponseProps = await fetch(url, init)
-    .then(response => response.json())
-    .catch(error => console.log(error))
   
-  return response
+  if (response.successfully === false) {
+    return { 
+      attendees: [],
+      total: 0,
+    }
+  }
+
+  return {
+    attendees: response.data.attendees,
+    total: response.data.total,    
+  }
 }

@@ -22,14 +22,6 @@ export class CreateRequest {
     }
   }
 
-  set pageIndex(pageIndex: number) {
-    this._url.searchParams.set('pageIndex', pageIndex.toString())
-  }
-
-  set search(search: string) {
-    this._url.searchParams.set('query', search)
-  }
-
   get url() {
     return this._url
   }
