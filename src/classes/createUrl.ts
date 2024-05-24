@@ -17,7 +17,7 @@ export class CreateUrl {
     }
 
     if (search != undefined) {
-      this._url.searchParams.set
+      this._url.searchParams.set('search', search)
     }
   }
 

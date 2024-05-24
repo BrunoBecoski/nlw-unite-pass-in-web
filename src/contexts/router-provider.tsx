@@ -135,6 +135,8 @@ export function RouterProvider({
         search,
       })
 
+      setPageIndex(1)
+
       window.history.pushState({}, '', url) 
     }
   }, [search])

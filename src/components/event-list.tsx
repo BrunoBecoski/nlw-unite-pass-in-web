@@ -42,65 +42,70 @@ export function EventList() {
         setSearch={setSearch}
       />
 
-      <Table>
-        <thead>
-          <tr className="border-b border-white/10">
-            <TableHeader style={{ width: 48 }} >
-              <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-            </TableHeader>
-            <TableHeader>Nome</TableHeader>
-            <TableHeader>Duração</TableHeader>
-            <TableHeader>Online / Presencial</TableHeader>
-            <TableHeader>Vagas</TableHeader>
-            <TableHeader style={{ width: 64 }}></TableHeader>
-          </tr>
-        </thead>
-
-        <tbody>
-          {events.map((event) => {
-            return (
-            <TableRow key={event.id}>
-              <TableCell>
-                <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-              </TableCell>
-              <TableCell>
-                <div className="flex flex-col gap-1">
-                  <span className="font-semibold text-white">{event.title}</span>
-                  <span>{event.slug}</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                {dayjs(event.startDate).format('DD/MM/YY')}
-                {' - '}
-                {dayjs(event.endDate).format('DD/MM/YY')}
-              </TableCell>
-              <TableCell>
-                {event.virtualEvent ? 'Sim' : 'Não'} 
-                {' / '}
-                {event.physicalEvent ? 'Sim' : 'Não'}
-              </TableCell>
-              <TableCell>
-                {event.attendees}
-                {' / '}
-                {event.maximumAttendees}
-              </TableCell>
-              <TableCell>
-                <IconButton transparent>
-                  <MoreHorizontal className="size-4" />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-            )
-          })}
-        </tbody>
-
-        <TableFoot
-          length={events.length}
-          total={total}
-          pageIndex={pageIndex}
-          setPageIndex={setPageIndex}
-        />
-      </Table>
+      {events.length === 0 
+        ?
+          <span>Nada encontrado com: <i>{search}</i></span>
+        :
+          <Table>
+            <thead>
+              <tr className="border-b border-white/10">
+                <TableHeader style={{ width: 48 }} >
+                  <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                </TableHeader>
+                <TableHeader>Nome</TableHeader>
+                <TableHeader>Duração</TableHeader>
+                <TableHeader>Online / Presencial</TableHeader>
+                <TableHeader>Vagas</TableHeader>
+                <TableHeader style={{ width: 64 }}></TableHeader>
+              </tr>
+            </thead>
+    
+            <tbody>
+              {events.map((event) => {
+                return (
+                <TableRow key={event.id}>
+                  <TableCell>
+                    <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col gap-1">
+                      <span className="font-semibold text-white">{event.title}</span>
+                      <span>{event.slug}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {dayjs(event.startDate).format('DD/MM/YY')}
+                    {' - '}
+                    {dayjs(event.endDate).format('DD/MM/YY')}
+                  </TableCell>
+                  <TableCell>
+                    {event.virtualEvent ? 'Sim' : 'Não'} 
+                    {' / '}
+                    {event.physicalEvent ? 'Sim' : 'Não'}
+                  </TableCell>
+                  <TableCell>
+                    {event.attendees}
+                    {' / '}
+                    {event.maximumAttendees}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton transparent>
+                      <MoreHorizontal className="size-4" />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+                )
+              })}
+            </tbody>
+    
+            <TableFoot
+              length={events.length}
+              total={total}
+              pageIndex={pageIndex}
+              setPageIndex={setPageIndex}
+            />
+          </Table>
+      }
     </div>
   )
 }  
