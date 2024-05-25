@@ -34,72 +34,75 @@ export function RouterProvider({
   children,
   ...props
 }: RouterProviderProps) {
- 
   const [pathname, setPathname] = useState('/')
   const [pageIndex, setPageIndex] = useState<number | undefined>(undefined)
   const [search, setSearch] = useState<string | undefined>(undefined)
 
-  useEffect(() => {
-    const { pathname, pageIndex, search } = new CreateUrl({})
+  useEffect(() => {    
+    const url = new URL(window.location.href)
 
-    setPathname(pathname)
-    setPageIndex(pageIndex)
-    setSearch(search)
+    const newPathname = url.pathname
+    const newPageIndex = Number(url.searchParams.get('page')) || undefined
+    const newSearch = url.searchParams.get('search') || undefined
+
+    setPathname(newPathname)
+    setPageIndex(newPageIndex)
+    setSearch(newSearch)
   }, [])
 
-
   function toHome() {
-    setPathname('/')
-    setPageIndex(undefined)
-    setSearch(undefined)
-
-    updateUrl()
+    updateUrl({
+      newPathname: '/',
+    })
   }
 
   function toEvents() {
-    setPathname('/eventos')
-    setPageIndex(undefined)
-    setSearch(undefined)
-
-    updateUrl()
+    updateUrl({
+      newPathname: '/eventos'
+    })
   }
 
   function toAttendees() {
-    setPathname('/participantes')
-    setPageIndex(undefined)
-    setSearch(undefined)
-
-    updateUrl()
+    updateUrl({
+      newPathname: '/participantes',
+    })
   }
 
   function changePageIndex(pageIndex: number | undefined) {
-    setPageIndex(pageIndex)
-            
-    updateUrl()
+    updateUrl({
+      newPageIndex: pageIndex
+    })
   }
 
   function changeSearch(search: string | undefined) {
     if (search?.length == 0) {        
-      setSearch(undefined)
-      updateUrl()
+      updateUrl({})
 
       return
     }
     
-    setSearch(search)
-    setPageIndex(1)
-    updateUrl()
-  }
-  
-
-  function updateUrl() {
-
-  console.log('updateUrl')
-    const { url } = new CreateUrl({
-      pageIndex, 
-      pathname,
-      search,
+    updateUrl({
+      newPageIndex: 1,
+      newSearch: search
     })
+  }
+
+  interface updateUrlProps {
+    newPathname?: string
+    newPageIndex?: number
+    newSearch?: string
+  }
+
+  function updateUrl({ newPathname = pathname, newPageIndex, newSearch }: updateUrlProps) {
+    const { url } = new CreateUrl({
+      pathname: newPathname,
+      pageIndex: newPageIndex,
+      search: newSearch,
+    })
+    
+    setPathname(newPathname)
+    setPageIndex(newPageIndex)
+    setSearch(newSearch)
 
     window.history.pushState({}, '', url)
   }
