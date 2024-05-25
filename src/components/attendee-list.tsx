@@ -19,7 +19,7 @@ dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export function AttendeeList() { 
-  const { pageIndex, setPageIndex, search, setSearch } = useRouter()
+  const { pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<AttendeeTypes[]>([])
@@ -40,7 +40,7 @@ export function AttendeeList() {
       <TableSearch
         title="participantes"
         search={search}
-        setSearch={setSearch}
+        setSearch={changeSearch}
       />
 
       {attendees.length === 0
@@ -99,7 +99,7 @@ export function AttendeeList() {
               length={attendees.length}
               total={total}
               pageIndex={pageIndex}
-              setPageIndex={setPageIndex}
+              setPageIndex={changePageIndex}
             />
           </Table>
       }      

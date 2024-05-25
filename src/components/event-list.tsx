@@ -18,7 +18,7 @@ dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export function EventList() {
-  const { pageIndex, setPageIndex, search, setSearch } = useRouter()
+  const { pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<EventTypes[]>([])
@@ -39,7 +39,7 @@ export function EventList() {
       <TableSearch 
         title="eventos"
         search={search}
-        setSearch={setSearch}
+        setSearch={changeSearch}
       />
 
       {events.length === 0 
@@ -102,7 +102,7 @@ export function EventList() {
               length={events.length}
               total={total}
               pageIndex={pageIndex}
-              setPageIndex={setPageIndex}
+              setPageIndex={changePageIndex}
             />
           </Table>
       }

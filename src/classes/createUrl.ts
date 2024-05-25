@@ -5,7 +5,7 @@ interface CreateUrlProps {
 }
 
 export class CreateUrl {
-  private _url = new URL(window.location.href)
+  private _url = new URL(window.location.origin)
 
   constructor ({ pathname, pageIndex, search }: CreateUrlProps) {
     if (pathname != undefined) {
