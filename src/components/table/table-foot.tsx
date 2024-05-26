@@ -19,16 +19,18 @@ export function TableFoot({
 
   const totalPages = Math.ceil(total / 10)
   
+  const currentPageIndex = pageIndex ? pageIndex : 1
+
   function goToFirstPage() {
     setPageIndex(1)
   }
   
   function goToPreviousPage() {
-    setPageIndex((pageIndex ? pageIndex : 1) - 1)
+    setPageIndex(currentPageIndex - 1)
   }
   
   function goToNextPage() {
-    setPageIndex((pageIndex ? pageIndex : 1) + 1)
+    setPageIndex(currentPageIndex + 1)
   }
 
   function goToLastPage() {
@@ -66,7 +68,7 @@ export function TableFoot({
               <IconButton
                 title="Ir para a próxima página"
                 onClick={goToNextPage}
-                disabled={(pageIndex ? pageIndex : 1)  >= totalPages}
+                disabled={currentPageIndex  >= totalPages}
               >
                 <ChevronRight className="size-4" />
               </IconButton>
@@ -74,7 +76,7 @@ export function TableFoot({
               <IconButton
                 title="Ir para a última página"
                 onClick={goToLastPage}
-                disabled={(pageIndex ? pageIndex : 1) >= totalPages}
+                disabled={currentPageIndex >= totalPages}
               >
                 <ChevronsRight className="size-4" />
               </IconButton>

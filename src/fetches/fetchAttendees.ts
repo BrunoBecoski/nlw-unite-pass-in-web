@@ -13,8 +13,8 @@ interface ResponseProps {
 
 export async function FetchAttendees({ pageIndex, search }: RequestProps): Promise<ResponseProps> {
   const response = await FetchApi({  
-    pathname: '/attendees',
     method: 'GET',
+    pathname: '/attendees',
     pageIndex,
     search, 
   })

@@ -5,19 +5,33 @@ interface CreateUrlProps {
 }
 
 export class CreateUrl {
-  private _url = new URL(window.location.origin)
+  private _url = new URL(window.location.href)
 
-  constructor ({ pathname, pageIndex, search }: CreateUrlProps) {
+  constructor (props?: CreateUrlProps) {
+    if (props == undefined) {
+      return
+    }
+
+    const {
+      pageIndex,
+      pathname,
+      search,
+    } = props
+
     if (pathname != undefined) {
       this._url.pathname = pathname
     }
     
     if (pageIndex != undefined) {
       this._url.searchParams.set('page', pageIndex.toString())  
+    } else {
+      this._url.searchParams.delete('page')
     }
 
     if (search != undefined) {
       this._url.searchParams.set('search', search)
+    } else {
+      this._url.searchParams.delete('search')
     }
   }
 

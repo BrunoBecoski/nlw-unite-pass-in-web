@@ -38,16 +38,12 @@ export function RouterProvider({
   const [pageIndex, setPageIndex] = useState<number | undefined>(undefined)
   const [search, setSearch] = useState<string | undefined>(undefined)
 
-  useEffect(() => {    
-    const url = new URL(window.location.href)
+  useEffect(() => { 
+    const { pathname, pageIndex, search } = new CreateUrl()
 
-    const newPathname = url.pathname
-    const newPageIndex = Number(url.searchParams.get('page')) || undefined
-    const newSearch = url.searchParams.get('search') || undefined
-
-    setPathname(newPathname)
-    setPageIndex(newPageIndex)
-    setSearch(newSearch)
+    setPathname(pathname)
+    setPageIndex(pageIndex)
+    setSearch(search)
   }, [])
 
   function toHome() {
@@ -70,7 +66,8 @@ export function RouterProvider({
 
   function changePageIndex(pageIndex: number | undefined) {
     updateUrl({
-      newPageIndex: pageIndex
+      newPageIndex: pageIndex,
+      newSearch: search,
     })
   }
 

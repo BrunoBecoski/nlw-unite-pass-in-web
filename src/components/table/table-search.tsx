@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Delete, Search } from 'lucide-react'
 
 import { IconButton } from '../icon-button'
@@ -26,14 +26,6 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
     setInput('')
     setSearch('')
   }
-
-  useEffect(() => {
-    const timeoutId = setTimeout(
-      handleSearch
-    , 2000)
-
-    return () => clearTimeout(timeoutId)
-  }, [input])
  
   return (
     <div className="flex gap-3 items-center">
