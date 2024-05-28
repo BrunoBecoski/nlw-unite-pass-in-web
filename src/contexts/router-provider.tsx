@@ -7,28 +7,28 @@ interface RouterProviderProps {
 }
 
 type RouterProviderState = {
+  route: Routes,
+  changeRoute: (route: Routes) => void,
   pathname: string,
   pageIndex?: number,
   search?: string,
   changePageIndex: (pageIndex: number) => void,
   changeSearch: (search: string) => void,
-  toHome: () => void,
-  toEvents: () => void,
-  toAttendees: () => void,
 }
 
 const initialState: RouterProviderState = {
+  route: 'home',
+  changeRoute: () => null,
   pathname: '/',
   pageIndex: undefined,
   search: undefined,
   changePageIndex: () => null,
   changeSearch: () => null,
-  toHome: () => null,
-  toEvents: () => null,
-  toAttendees: () => null,
 }
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
+
+type Routes = 'home' | 'events' | 'attendees'
 
 export function RouterProvider({
   children,
@@ -38,81 +38,109 @@ export function RouterProvider({
   const [pageIndex, setPageIndex] = useState<number | undefined>(undefined)
   const [search, setSearch] = useState<string | undefined>(undefined)
 
+  const [route, setRoute] = useState<Routes>('home')
+
   useEffect(() => { 
     const { pathname, pageIndex, search } = new CreateUrl()
 
+    setRoute(() => {
+      switch (pathname) {
+        case '/':
+          return 'home'
+          
+        case '/eventos':
+          return 'events'
+        
+        case '/participantes':
+          return 'attendees'
+        
+        default:
+          return 'home'
+      }
+    })
     setPathname(pathname)
     setPageIndex(pageIndex)
     setSearch(search)
   }, [])
 
-  function toHome() {
-    updateUrl({
-      newPathname: '/',
-    })
+  function changeRoute(route : Routes) {
+    
+    setRoute(route)
+
+    switch (route) {
+      case 'home':
+        updateUrl('/')
+        break;
+        
+      case 'events':
+        updateUrl('/eventos')
+        break;
+        
+      case 'attendees':
+        updateUrl('/participantes')
+        break;
+    
+      default:
+        updateUrl('/')
+        break;
+    }
   }
 
-  function toEvents() {
-    updateUrl({
-      newPathname: '/eventos'
+  function updateUrl(pathname: string) {
+    const { url } = new CreateUrl({
+      pathname
     })
-  }
+    
+    setPathname(pathname)
+    setPageIndex(undefined)
+    setSearch(undefined)
 
-  function toAttendees() {
-    updateUrl({
-      newPathname: '/participantes',
-    })
+    window.history.pushState({}, '', url)
   }
 
   function changePageIndex(pageIndex: number | undefined) {
-    updateUrl({
-      newPageIndex: pageIndex,
-      newSearch: search,
+    const { url } = new CreateUrl({
+      pageIndex,
     })
+    
+    setPageIndex(pageIndex)
+
+    window.history.pushState({}, '', url)
   }
 
   function changeSearch(search: string | undefined) {
     if (search?.length == 0) {        
-      updateUrl({})
+      const { url } = new CreateUrl({
+        pageIndex: 1,
+        search: undefined,
+      })
 
+      setPageIndex(1)
+      setSearch(undefined)
+      
+      window.history.pushState({}, '', url)
       return
     }
     
-    updateUrl({
-      newPageIndex: 1,
-      newSearch: search
-    })
-  }
-
-  interface updateUrlProps {
-    newPathname?: string
-    newPageIndex?: number
-    newSearch?: string
-  }
-
-  function updateUrl({ newPathname = pathname, newPageIndex, newSearch }: updateUrlProps) {
     const { url } = new CreateUrl({
-      pathname: newPathname,
-      pageIndex: newPageIndex,
-      search: newSearch,
+      pageIndex: 1,
+      search,
     })
     
-    setPathname(newPathname)
-    setPageIndex(newPageIndex)
-    setSearch(newSearch)
+    setPageIndex(1)
+    setSearch(search)
 
     window.history.pushState({}, '', url)
   }
 
   const value: RouterProviderState = {
+    route,
+    changeRoute,
     pathname,
     pageIndex,
     search,
     changePageIndex,
     changeSearch,
-    toHome,
-    toEvents,
-    toAttendees,
   }
 
   return (
