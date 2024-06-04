@@ -2,6 +2,7 @@ import { useRouter } from './contexts/router-provider'
 import { Header } from './components/header'
 import { AttendeeList } from './components/attendee-list'
 import { EventList } from './components/event-list'
+import { CreateAttendee } from './components/create-attendee'
 
 export function App() {
   const { pathname } = useRouter()
@@ -9,9 +10,11 @@ export function App() {
   return (
     <div className="max-w-[1216px] mx-auto flex flex-col gap-5">
       <Header />
-
+      
       {pathname === '/eventos' && <EventList />}
       {pathname === '/participantes' && <AttendeeList />}
+
+      {pathname === '/criar/participante' && <CreateAttendee />}
     </div>
   )
 }

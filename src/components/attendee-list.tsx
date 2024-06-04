@@ -54,9 +54,8 @@ export function AttendeeList() {
                   <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
                 </TableHeader>
                 <TableHeader>Código</TableHeader>
-                <TableHeader>Participantes</TableHeader>
-                <TableHeader>Data de inscrição</TableHeader>
-                <TableHeader>Data do check-in</TableHeader>
+                <TableHeader>Participante</TableHeader>
+                <TableHeader>Eventos</TableHeader>
                 <TableHeader style={{ width: 64 }}></TableHeader>
               </tr>
             </thead>
@@ -68,22 +67,22 @@ export function AttendeeList() {
                   <TableCell>
                     <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
                   </TableCell>
-                  <TableCell>{attendee.id}</TableCell>
+
+                  <TableCell>
+                    {attendee.code}
+                  </TableCell>
+
                   <TableCell>
                     <div className="flex flex-col gap-1">
                       <span className="font-semibold text-white">{attendee.name}</span>
                       <span>{attendee.email}</span>
                     </div>
                   </TableCell>
+
                   <TableCell>
-                    {/* {dayjs().to(attendee.createdAt)} */}
+                    {attendee.events}
                   </TableCell>
-                  <TableCell >
-                    {/* {attendee.checkedInAt === null
-                      ? <span className="text-zinc-400">Não fez check-in</span>
-                      : dayjs().to(attendee.checkedInAt)
-                    } */}
-                  </TableCell>
+
                   <TableCell>
                     <IconButton transparent>
                       <MoreHorizontal className="size-4" />

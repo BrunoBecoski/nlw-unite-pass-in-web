@@ -17,8 +17,10 @@ export type EventTypes = {
 
 export type AttendeeTypes = {
   id: string
+  code: string
   name: string
   email: string
+  events: number
 }
 
 export {

@@ -14,7 +14,7 @@ interface ResponseProps {
 export async function FetchAttendees({ pageIndex, search }: RequestProps): Promise<ResponseProps> {
   const response = await FetchApi({  
     method: 'GET',
-    pathname: '/attendees',
+    pathname: '/get/attendees',
     pageIndex,
     search, 
   })
