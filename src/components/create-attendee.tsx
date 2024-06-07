@@ -1,41 +1,67 @@
-import { FormEvent, useRef } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import * as  z from 'zod'
 
 const schema = z.object({
-  name: z.string().min(3),
-  email: z.string().email(),
+  name: z.string().min(3, { message: 'Mínimo 3 caráteres' }),
+  email: z.string().email({ message: 'Email inválido' }),
 })
 
 export function CreateAttendee() {
- const nameRef = useRef<HTMLInputElement>(null)
- const emailRef = useRef<HTMLInputElement>(null)
+  const [nameMessage, setNameMessage] = useState('')
+  const [emailMessage, setEmailMessage] = useState('')
+
+  const nameRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    setNameMessage('')
+    setEmailMessage('')
+
     event.preventDefault()
 
-    const name = nameRef.current?.value
-    const email = emailRef.current?.value
+    const name = nameRef.current
+    const email = emailRef.current
+
+    if (name == null || email == null) {
+      return 
+    }
+
+    const nameValue = name.value
+    const emailValue = email.value
 
     const result = schema.safeParse({
-      name,
-      email,
+      name: nameValue,
+      email: emailValue,
     })
 
-    if (result.success == false) {
-      alert(result.error)
-      return
+    if (result.success == true) {
+      console.log(result)
+    } else {
+      const { name, email } = result.error.format()
+
+      if (name != undefined) {
+        setNameMessage(name._errors[0])
+      }
+
+      if (email != undefined) {
+        setEmailMessage(email._errors[0])
+      }
     }
-      
-    console.log(result)
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Nome: </label>
-      <input id="name" className="text-black" ref={nameRef} />
+      <div>
+        <label htmlFor="name">Nome: </label>
+        <input id="name" className="text-black" ref={nameRef} />
+        <span className="text-red-500">{nameMessage}</span>
+      </div>
 
-      <label htmlFor="email">Email: </label>
-      <input id="email" className="text-black" ref={emailRef} />
+      <div>
+        <label htmlFor="email">Email: </label>
+        <input id="email" className="text-black" ref={emailRef} />
+        <span className="text-red-500">{emailMessage}</span>
+      </div>
 
       <button type="submit">Criar participante</button>
     </form>
