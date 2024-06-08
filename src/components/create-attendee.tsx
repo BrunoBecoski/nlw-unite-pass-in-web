@@ -1,69 +1,54 @@
-import { FormEvent, useRef, useState } from 'react'
+import { useState } from 'react'
 import * as  z from 'zod'
 
+import { FormInput } from './form/form-input';
+
 const schema = z.object({
-  name: z.string().min(3, { message: 'Mínimo 3 caráteres' }),
-  email: z.string().email({ message: 'Email inválido' }),
+  name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
+  email: z.string({ message: 'Email obrigatório' }).email({ message: 'Email inválido' }),
 })
 
 export function CreateAttendee() {
-  const [nameMessage, setNameMessage] = useState('')
-  const [emailMessage, setEmailMessage] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [errorMessages, setErrorMessages] = useState({ name: '', email: ''})
 
-  const nameRef = useRef<HTMLInputElement>(null)
-  const emailRef = useRef<HTMLInputElement>(null)
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    setNameMessage('')
-    setEmailMessage('')
-
-    event.preventDefault()
-
-    const name = nameRef.current
-    const email = emailRef.current
-
-    if (name == null || email == null) {
-      return 
-    }
-
-    const nameValue = name.value
-    const emailValue = email.value
-
+  function handleSubmit() {
     const result = schema.safeParse({
-      name: nameValue,
-      email: emailValue,
+      name,
+      email,
     })
 
-    if (result.success == true) {
-      console.log(result)
-    } else {
+    if (result.success == false) {
       const { name, email } = result.error.format()
 
-      if (name != undefined) {
-        setNameMessage(name._errors[0])
-      }
+      setErrorMessages({
+        name: name ? name._errors[0] : '',
+        email: email ? email._errors[0] : '',
+      })
 
-      if (email != undefined) {
-        setEmailMessage(email._errors[0])
-      }
+    } else {
+      console.log(name, email)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="name">Nome: </label>
-        <input id="name" className="text-black" ref={nameRef} />
-        <span className="text-red-500">{nameMessage}</span>
-      </div>
+    <div>
+      <FormInput
+        label='Nome'
+        setValue={setName}
+        value={name}
+        errorMessage={errorMessages.name}
+      />
 
-      <div>
-        <label htmlFor="email">Email: </label>
-        <input id="email" className="text-black" ref={emailRef} />
-        <span className="text-red-500">{emailMessage}</span>
-      </div>
+      <FormInput
+        label='Email'
+        setValue={setEmail}
+        value={email}
+        errorMessage={errorMessages.email}
+      />
 
-      <button type="submit">Criar participante</button>
-    </form>
+      <button onClick={handleSubmit}>Criar participante</button>
+    </div>
   )
 }
