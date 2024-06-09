@@ -5,7 +5,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useRouter } from '../contexts/router-provider'
-import { EventTypes, FetchEvents } from '../fetches'
+import { EventTypes, getEvents } from '../fetches'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -25,7 +25,7 @@ export function EventList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await FetchEvents({ pageIndex, search })
+      const data = await getEvents({ pageIndex, search })
       
       setEvents(data.events)
       setTotal(data.total)

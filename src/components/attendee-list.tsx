@@ -6,7 +6,8 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
 import { useRouter } from '../contexts/router-provider'
-import { AttendeeTypes, FetchAttendees } from '../fetches'
+import { AttendeeTypes, getAttendee } from '../fetches'
+
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -26,7 +27,7 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await FetchAttendees({ pageIndex, search })
+      const data = await getAttendee({ pageIndex, search })
 
       setAttendees(data.attendees)
       setTotal(data.total)

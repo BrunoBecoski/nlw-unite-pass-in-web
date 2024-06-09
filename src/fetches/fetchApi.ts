@@ -1,10 +1,6 @@
-import { CreateRequest } from '../classes/createRequest'
-
 interface FetchProps {
-  pathname: string
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
-  pageIndex?: number
-  search?: string
+  url: URL
+  init: RequestInit
 }
 
 interface FetchReturn {
@@ -12,15 +8,11 @@ interface FetchReturn {
   data?: any
 }
 
-export async function FetchApi({ pathname, method, pageIndex, search }: FetchProps): Promise<FetchReturn> {
-  const { url, init } = new CreateRequest({
-    method,
-    pathname,
-    pageIndex,
-    search
-  })
+export async function FetchApi({ url, init }: FetchProps): Promise<FetchReturn> {
 
   const response = await fetch(url, init)
+
+  console.log(response)
 
   if (response.ok === false) {
     return { 

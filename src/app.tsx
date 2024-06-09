@@ -2,7 +2,7 @@ import { useRouter } from './contexts/router-provider'
 import { Header } from './components/header'
 import { AttendeeList } from './components/attendee-list'
 import { EventList } from './components/event-list'
-import { CreateAttendee } from './components/create-attendee'
+import { AttendeeForm } from './components/attendee-form'
 
 export function App() {
   const { pathname } = useRouter()
@@ -14,7 +14,7 @@ export function App() {
       {pathname === '/eventos' && <EventList />}
       {pathname === '/participantes' && <AttendeeList />}
 
-      {pathname === '/criar/participante' && <CreateAttendee />}
+      {pathname === '/criar/participante' && <AttendeeForm />}
     </div>
   )
 }

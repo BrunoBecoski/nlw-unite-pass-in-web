@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import * as  z from 'zod'
 
+import { createAttendee } from '../fetches'
+
 import { FormInput } from './form/form-input';
 
 const schema = z.object({
@@ -8,12 +10,12 @@ const schema = z.object({
   email: z.string({ message: 'Email obrigatório' }).email({ message: 'Email inválido' }),
 })
 
-export function CreateAttendee() {
+export function AttendeeForm() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [errorMessages, setErrorMessages] = useState({ name: '', email: ''})
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const result = schema.safeParse({
       name,
       email,
@@ -27,9 +29,16 @@ export function CreateAttendee() {
         email: email ? email._errors[0] : '',
       })
 
-    } else {
-      console.log(name, email)
+      return
     }
+
+    const response = await createAttendee({
+      name,
+      email,
+    })
+
+    console.log('form')
+    console.log(response)
   }
 
   return (
