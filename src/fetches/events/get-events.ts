@@ -1,5 +1,5 @@
 import { EventTypes } from '../index'
-import { FetchApi } from '../fetchApi'
+import { fetchApi } from '../fetchApi'
 import { CreateRequest } from '../../classes/createRequest'
 
 interface RequestProps {
@@ -20,7 +20,7 @@ export async function getEvents({ pageIndex, search }: RequestProps): Promise<Re
     search,
   })
 
-  const response = await FetchApi({ url, init })
+  const response = await fetchApi({ url, init })
   
   if (response.successfully === false) {
     return { 

@@ -1,29 +1,29 @@
-interface FetchProps {
+interface FetchApiRequest {
   url: URL
   init: RequestInit
 }
 
-interface FetchReturn {
+interface FetchApiResponse {
   successfully: boolean
+  message?: string
   data?: any
 }
 
-export async function FetchApi({ url, init }: FetchProps): Promise<FetchReturn> {
+export async function fetchApi({ url, init }: FetchApiRequest): Promise<FetchApiResponse> {
 
   const response = await fetch(url, init)
 
-  console.log(response)
+  const data = await response.json()
 
-  if (response.ok === false) {
-    return { 
-      successfully: false
+  if (response.ok == true) {
+    return {
+      successfully: true,
+      data,
     }
-  } 
-
-  const data = await response.json().then()
+  }
 
   return {
-    successfully: true,
-    data,
+    successfully: false,
+    message: data,
   }
 }

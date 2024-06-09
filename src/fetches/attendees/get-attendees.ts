@@ -1,18 +1,22 @@
 import { CreateRequest } from '../../classes/createRequest'
-import { FetchApi } from '../fetchApi'
 import { AttendeeTypes } from '../'
+import { fetchApi } from '../fetchApi'
 
-interface RequestProps {
+interface GetAttendeeRequest {
   pageIndex?: number
   search?: string
 }
 
-interface ResponseProps {
-  attendees: AttendeeTypes[]
-  total: number
+interface GetAttendeeResponse {
+  successfully: boolean 
+  message?: string
+  data?: {
+    attendees: AttendeeTypes[]
+    total: number
+  }
 }
 
-export async function getAttendee({ pageIndex, search }: RequestProps): Promise<ResponseProps> {
+export async function getAttendee({ pageIndex, search }: GetAttendeeRequest): Promise<GetAttendeeResponse> {
   const { url, init } = new CreateRequest({
     method: 'GET',
     pathname: '/get/attendees',
@@ -20,17 +24,27 @@ export async function getAttendee({ pageIndex, search }: RequestProps): Promise<
     search, 
   })
 
-  const response = await FetchApi({ url, init })
-  
-  if (response.successfully === false) {
-    return { 
-      attendees: [],
-      total: 0,
+  const response = await fetchApi({ url, init })
+
+  if (response.successfully == true) {
+    return {
+      successfully: true,
+      data: {
+        attendees: response.data.attendees,
+        total: response.data.total,
+       }
+    }
+  }
+
+  if (response.message != undefined) {
+    return {
+      successfully: false,
+      message: response.message,
     }
   }
 
   return {
-    attendees: response.data.attendees,
-    total: response.data.total,    
+    successfully: false,
+    message: 'Não foi possível buscar os participantes',
   }
 }

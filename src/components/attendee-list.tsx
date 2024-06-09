@@ -27,10 +27,11 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await getAttendee({ pageIndex, search })
-
-      setAttendees(data.attendees)
-      setTotal(data.total)
+      const { successfully, data } = await getAttendee({ pageIndex, search })
+      if (successfully == true) {
+        setAttendees(data.attendees)
+        setTotal(data.total)
+      } 
     }
 
     fetch()

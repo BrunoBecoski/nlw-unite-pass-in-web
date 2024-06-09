@@ -16,6 +16,8 @@ export function AttendeeForm() {
   const [errorMessages, setErrorMessages] = useState({ name: '', email: ''})
 
   async function handleSubmit() {
+    setErrorMessages({ name: '', email: '' })
+    
     const result = schema.safeParse({
       name,
       email,
@@ -32,13 +34,12 @@ export function AttendeeForm() {
       return
     }
 
-    const response = await createAttendee({
+    const { message } = await createAttendee({
       name,
       email,
     })
 
-    console.log('form')
-    console.log(response)
+    alert(message.message)
   }
 
   return (
