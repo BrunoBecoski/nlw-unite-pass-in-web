@@ -9,8 +9,10 @@ interface CreateAttendeeRequest {
 
 interface CreateAttendeeResponse {
   successfully: boolean 
-  message?: string
-  attendee?: AttendeeTypes
+  message: string
+  data?: {
+    attendee: AttendeeTypes
+  }
 }
 
 export async function createAttendee({ name, email }: CreateAttendeeRequest): Promise<CreateAttendeeResponse> {
@@ -26,25 +28,29 @@ export async function createAttendee({ name, email }: CreateAttendeeRequest): Pr
     })
   })
   
-  const response = await fetchApi({ url, init })
+  const { successfully, message, data } = await fetchApi({ url, init })
 
-  if (response.successfully == true) {
+  if (successfully == true) {
     return {
       successfully: true,
-      message: 'Participante criado com sucesso',
-      attendee: response.data,
+      message: 'Participante criado com sucesso.',
+      data: {
+        attendee: data,
+      }
     }
   }
 
-  if (response.message != undefined) {
+  if (message != undefined) {
     return {
       successfully: false,
-      message: response.message,
+      message,
+      data: undefined,
     }
   }
 
   return {
     successfully: false,
-    message: 'Não foi possível cria criar o participante'
+    message: 'Não foi possível criar o participante.',
+    data: undefined,
   }
 }

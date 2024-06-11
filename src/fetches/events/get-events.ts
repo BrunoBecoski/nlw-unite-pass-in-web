@@ -8,8 +8,12 @@ interface RequestProps {
 }
 
 interface ResponseProps {
-  events: EventTypes[]
-  total: number
+  successfully: boolean 
+  message: string
+  data?: {
+    events: EventTypes[]
+    total: number
+  }
 }
 
 export async function getEvents({ pageIndex, search }: RequestProps): Promise<ResponseProps>{
@@ -20,17 +24,30 @@ export async function getEvents({ pageIndex, search }: RequestProps): Promise<Re
     search,
   })
 
-  const response = await fetchApi({ url, init })
+  const { successfully, message, data } = await fetchApi({ url, init })
   
-  if (response.successfully === false) {
-    return { 
-      events: [],
-      total: 0,
+  if (successfully == true) {
+    return {
+      successfully,
+      message: 'Eventos buscados com sucesso.',
+      data: {
+        events: data.events,
+        total: data.total
+      }
+    }
+  }
+
+  if (message != undefined) {
+    return {
+      successfully: false,
+      message: message,
+      data: undefined,
     }
   }
 
   return {
-    events: response.data.events,
-    total: response.data.total,    
+    successfully: false,
+    message: 'Erro ao buscar os participantes',
+    data: undefined,
   }
 }

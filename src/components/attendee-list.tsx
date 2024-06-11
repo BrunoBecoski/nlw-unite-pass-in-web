@@ -27,8 +27,13 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      const { successfully, data } = await getAttendee({ pageIndex, search })
-      if (successfully == true) {
+      const { successfully, message, data } = await getAttendee({ pageIndex, search })
+
+      if (successfully == false) {
+        alert(message)
+      }
+
+      if (successfully == true && data != undefined) {
         setAttendees(data.attendees)
         setTotal(data.total)
       } 

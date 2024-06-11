@@ -9,7 +9,7 @@ interface GetAttendeeRequest {
 
 interface GetAttendeeResponse {
   successfully: boolean 
-  message?: string
+  message: string
   data?: {
     attendees: AttendeeTypes[]
     total: number
@@ -24,27 +24,30 @@ export async function getAttendee({ pageIndex, search }: GetAttendeeRequest): Pr
     search, 
   })
 
-  const response = await fetchApi({ url, init })
+  const { successfully, message, data } = await fetchApi({ url, init })
 
-  if (response.successfully == true) {
+  if (successfully == true) {
     return {
-      successfully: true,
+      successfully,
+      message: 'Participantes buscados com sucesso.',
       data: {
-        attendees: response.data.attendees,
-        total: response.data.total,
+        attendees: data.attendees,
+        total: data.total,
        }
     }
   }
 
-  if (response.message != undefined) {
+  if (message != undefined) {
     return {
       successfully: false,
-      message: response.message,
+      message: message,
+      data: undefined,
     }
   }
 
   return {
     successfully: false,
-    message: 'Não foi possível buscar os participantes',
+    message: 'Erro ao buscar os participantes',
+    data: undefined,
   }
 }

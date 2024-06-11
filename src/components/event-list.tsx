@@ -25,11 +25,17 @@ export function EventList() {
 
   useEffect(() => {
     async function fetch() {
-      const data = await getEvents({ pageIndex, search })
+      const { successfully, message, data } = await getEvents({ pageIndex, search })
       
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully == true && data != undefined) {
       setEvents(data.events)
       setTotal(data.total)
-    }
+    } 
+  }
 
     fetch()
   }, [pageIndex, search])
