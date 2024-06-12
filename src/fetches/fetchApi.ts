@@ -25,7 +25,7 @@ export async function fetchApi({ url, init }: FetchApiRequest): Promise<FetchApi
 
     return {
       successfully: false,
-      message: data,
+      message: data.message,
       data: undefined
     }
   } catch (error) {

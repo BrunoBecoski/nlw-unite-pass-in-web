@@ -7,16 +7,18 @@ interface FormInputProps {
 
 export function FormInput({ label, value, errorMessage, setValue }: FormInputProps) {
   return (
-    <label>
-      {label}:
+    <label className="flex flex-col gap-2 ">
+      {label}
       
       <input 
-        className="text-black" 
+        className="bg-transparent border border-white/50 p-2 text-sm rounded-md
+          focus:border-orange-400 
+        " 
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
 
-      <span className="text-red-500">{errorMessage}</span>
+      <span className="text-red-500 text-right">{errorMessage}</span>
     </label>
   )
 }

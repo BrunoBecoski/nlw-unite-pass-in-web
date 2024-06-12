@@ -40,6 +40,14 @@ export async function createAttendee({ name, email }: CreateAttendeeRequest): Pr
     }
   }
 
+  if (message == 'Another attendee with same email already exists.') {
+    return {
+      successfully: false,
+      message: 'Email já está sendo utilizado.',
+      data: undefined,
+    }
+  }
+
   if (message != undefined) {
     return {
       successfully: false,

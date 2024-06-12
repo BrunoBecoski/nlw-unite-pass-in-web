@@ -4,6 +4,7 @@ import * as  z from 'zod'
 import { createAttendee } from '../fetches'
 
 import { FormInput } from './form/form-input';
+import { IconButton } from './icon-button';
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
@@ -39,26 +40,32 @@ export function AttendeeForm() {
       email,
     })
 
-    alert(message.message)
+    alert(message)
   }
 
   return (
     <div>
-      <FormInput
-        label='Nome'
-        setValue={setName}
-        value={name}
-        errorMessage={errorMessages.name}
-      />
+      <h1 className="text-2xl font-bold">
+        Criar participante
+      </h1>
 
-      <FormInput
-        label='Email'
-        setValue={setEmail}
-        value={email}
-        errorMessage={errorMessages.email}
-      />
+      <div className="flex flex-col gap-4">
+        <FormInput
+          label="Nome"
+          setValue={setName}
+          value={name}
+          errorMessage={errorMessages.name}
+          />
 
-      <button onClick={handleSubmit}>Criar participante</button>
+        <FormInput
+          label="Email"
+          setValue={setEmail}
+          value={email}
+          errorMessage={errorMessages.email}
+        />
+
+        <IconButton onClick={handleSubmit}>Criar participante </ IconButton>
+      </div>
     </div>
   )
 }

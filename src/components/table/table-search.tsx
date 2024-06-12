@@ -29,7 +29,7 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
  
   return (
     <div className="flex gap-3 items-center">
-      <h1 className="text-2 xl font-bold first-letter:uppercase">{title}</h1>
+      <h1 className="text-2xl font-bold first-letter:uppercase">{title}</h1>
       <div className="px-3 w-72 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3 has-[:focus]:border-orange-400">
         <IconButton
           onClick={handleSearch}
