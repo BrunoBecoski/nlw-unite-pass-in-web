@@ -3,8 +3,8 @@ import * as  z from 'zod'
 
 import { createAttendee } from '../fetches'
 
-import { FormInput } from './form/form-input';
 import { IconButton } from './icon-button';
+import { Input } from './input';
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
@@ -50,18 +50,24 @@ export function AttendeeForm() {
       </h1>
 
       <div className="flex flex-col gap-4">
-        <FormInput
+        <Input
+          iconName="user"
+          id="name"
           label="Nome"
           setValue={setName}
           value={name}
-          errorMessage={errorMessages.name}
-          />
+          message={errorMessages.name}
+          handleErase={() => setName('')}
+        />
 
-        <FormInput
+        <Input
+          iconName="mail"
+          id="email"
           label="Email"
           setValue={setEmail}
           value={email}
-          errorMessage={errorMessages.email}
+          message={errorMessages.email}
+          handleErase={() => setEmail('')}
         />
 
         <IconButton onClick={handleSubmit}>Criar participante </ IconButton>
