@@ -3,8 +3,8 @@ import * as  z from 'zod'
 
 import { createAttendee } from '../fetches'
 
-import { IconButton } from './icon-button';
-import { Input } from './input';
+import { Input } from './input'
+import { Button } from './button'
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
@@ -70,7 +70,12 @@ export function AttendeeForm() {
           handleErase={() => setEmail('')}
         />
 
-        <IconButton onClick={handleSubmit}>Criar participante </ IconButton>
+        <Button 
+          onClick={handleSubmit}
+          iconName="user-plus"
+        >
+          Criar participante
+        </ Button>
       </div>
     </div>
   )
