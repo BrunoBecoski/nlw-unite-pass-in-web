@@ -16,9 +16,7 @@ export function Button({ variant = 'default', iconName, children, ...props }: Bu
         className="bg-transparent flex items-center justify-center"
         {...props}
       >
-        {iconName &&
-          <Icon name={iconName} />
-        }
+        <Icon name={iconName} />
       </button>
 
     )
@@ -29,10 +27,7 @@ export function Button({ variant = 'default', iconName, children, ...props }: Bu
       className="bg-orange-500 flex items-center justify-center gap-4 w-fit px-4 py-2 text-white rounded-lg"
       {...props}
     >
-      {
-        iconName &&
-          <Icon name={iconName} className="text-white w-4 h-4" />
-      }
+      { iconName && <Icon name={iconName} className="text-white w-4 h-4" /> }
       {children}
     </button>
   )
