@@ -7,10 +7,8 @@ interface InputProps extends ComponentProps<'input'> {
   label?: string
   message?: string
   iconName?: IconName
+  status?: 'default' | 'focus' | 'error' 
   handleSearch?: () => void
-  handleErase?: () => void
-  setValue: (value: string) => void
-  value: string
 }
 
 export function Input({ 
@@ -18,46 +16,31 @@ export function Input({
   label,
   message,
   iconName,
-  handleSearch,
-  handleErase,
-  value,
-  setValue,
+  status = 'default',
   ...props
 }: InputProps) {
   
-  function submitSearch(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (handleSearch) {
-      if (event.code == 'Enter' || event.code == 'NumpadEnter') {
-        handleSearch()
-      }
-    }
-  }
-  
   return (
-    <label
-      htmlFor={id}
-      className="flex flex-col gap-2 w-min"
+    <div className="flex flex-col gap-2 w-min outline-pink-500" >
 
-    >
-      {label}
+      { label && <label htmlFor={id}>{label}</label> }
+
       <div 
-        className="px-3 w-72 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3 has-[:focus]:border-orange-400"
+        className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3 has-[:focus]:border-orange-400"
       >
         <Icon name={iconName} size="sm" color="emerald" />
 
         <input
-          className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
           id={id}
-          onChange={(event) => setValue(event.target.value)}
+          className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
           {...props}
-          onKeyDown={submitSearch}
-          value={value}
         />
 
         { message && <Icon name="circle-alert" size="sm" color="red" /> }
       </div>
       
       <span className="text-red-500 text-sm text-right">{message}</span>
-    </label>
+    </div>
+
   )
 }

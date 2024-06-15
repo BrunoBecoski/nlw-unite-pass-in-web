@@ -12,13 +12,14 @@ const schema = z.object({
 })
 
 export function AttendeeForm() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
   const [errorMessages, setErrorMessages] = useState({ name: '', email: ''})
-
+  
   async function handleSubmit() {
     setErrorMessages({ name: '', email: '' })
     
+    const name = document.getElementById('name').value
+    const email = document.getElementById('email').value
+
     const result = schema.safeParse({
       name,
       email,
@@ -35,12 +36,15 @@ export function AttendeeForm() {
       return
     }
 
-    const { message } = await createAttendee({
-      name,
-      email,
-    })
+   console.log('name: ' + result.data.name)
+   console.log('email: ' +  result.data.email)
 
-    alert(message)
+    // const { message } = await createAttendee({
+    //   name: result.data.name,
+    //   email: result.data.email,
+    // })
+
+    // alert(message)
   }
 
   return (
@@ -51,23 +55,17 @@ export function AttendeeForm() {
 
       <div className="flex flex-col gap-4">
         <Input
-          iconName="user"
           id="name"
           label="Nome"
-          setValue={setName}
-          value={name}
+          iconName="user"
           message={errorMessages.name}
-          handleErase={() => setName('')}
         />
 
         <Input
-          iconName="mail"
           id="email"
           label="Email"
-          setValue={setEmail}
-          value={email}
+          iconName="mail"
           message={errorMessages.email}
-          handleErase={() => setEmail('')}
         />
 
         <Button 

@@ -24,17 +24,11 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
     <div className="flex gap-3 items-center">
       <h1 className="text-2xl font-bold first-letter:uppercase">{title}</h1>
       
-      <div>       
-        <Input
-          iconName="search"
-          id="attendee"
-          placeholder={`Buscar ${title}...`}
-          setValue={setInput}
-          value={input}
-          handleSearch={handleSearch}
-          handleErase={handleErase}
-        />
-      </div>
+      <Input
+        iconName="search"
+        id="attendee"
+        placeholder={`Buscar ${title}...`}
+      />
     </div>
   )
 } 
