@@ -7,7 +7,6 @@ interface InputProps extends ComponentProps<'input'> {
   label?: string
   message?: string
   iconName?: IconName
-  status?: 'default' | 'focus' | 'error' 
   handleSearch?: () => void
 }
 
@@ -16,23 +15,23 @@ export function Input({
   label,
   message,
   iconName,
-  status = 'default',
   ...props
 }: InputProps) {
-  
   return (
-    <div className="flex flex-col gap-2 w-min outline-pink-500" >
-
+    <div className="flex flex-col gap-2 w-min">
       { label && <label htmlFor={id}>{label}</label> }
 
       <div 
-        className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3 has-[:focus]:border-orange-400"
+        className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3 focus-within:border-orange-500 text-emerald-500 focus-within:text-orange-500"
       >
-        <Icon name={iconName} size="sm" color="emerald" />
+        <Icon 
+          name={iconName} 
+          size="sm"
+        />
 
         <input
           id={id}
-          className="bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
+          className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
           {...props}
         />
 
@@ -41,6 +40,5 @@ export function Input({
       
       <span className="text-red-500 text-sm text-right">{message}</span>
     </div>
-
   )
 }

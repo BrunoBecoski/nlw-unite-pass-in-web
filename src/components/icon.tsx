@@ -6,37 +6,27 @@ const fallback = <div className="bg-zinc-950 size-6" />
 
 export type IconName = keyof typeof dynamicIconImports;
 
-interface IconProps extends Omit<LucideProps, 'ref'> {
+interface IconProps {
   name?: IconName
   color?: 'white' | 'emerald' | 'orange' | 'red'
   size?: 'sm' | 'base'
+  className?: string
 }
 
-export const Icon = ({ name = 'code-xml', color, size, ...props }: IconProps) => {
+export const Icon = ({ name = 'code-xml', size, className }: IconProps) => {
   const LucideIcon = lazy(dynamicIconImports[name])
 
-  const className = []
+  const styles = [className]
 
   switch (size) {
-    case 'sm': className.push('size-4'); break
-    case 'base': className.push('size-6'); break
-    default: className.push('size-6'); break
+    case 'sm': styles.push('size-4'); break
+    case 'base': styles.push('size-6'); break
+    default: styles.push('size-6'); break
   }
-
-  switch (color) {
-    case 'white': className.push('text-white'); break
-    case 'emerald': className.push('text-emerald-500'); break
-    case 'orange': className.push('text-orange-500'); break
-    case 'red': className.push('text-red-500'); break
-    default: className.push('text-white'); break
-  } 
 
   return (
     <Suspense fallback={fallback}>
-      <LucideIcon 
-        className={className.join(' ')}
-        {...props}
-      />
+      <LucideIcon className={styles.join(' ')} />
     </Suspense>
   )
 }
