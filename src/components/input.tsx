@@ -7,7 +7,6 @@ interface InputProps extends ComponentProps<'input'> {
   label?: string
   message?: string
   iconName?: IconName
-  handleSearch?: () => void
 }
 
 export function Input({ 
@@ -22,7 +21,10 @@ export function Input({
       { label && <label htmlFor={id}>{label}</label> }
 
       <div 
-        className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3 focus-within:border-orange-500 text-emerald-500 focus-within:text-orange-500"
+        className={
+          `px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-orange-500 text-emerald-500 focus-within:text-orange-500 
+          ${message && 'border-red-500 text-red-500'}
+        `}
       >
         <Icon 
           name={iconName} 
@@ -35,7 +37,11 @@ export function Input({
           {...props}
         />
 
-        { message && <Icon name="circle-alert" size="sm" color="red" /> }
+        <Icon 
+          name="circle-alert"
+          size="sm"
+          color={message ? 'red' : 'transparent'}
+        />
       </div>
       
       <span className="text-red-500 text-sm text-right">{message}</span>

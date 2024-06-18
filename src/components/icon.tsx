@@ -1,5 +1,4 @@
 import { Suspense, lazy } from 'react'
-import { LucideProps } from 'lucide-react'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
 
 const fallback = <div className="bg-zinc-950 size-6" />
@@ -8,12 +7,12 @@ export type IconName = keyof typeof dynamicIconImports;
 
 interface IconProps {
   name?: IconName
-  color?: 'white' | 'emerald' | 'orange' | 'red'
+  color?: 'transparent' | 'white' | 'emerald' | 'orange' | 'red'
   size?: 'sm' | 'base'
   className?: string
 }
 
-export const Icon = ({ name = 'code-xml', size, className }: IconProps) => {
+export const Icon = ({ name = 'code-xml', color, size, className }: IconProps) => {
   const LucideIcon = lazy(dynamicIconImports[name])
 
   const styles = [className]
@@ -22,6 +21,14 @@ export const Icon = ({ name = 'code-xml', size, className }: IconProps) => {
     case 'sm': styles.push('size-4'); break
     case 'base': styles.push('size-6'); break
     default: styles.push('size-6'); break
+  }
+
+  switch (color) {
+    case 'transparent': styles.push('text-transparent'); break
+    case 'white': styles.push('text-white'); break
+    case 'emerald': styles.push('text-emerald-500'); break
+    case 'orange': styles.push('text-orange-500'); break
+    case 'red': styles.push('text-red-500'); break
   }
 
   return (
