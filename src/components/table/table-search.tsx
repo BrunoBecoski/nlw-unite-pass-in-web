@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Input } from '../input'
+import { SearchInput } from '../input'
 
 interface TableSearchProps {
   title: string
@@ -14,20 +14,15 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
   function handleSearch() {
     setSearch(input)
   }
-  
-  function handleErase() {
-    setInput('')
-    setSearch('')
-  }
 
   return (
     <div className="flex gap-3 items-center">
       <h1 className="text-2xl font-bold first-letter:uppercase">{title}</h1>
       
-      <Input
+      <SearchInput
         iconName="search"
-        id="attendee"
         placeholder={`Buscar ${title}...`}
+        handleSearch={handleSearch}
       />
     </div>
   )

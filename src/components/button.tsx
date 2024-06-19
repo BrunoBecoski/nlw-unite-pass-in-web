@@ -13,10 +13,13 @@ export function Button({ variant = 'default', iconName, children, ...props }: Bu
   if (variant === 'icon') {
     return (
       <button
-        className="bg-transparent flex items-center justify-center"
+        className="bg-transparent flex items-center justify-center text-emerald-400 hover:text-orange-400"
         {...props}
       >
-        <Icon name={iconName} />
+        <Icon 
+          name={iconName}
+          size="sm"
+        />
       </button>
 
     )

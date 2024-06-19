@@ -26,9 +26,9 @@ export const Icon = ({ name = 'code-xml', color, size, className }: IconProps) =
   switch (color) {
     case 'transparent': styles.push('text-transparent'); break
     case 'white': styles.push('text-white'); break
-    case 'emerald': styles.push('text-emerald-500'); break
-    case 'orange': styles.push('text-orange-500'); break
-    case 'red': styles.push('text-red-500'); break
+    case 'emerald': styles.push('text-emerald-400'); break
+    case 'orange': styles.push('text-orange-400'); break
+    case 'red': styles.push('text-red-400'); break
   }
 
   return (

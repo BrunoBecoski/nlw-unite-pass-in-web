@@ -3,7 +3,7 @@ import * as  z from 'zod'
 
 import { createAttendee } from '../fetches'
 
-import { Input } from './input'
+import { FormInput } from './input'
 import { Button } from './button'
 
 const schema = z.object({
@@ -54,14 +54,14 @@ export function AttendeeForm() {
       </h1>
 
       <div className="flex flex-col gap-4">
-        <Input
+        <FormInput
           id="name"
           label="Nome"
           iconName="user"
           message={errorMessages.name}
         />
 
-        <Input
+        <FormInput
           id="email"
           label="Email"
           iconName="mail"

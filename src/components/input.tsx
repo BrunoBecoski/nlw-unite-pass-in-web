@@ -1,29 +1,27 @@
-import { ComponentProps } from 'react'
-
+import { Button } from './button'
 import { Icon, IconName } from './icon'
 
-interface InputProps extends ComponentProps<'input'> {
+interface FormInputProps {
   id: string
-  label?: string
+  label: string
+  iconName: IconName
   message?: string
-  iconName?: IconName
 }
 
-export function Input({ 
+export function FormInput({ 
   id,
   label,
   message,
   iconName,
-  ...props
-}: InputProps) {
+}: FormInputProps) {
   return (
     <div className="flex flex-col gap-2 w-min">
-      { label && <label htmlFor={id}>{label}</label> }
+      <label htmlFor={id}>{label}</label>
 
       <div 
         className={
-          `px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-orange-500 text-emerald-500 focus-within:text-orange-500 
-          ${message && 'border-red-500 text-red-500'}
+          `px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-orange-400 text-emerald-400 focus-within:text-orange-400 
+          ${message && 'border-red-400 text-red-400'}
         `}
       >
         <Icon 
@@ -34,7 +32,6 @@ export function Input({
         <input
           id={id}
           className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
-          {...props}
         />
 
         <Icon 
@@ -44,7 +41,46 @@ export function Input({
         />
       </div>
       
-      <span className="text-red-500 text-sm text-right">{message}</span>
+      <span className="text-red-400 text-sm text-right">{message}</span>
     </div>
   )
+}
+
+interface SearchInputProps {
+  iconName: IconName
+  placeholder: string
+  handleSearch: () => void
+}
+
+export function SearchInput({ 
+  iconName, 
+  placeholder, 
+  handleSearch, 
+}: SearchInputProps) {
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.code == 'Enter' || event.code == 'NumpadEnter') {
+      handleSearch()
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-2 w-min">
+      <div 
+        className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-emerald-500">
+        <Button
+          iconName={iconName}
+          onClick={handleSearch}
+          variant="icon"
+          title="Pesquisar"
+        />
+
+        <input
+          className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
+          placeholder={placeholder}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+    </div>
+  )
+
 }
