@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef } from 'react'
 
 import { Button } from './button'
 import { Icon, IconName } from './icon'
@@ -33,6 +33,7 @@ export function FormInput({
 
         <input
           id={id}
+          name={id}
           className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
         />
 
@@ -63,15 +64,20 @@ export function SearchInput({
   onSearch,
   onErase,
 }: SearchInputProps) {
-  const [search, setSearch] = useState(initialValue)
+  const searchRef = useRef<HTMLInputElement>(null)
 
   function handleSearch() {
-    onSearch(search)
+    if (searchRef.current) {
+      onSearch(searchRef.current.value)
+    }
   }
 
   function handleEraser() {
-    setSearch('')
-    onErase()
+    if (searchRef.current) {
+      searchRef.current.value = ''
+      
+      onErase()
+    }
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -94,21 +100,17 @@ export function SearchInput({
           className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
           placeholder={placeholder}
           onKeyDown={handleKeyDown}
-          value={search}
-          onChange={event => setSearch(event.target.value)}
+          ref={searchRef}
+          defaultValue={initialValue}
         />
 
-        {
-          search &&
-          <Button
-            onClick={handleEraser}
-            iconName="eraser"
-            variant="icon"
-            title="Apagar"
-          />
-        }
+        <Button
+          onClick={handleEraser}
+          iconName="eraser"
+          variant="icon"
+          title="Apagar"
+        />
       </div>
     </div>
   )
-
 }

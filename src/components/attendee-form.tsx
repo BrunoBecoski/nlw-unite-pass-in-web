@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import * as  z from 'zod'
 
 import { createAttendee } from '../fetches'
@@ -14,11 +14,13 @@ const schema = z.object({
 export function AttendeeForm() {
   const [errorMessages, setErrorMessages] = useState({ name: '', email: ''})
   
-  async function handleSubmit() {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setErrorMessages({ name: '', email: '' })
-    
-    const name = document.getElementById('name').value
-    const email = document.getElementById('email').value
+
+    const form = new FormData(event.currentTarget)
+    const name = form.get('name')
+    const email = form.get('email')
 
     const result = schema.safeParse({
       name,
@@ -36,15 +38,12 @@ export function AttendeeForm() {
       return
     }
 
-   console.log('name: ' + result.data.name)
-   console.log('email: ' +  result.data.email)
+    const { message } = await createAttendee({
+      name: result.data.name,
+      email: result.data.email,
+    })
 
-    // const { message } = await createAttendee({
-    //   name: result.data.name,
-    //   email: result.data.email,
-    // })
-
-    // alert(message)
+    alert(message)
   }
 
   return (
@@ -53,7 +52,7 @@ export function AttendeeForm() {
         Criar participante
       </h1>
 
-      <div className="flex flex-col gap-4">
+      <form  onSubmit={handleSubmit} className="flex flex-col gap-4">
         <FormInput
           id="name"
           label="Nome"
@@ -68,13 +67,13 @@ export function AttendeeForm() {
           message={errorMessages.email}
         />
 
-        <Button 
-          onClick={handleSubmit}
+        <Button
           iconName="user-plus"
+          type="submit"
         >
           Criar participante
         </ Button>
-      </div>
+      </form>
     </div>
   )
 }
