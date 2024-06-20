@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { Button } from './button'
 import { Icon, IconName } from './icon'
 
@@ -49,14 +51,29 @@ export function FormInput({
 interface SearchInputProps {
   iconName: IconName
   placeholder: string
-  handleSearch: () => void
+  initialValue: string
+  onSearch: (search: string) => void
+  onErase: () => void
 }
 
 export function SearchInput({ 
   iconName, 
-  placeholder, 
-  handleSearch, 
+  placeholder,
+  initialValue,
+  onSearch,
+  onErase,
 }: SearchInputProps) {
+  const [search, setSearch] = useState(initialValue)
+
+  function handleSearch() {
+    onSearch(search)
+  }
+
+  function handleEraser() {
+    setSearch('')
+    onErase()
+  }
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.code == 'Enter' || event.code == 'NumpadEnter') {
       handleSearch()
@@ -65,8 +82,7 @@ export function SearchInput({
 
   return (
     <div className="flex flex-col gap-2 w-min">
-      <div 
-        className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-emerald-500">
+      <div className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-emerald-500">
         <Button
           iconName={iconName}
           onClick={handleSearch}
@@ -78,7 +94,19 @@ export function SearchInput({
           className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
           placeholder={placeholder}
           onKeyDown={handleKeyDown}
+          value={search}
+          onChange={event => setSearch(event.target.value)}
         />
+
+        {
+          search &&
+          <Button
+            onClick={handleEraser}
+            iconName="eraser"
+            variant="icon"
+            title="Apagar"
+          />
+        }
       </div>
     </div>
   )

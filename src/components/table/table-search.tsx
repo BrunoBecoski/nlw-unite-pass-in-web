@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { SearchInput } from '../input'
 
 interface TableSearchProps {
@@ -9,10 +7,12 @@ interface TableSearchProps {
 }
 
 export function TableSearch({ title, search = '', setSearch }: TableSearchProps) {
-  const [input, setInput] = useState(search)
+  function handleSearch(search: string) {
+    setSearch(search)
+  }
 
-  function handleSearch() {
-    setSearch(input)
+  function handleErase() {
+    setSearch('')
   }
 
   return (
@@ -22,7 +22,9 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
       <SearchInput
         iconName="search"
         placeholder={`Buscar ${title}...`}
-        handleSearch={handleSearch}
+        initialValue={search}
+        onSearch={handleSearch}
+        onErase={handleErase}
       />
     </div>
   )
