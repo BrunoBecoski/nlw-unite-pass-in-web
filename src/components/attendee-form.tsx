@@ -5,7 +5,7 @@ import { createAttendee } from '../fetches'
 
 import { FormInput } from './input'
 import { Button } from './button'
-import { Modal } from './modal'
+import { Modal, ModalData } from './modal'
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
@@ -15,7 +15,7 @@ const schema = z.object({
 export function AttendeeForm() {
   const [errorMessages, setErrorMessages] = useState({ name: '', email: ''})
   const [showModal, setShowModal] = useState(false)
-  const [modalMessage, setModalMessage] = useState('')
+  const [modalData, setModalData] = useState({} as ModalData)
   
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -46,17 +46,32 @@ export function AttendeeForm() {
       email: result.data.email,
     })
     
-    setModalMessage(message)
+    handleOpenModal({
+      title: 'Criar participante',
+      message,
+    })
+  }
+
+  function handleOpenModal(data: ModalData) {
     setShowModal(true)
+    setModalData(data)
+  }
+
+  function handleCloseModal() {
+    setShowModal(false)
+    setModalData({})
   }
 
   return (
     <div>
+      <Button onClick={handleCloseModal}>
+        Abrir modal
+      </Button>
+
       <Modal
-        title="Criar participante"
-        message={modalMessage}
+        data={modalData}
         showModal={showModal}
-        setShowModal={setShowModal}
+        handleCloseModal={handleCloseModal}
       />
 
       <h1 className="text-2xl font-bold">
