@@ -8,7 +8,7 @@ export function App() {
   const { pathname } = useRouter()
 
   return (
-    <div className="max-w-[1216px] mx-auto flex flex-col gap-5">
+    <div className="max-w-[1216px] mx-auto flex flex-col gap-5">      
       <Header />
       
       {pathname === '/eventos' && <EventList />}

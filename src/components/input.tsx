@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { Button } from './button'
+import { IconButton } from './button'
 import { Icon, IconName } from './icon'
 
 interface FormInputProps {
@@ -22,7 +22,7 @@ export function FormInput({
 
       <div 
         className={
-          `px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-orange-400 text-emerald-400 focus-within:text-orange-400 
+          `px-3 py-1.5 border border-zinc-700 rounded-lg text-sm flex items-center gap-3  focus-within:border-orange-400 text-emerald-400 focus-within:text-orange-400
           ${message && 'border-red-400 text-red-400'}
         `}
       >
@@ -89,10 +89,9 @@ export function SearchInput({
   return (
     <div className="flex flex-col gap-2 w-min">
       <div className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-emerald-500">
-        <Button
+        <IconButton
           iconName={iconName}
           onClick={handleSearch}
-          variant="icon"
           title="Pesquisar"
         />
 
@@ -104,10 +103,9 @@ export function SearchInput({
           defaultValue={initialValue}
         />
 
-        <Button
+        <IconButton
           onClick={handleEraser}
           iconName="eraser"
-          variant="icon"
           title="Apagar"
         />
       </div>
