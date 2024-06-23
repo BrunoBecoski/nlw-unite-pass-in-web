@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { MoreHorizontal } from 'lucide-react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -8,13 +7,13 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { useRouter } from '../contexts/router-provider'
 import { AttendeeTypes, getAttendee } from '../fetches'
 
-import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
 import { TableCell } from './table/table-cell'
 import { TableRow } from './table/table-row'
 import { TableFoot } from './table/table-foot'
 import { TableSearch } from './table/table-search'
+import { IconButton } from './button'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -91,9 +90,7 @@ export function AttendeeList() {
                   </TableCell>
 
                   <TableCell>
-                    <IconButton transparent>
-                      <MoreHorizontal className="size-4" />
-                    </IconButton>
+                    <IconButton name="ellipsis-vertical" size="sm" border />
                   </TableCell>
                 </TableRow>
                 )

@@ -64,10 +64,6 @@ export function AttendeeForm() {
 
   return (
     <div>
-      <Button onClick={handleCloseModal}>
-        Abrir modal
-      </Button>
-
       <Modal
         data={modalData}
         showModal={showModal}

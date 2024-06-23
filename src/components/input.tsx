@@ -50,7 +50,6 @@ export function FormInput({
 }
 
 interface SearchInputProps {
-  iconName: IconName
   placeholder: string
   initialValue: string
   onSearch: (search: string) => void
@@ -58,7 +57,6 @@ interface SearchInputProps {
 }
 
 export function SearchInput({ 
-  iconName, 
   placeholder,
   initialValue,
   onSearch,
@@ -90,9 +88,10 @@ export function SearchInput({
     <div className="flex flex-col gap-2 w-min">
       <div className="px-3 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3  focus-within:border-emerald-500">
         <IconButton
-          iconName={iconName}
-          onClick={handleSearch}
+          name="search"
+          size="sm"
           title="Pesquisar"
+          onClick={handleSearch}
         />
 
         <input
@@ -104,9 +103,10 @@ export function SearchInput({
         />
 
         <IconButton
-          onClick={handleEraser}
-          iconName="eraser"
+          name="eraser"
+          size="sm"
           title="Apagar"
+          onClick={handleEraser}
         />
       </div>
     </div>

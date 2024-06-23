@@ -1,4 +1,5 @@
 import { ComponentProps, ReactNode } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { Icon, IconName } from './icon'
 
@@ -35,30 +36,45 @@ export function Button({ variant = 'default', iconName, children, ...props }: Bu
 
 interface IconButtonProps extends ComponentProps<'button'> {
   name: IconName
+  border?: boolean
+  disabled?: boolean
   variant?: 'default' | 'close'
   size?: 'base' | 'sm'
 }
 
-export function IconButton({ name, variant = 'default', size = 'base', ...props }: IconButtonProps) {
+export function IconButton({ 
+  name,
+  border = false,
+  disabled = false,
+  variant = 'default',
+  size = 'base',
+  ...props
+}: IconButtonProps) {
   
   let styles = []
 
   switch (variant) {
     case 'close':
-      styles.push('text-white hover:text-red-400')
+      styles.push(`text-white 
+        ${disabled ? '' : 'hover:text-red-500'}
+      `)
       break;
 
     default:
-      styles.push('text-emerald-400 hover:text-orange-400')
+      styles.push(`text-orange-500 
+        ${disabled ? '' : 'hover:text-orange-600'}
+      `)
       break;
   }
 
   return (
     <button
-      className={`
-        bg-transparent flex items-center justify-center
-        ${styles.join(' ')}
-      `}
+      className={twMerge(
+        'bg-transparent flex items-center justify-center transition',
+        styles.join(' '),
+        border && 'border border-orange-500 hover:border-orange-600 rounded-md p-1 ',
+        disabled && 'opacity-50 cursor-not-allowed',
+      )}
       {...props}
     >
       <Icon 

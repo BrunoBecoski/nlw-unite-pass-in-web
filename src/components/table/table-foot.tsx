@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 
-import { IconButton } from '../icon-button'
+import { IconButton } from '../button'
 import { TableCell } from './table-cell'
 
 interface TableFootProps {
@@ -49,37 +49,33 @@ export function TableFoot({
             <span>Página {pageIndex ? pageIndex : 1} de {totalPages}</span>
 
             <div className="flex gap-1.5">
-              <IconButton 
+              <IconButton
                 title="Ir para a primeira página"
                 onClick={goToFirstPage}
                 disabled={pageIndex === 1}
-              >
-                <ChevronsLeft className="size-4" />
-              </IconButton>
+                name="chevrons-left"
+              />
 
               <IconButton
+                name="chevron-left"
                 title="Ir para a página anterior"
                 onClick={goToPreviousPage}
                 disabled={pageIndex === 1}
-              >
-                <ChevronLeft className="size-4" />
-              </IconButton>
+              />
 
               <IconButton
+                name="chevron-right"
                 title="Ir para a próxima página"
                 onClick={goToNextPage}
                 disabled={currentPageIndex  >= totalPages}
-              >
-                <ChevronRight className="size-4" />
-              </IconButton>
+              />
               
               <IconButton
+                name="chevrons-right"
                 title="Ir para a última página"
                 onClick={goToLastPage}
                 disabled={currentPageIndex >= totalPages}
-              >
-                <ChevronsRight className="size-4" />
-              </IconButton>
+              />
             </div>
           </div>
         </TableCell>

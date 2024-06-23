@@ -20,7 +20,6 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
       <h1 className="text-2xl font-bold first-letter:uppercase">{title}</h1>
       
       <SearchInput
-        iconName="search"
         placeholder={`Buscar ${title}...`}
         initialValue={search}
         onSearch={handleSearch}
