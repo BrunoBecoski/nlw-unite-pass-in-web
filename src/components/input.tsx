@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { IconButton } from './button'
 import { Icon, IconName } from './icon'
@@ -8,6 +9,7 @@ interface FormInputProps {
   label: string
   iconName: IconName
   message?: string
+  variant?: 'default' | 'success' | 'error'
 }
 
 export function FormInput({ 
@@ -15,16 +17,25 @@ export function FormInput({
   label,
   message,
   iconName,
+  variant = 'default',
 }: FormInputProps) {
+
+  let styles = ''
+
+  switch (variant) {
+    case 'success': styles = 'border-emerald-200/50 focus-within:border-emerald-500 text-emerald-500 focus-within:text-emerald-600'; break;
+    case 'error': styles = 'border-red-200/50 focus-within:border-red-500 text-red-500 focus-within:text-red-600'; break;
+    default: styles = 'border-orange-200/50 focus-within:border-orange-500 text-orange-500 focus-within:text-orange-600'; break;
+  }
   return (
     <div className="flex flex-col gap-2 w-min">
       <label htmlFor={id}>{label}</label>
 
       <div 
-        className={
-          `px-3 py-1.5 border border-zinc-700 rounded-lg text-sm flex items-center gap-3  focus-within:border-orange-400 text-emerald-400 focus-within:text-orange-400
-          ${message && 'border-red-400 text-red-400'}
-        `}
+        className={twMerge(
+          'px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3',
+          styles
+        )}
       >
         <Icon 
           name={iconName} 
@@ -40,7 +51,7 @@ export function FormInput({
         <Icon 
           name="circle-alert"
           size="sm"
-          color={message ? 'red' : 'transparent'}
+          color={variant == 'error' ? 'red' : 'transparent'}
         />
       </div>
       

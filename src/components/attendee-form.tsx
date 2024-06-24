@@ -80,6 +80,7 @@ export function AttendeeForm() {
           label="Nome"
           iconName="user"
           message={errorMessages.name}
+          variant={errorMessages.name ? 'error' : 'default'}
         />
 
         <FormInput
@@ -87,6 +88,7 @@ export function AttendeeForm() {
           label="Email"
           iconName="mail"
           message={errorMessages.email}
+          variant={errorMessages.email ? 'error' : 'default'}
         />
 
         <Button
