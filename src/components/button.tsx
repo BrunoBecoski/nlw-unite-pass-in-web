@@ -1,6 +1,7 @@
 import { ComponentProps, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { styles } from '../styles'
 import { Icon, IconName } from './icon'
 
 interface ButtonProps extends ComponentProps<'button'> {
@@ -10,20 +11,13 @@ interface ButtonProps extends ComponentProps<'button'> {
 }
 
 export function Button({ variant = 'default', iconName, children, ...props }: ButtonProps) {
-  let styles = []
-
-  switch (variant) {
-    case 'success': styles.push('bg-emerald-500 hover:bg-emerald-400'); break;
-    case 'error': styles.push('bg-red-500 hover:bg-red-400'); break;
-    default: styles.push('bg-orange-500 hover:bg-orange-400'); break;
-  }
-
   return (
     <button
-      className={`
-        flex items-center justify-center gap-4 w-fit px-4 py-2 rounded-lg text-white transition
-        ${styles.join(' ')}        
-      `}
+      className={twMerge(
+        'flex items-center justify-center gap-4 w-fit px-4 py-2 rounded-lg text-white transition',
+        styles[variant].background,
+        `hover:${styles[variant].backgroundActive}`,
+      )}
       {...props}
     >
       { iconName && <Icon name={iconName} className="w-4 h-4" /> }

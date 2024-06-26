@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { styles } from '../styles'
 import { IconButton } from './button'
 import { Icon, IconName } from './icon'
 
@@ -20,21 +21,17 @@ export function FormInput({
   variant = 'default',
 }: FormInputProps) {
 
-  let styles = ''
-
-  switch (variant) {
-    case 'success': styles = 'border-emerald-200/50 focus-within:border-emerald-500 text-emerald-500 focus-within:text-emerald-600'; break;
-    case 'error': styles = 'border-red-200/50 focus-within:border-red-500 text-red-500 focus-within:text-red-600'; break;
-    default: styles = 'border-orange-200/50 focus-within:border-orange-500 text-orange-500 focus-within:text-orange-600'; break;
-  }
-  return (
+ return (
     <div className="flex flex-col gap-2 w-min">
       <label htmlFor={id}>{label}</label>
 
       <div 
         className={twMerge(
           'px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3',
-          styles
+          styles[variant].border,
+          styles[variant].text,
+          `focus-within:${styles[variant].borderActive}`,
+          `focus-within:${styles[variant].textActive}`,
         )}
       >
         <Icon 
