@@ -14,8 +14,8 @@ interface FormInputProps {
 export function FormInput({ 
   id,
   label,
-  message,
   iconName,
+  message,
   variant = 'default',
 }: FormInputProps) {
 
@@ -24,7 +24,11 @@ export function FormInput({
       <div className="flex flex-col gap-2 w-min">
         <label htmlFor={id}>{label}</label>
   
-        <div className="px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3 border-orange-200/50 focus-within:border-orange-500 text-orange-300 focus-within:text-orange-500">
+        <div className={`
+          px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3
+          border-orange-200/50 focus-within:border-orange-500
+          text-orange-300 focus-within:text-orange-500
+        `}>
           <Icon 
             name={iconName} 
             size="sm"
@@ -63,6 +67,8 @@ export function FormInput({
             color="emerald"
           />
         </div>
+
+        <span className="text-emerald-400 text-sm text-right">{message}</span>
       </div>
     )
   }

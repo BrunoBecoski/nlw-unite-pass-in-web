@@ -13,13 +13,31 @@ const schema = z.object({
 })
 
 export function AttendeeForm() {
-  const [errorMessages, setErrorMessages] = useState({ name: '', email: ''})
+  const [formData, setFormData] = useState({ 
+    name: {
+      message: '',
+      status: 'default',
+    },
+    email: {
+      message: '',
+      status: 'default',
+    }
+  })
   const [showModal, setShowModal] = useState(false)
   const [modalData, setModalData] = useState({} as ModalData)
   
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setErrorMessages({ name: '', email: '' })
+    setFormData({
+      name: {
+      message: '',
+      status: 'default',
+      },
+      email: {
+        message: '',
+        status: 'default',
+      }
+    })
 
     const form = new FormData(event.currentTarget)
     const name = form.get('name')
@@ -29,28 +47,34 @@ export function AttendeeForm() {
       name,
       email,
     })
-
+    
     if (result.success == false) {
       const { name, email } = result.error.format()
 
-      setErrorMessages({
-        name: name ? name._errors[0] : '',
-        email: email ? email._errors[0] : '',
+      setFormData({
+        name:  {
+          status: name ? 'error' : 'success',
+          message: name?._errors[0] ? name._errors[0] : 'Valor valido',
+        },
+        email: { 
+          status: email ? 'error' : 'success',
+          message: email?._errors[0] ? email._errors[0] : 'Valor valido',
+        }
       })
 
       return
     }
-
-    const { message } = await createAttendee({
-      name: result.data.name,
-      email: result.data.email,
-    })
-    
-    handleOpenModal({
-      title: 'Criar participante',
-      message,
-    })
   }
+
+  //   const { message } = await createAttendee({
+  //     name: result.data.name,
+  //     email: result.data.email,
+  //   })
+    
+  //   handleOpenModal({
+  //     title: 'Criar participante',
+  //     message,
+  //   })
 
   function handleOpenModal(data: ModalData) {
     setShowModal(true)
@@ -79,16 +103,16 @@ export function AttendeeForm() {
           id="name"
           label="Nome"
           iconName="user"
-          message={errorMessages.name}
-          variant={errorMessages.name ? 'error' : 'default'}
+          message={formData.name.message}
+          variant={formData.name.status}
         />
 
         <FormInput
           id="email"
           label="Email"
           iconName="mail"
-          message={errorMessages.email}
-          variant={errorMessages.email ? 'error' : 'default'}
+          message={formData.email.message}
+          variant={formData.email.status}
         />
 
         <Button
