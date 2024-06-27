@@ -1,7 +1,5 @@
 import { useRef } from 'react'
-import { twMerge } from 'tailwind-merge'
 
-import { styles } from '../styles'
 import { IconButton } from './button'
 import { Icon, IconName } from './icon'
 
@@ -21,40 +19,82 @@ export function FormInput({
   variant = 'default',
 }: FormInputProps) {
 
- return (
-    <div className="flex flex-col gap-2 w-min">
-      <label htmlFor={id}>{label}</label>
-
-      <div 
-        className={twMerge(
-          'px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3',
-          styles[variant].border,
-          styles[variant].text,
-          `focus-within:${styles[variant].borderActive}`,
-          `focus-within:${styles[variant].textActive}`,
-        )}
-      >
-        <Icon 
-          name={iconName} 
-          size="sm"
-        />
-
-        <input
-          id={id}
-          name={id}
-          className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
-        />
-
-        <Icon 
-          name="circle-alert"
-          size="sm"
-          color={variant == 'error' ? 'red' : 'transparent'}
-        />
+  if (variant == 'default') {
+    return (
+      <div className="flex flex-col gap-2 w-min">
+        <label htmlFor={id}>{label}</label>
+  
+        <div className="px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3 border-orange-200/50 focus-within:border-orange-500 text-orange-300 focus-within:text-orange-500">
+          <Icon 
+            name={iconName} 
+            size="sm"
+          />
+  
+          <input
+            id={id}
+            name={id}
+            className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
+          />
+        </div>
       </div>
-      
-      <span className="text-red-400 text-sm text-right">{message}</span>
-    </div>
-  )
+    )
+  }
+
+  if (variant == 'success') {
+    return (
+      <div className="flex flex-col gap-2 w-min">
+        <label htmlFor={id}>{label}</label>
+  
+        <div className="px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3 border-emerald-200/50 focus-within:border-emerald-500 text-emerald-300 focus-within:text-emerald-500">
+          <Icon 
+            name={iconName} 
+            size="sm"
+          />
+  
+          <input
+            id={id}
+            name={id}
+            className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
+          />
+  
+          <Icon 
+            name="circle-check"
+            size="sm"
+            color="emerald"
+          />
+        </div>
+      </div>
+    )
+  }
+
+  if (variant == 'error') {
+    return (
+      <div className="flex flex-col gap-2 w-min">
+        <label htmlFor={id}>{label}</label>
+  
+        <div className="px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3 border-red-200/50 focus-within:border-red-500 text-red-300 focus-within:text-red-500">
+          <Icon 
+            name={iconName} 
+            size="sm"
+          />
+  
+          <input
+            id={id}
+            name={id}
+            className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
+          />
+  
+          <Icon 
+            name="circle-alert"
+            size="sm"
+            color="red"
+          />
+        </div>
+        
+        <span className="text-red-400 text-sm text-right">{message}</span>
+      </div>
+    )
+  }
 }
 
 interface SearchInputProps {
