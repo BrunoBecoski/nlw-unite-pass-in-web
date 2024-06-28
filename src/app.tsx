@@ -3,6 +3,7 @@ import { Header } from './components/header'
 import { AttendeeList } from './components/attendee-list'
 import { EventList } from './components/event-list'
 import { AttendeeForm } from './components/attendee-form'
+import { EventForm } from './components/event-form'
 
 export function App() {
   const { pathname } = useRouter()
@@ -15,6 +16,7 @@ export function App() {
       {pathname === '/participantes' && <AttendeeList />}
 
       {pathname === '/criar/participante' && <AttendeeForm />}
+      {pathname === '/criar/evento' && <EventForm />}
     </div>
   )
 }

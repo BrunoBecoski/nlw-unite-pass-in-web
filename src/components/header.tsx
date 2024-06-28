@@ -39,6 +39,14 @@ export function Header() {
         >
           Criar Participante
         </NavLink>
+
+        <NavLink
+          href="/criar/evento"
+          onClick={() => changeRoute('createEvent')}
+          selected={route === 'createEvent'}
+        >
+          Criar Evento
+        </NavLink>
       </nav>
     </div>
   )

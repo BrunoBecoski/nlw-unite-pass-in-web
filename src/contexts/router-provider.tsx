@@ -28,7 +28,7 @@ const initialState: RouterProviderState = {
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
 
-type Routes = 'home' | 'events' | 'attendees' | 'createAttendee'
+type Routes = 'home' | 'events' | 'attendees' | 'createAttendee' | 'createEvent'
 
 export function RouterProvider({
   children,
@@ -82,6 +82,10 @@ export function RouterProvider({
       
       case 'createAttendee':
         updateUrl('/criar/participante')
+        break;
+
+      case 'createEvent':
+        updateUrl('/criar/evento')
         break;
 
       default:
