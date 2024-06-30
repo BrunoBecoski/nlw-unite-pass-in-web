@@ -53,8 +53,8 @@ export function AttendeeForm() {
       
     } else {
       return {
-        name,
-        email,
+        name: result.data.name,
+        email: result.data.email,
       }
     }
   }
@@ -72,19 +72,35 @@ export function AttendeeForm() {
       return
     }
 
-    console.log(validatedForm)
+    const { message, data } = await createAttendee({
+      name: validatedForm.name,
+      email: validatedForm.email,
+    })
 
-    // const { message } = await createAttendee({
-    //   name: validatedForm.name,
-    //   email: validatedForm.email,
-    // })
-    
-    // handleOpenModal({
-    //   title: 'Criar participante',
-    //   message,
-    // })
+    if (message == 'Email já está sendo utilizado.') {
+      handleOpenModal({
+        title: 'Erro ao criar o participante',
+        message,
+        variant: 'error',
+        button: 'Tentar novamente'
+      })
+
+      return
+    }
+
+    if (data) {
+      handleOpenModal({
+        title: 'Sucesso ao criar o participante',
+        message,
+        attendee: {
+           code: data.attendee.attendee.code
+        },
+        variant: 'success',
+        button: 'Sucesso'
+      })
+      
+    }
   }
-
 
   function handleOpenModal(data: ModalData) {
     setShowModal(true)
@@ -95,8 +111,6 @@ export function AttendeeForm() {
     setShowModal(false)
     setModalData({})
   }
-
-
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -128,22 +142,8 @@ export function AttendeeForm() {
         />
 
         <Button
-          iconName="user-plus"
-          type="submit"
-        >
-          Criar participante
-        </ Button>
-
-        <Button
           type="submit"
           variant="confirm"
-        >
-          Criar participante
-        </ Button>
-
-        <Button
-          type="submit"
-          variant="cancel"
         >
           Criar participante
         </ Button>
