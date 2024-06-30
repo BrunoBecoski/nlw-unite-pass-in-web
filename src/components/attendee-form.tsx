@@ -3,7 +3,7 @@ import * as  z from 'zod'
 
 import { createAttendee } from '../fetches'
 
-import { FormInput } from './input'
+import { FormInput, InputVariants } from './input'
 import { Button } from './button'
 import { Modal, ModalData } from './modal'
 
@@ -12,34 +12,23 @@ const schema = z.object({
   email: z.string({ message: 'Email obrigatório' }).email({ message: 'Email inválido' }),
 })
 
+interface FormStatusProps {
+  name: {
+    message: string
+    variant: InputVariants
+  }
+  email: {
+    message: string
+    variant: InputVariants
+  }
+}
+
 export function AttendeeForm() {
-  const [formData, setFormData] = useState({ 
-    name: {
-      message: '',
-      status: 'default',
-    },
-    email: {
-      message: '',
-      status: 'default',
-    }
-  })
+  const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [showModal, setShowModal] = useState(false)
   const [modalData, setModalData] = useState({} as ModalData)
   
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setFormData({
-      name: {
-      message: '',
-      status: 'default',
-      },
-      email: {
-        message: '',
-        status: 'default',
-      }
-    })
-
-    const form = new FormData(event.currentTarget)
+  function formValidation(form: FormData) {
     const name = form.get('name')
     const email = form.get('email')
 
@@ -51,30 +40,51 @@ export function AttendeeForm() {
     if (result.success == false) {
       const { name, email } = result.error.format()
 
-      setFormData({
+      setFormStatus({
         name:  {
-          status: name ? 'error' : 'success',
-          message: name?._errors[0] ? name._errors[0] : 'Valor valido',
+          variant: name ? 'error' : 'success',
+          message: name?._errors[0] ? name._errors[0] : 'Nome valido',
         },
         email: { 
-          status: email ? 'error' : 'success',
-          message: email?._errors[0] ? email._errors[0] : 'Valor valido',
+          variant: email ? 'error' : 'success',
+          message: email?._errors[0] ? email._errors[0] : 'Email valido',
         }
       })
-
-      return
+      
+    } else {
+      return {
+        name,
+        email,
+      }
     }
   }
-
-  //   const { message } = await createAttendee({
-  //     name: result.data.name,
-  //     email: result.data.email,
-  //   })
+ 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     
-  //   handleOpenModal({
-  //     title: 'Criar participante',
-  //     message,
-  //   })
+    setFormStatus({} as FormStatusProps)
+    
+    const form = new FormData(event.currentTarget)
+
+    const validatedForm = formValidation(form)
+
+    if (validatedForm == undefined) {
+      return
+    }
+
+    console.log(validatedForm)
+
+    // const { message } = await createAttendee({
+    //   name: validatedForm.name,
+    //   email: validatedForm.email,
+    // })
+    
+    // handleOpenModal({
+    //   title: 'Criar participante',
+    //   message,
+    // })
+  }
+
 
   function handleOpenModal(data: ModalData) {
     setShowModal(true)
@@ -86,8 +96,10 @@ export function AttendeeForm() {
     setModalData({})
   }
 
+
+
   return (
-    <div>
+    <div className="flex flex-col items-center gap-4">
       <Modal
         data={modalData}
         showModal={showModal}
@@ -98,26 +110,40 @@ export function AttendeeForm() {
         Criar participante
       </h1>
 
-      <form  onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form  onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
         <FormInput
           id="name"
           label="Nome"
           iconName="user"
-          message={formData.name.message}
-          variant={formData.name.status}
+          message={formStatus.name?.message}
+          variant={formStatus.name?.variant}
         />
 
         <FormInput
           id="email"
           label="Email"
           iconName="mail"
-          message={formData.email.message}
-          variant={formData.email.status}
+          message={formStatus.email?.message}
+          variant={formStatus.email?.variant}
         />
 
         <Button
           iconName="user-plus"
           type="submit"
+        >
+          Criar participante
+        </ Button>
+
+        <Button
+          type="submit"
+          variant="confirm"
+        >
+          Criar participante
+        </ Button>
+
+        <Button
+          type="submit"
+          variant="cancel"
         >
           Criar participante
         </ Button>

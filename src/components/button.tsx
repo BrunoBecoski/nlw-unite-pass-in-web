@@ -1,29 +1,37 @@
 import { ComponentProps, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { styles } from '../styles'
 import { Icon, IconName } from './icon'
 
 interface ButtonProps extends ComponentProps<'button'> {
   iconName?: IconName
   children?: ReactNode
-  variant?: 'default' | 'success' | 'error'
+  variant?: 'default' | 'confirm' | 'cancel'
 }
 
 export function Button({ variant = 'default', iconName, children, ...props }: ButtonProps) {
+  
+  let styles = ''
+
+  switch (variant) {
+    case 'confirm': styles = 'bg-emerald-500 hover:bg-emerald-400'; break;
+    case 'cancel': styles = 'bg-red-500 hover:bg-red-400'; break;
+    default: styles = 'bg-orange-500 hover:bg-orange-400'; break;
+  }
+
   return (
     <button
       className={twMerge(
-        'flex items-center justify-center gap-4 w-fit px-4 py-2 rounded-lg text-white transition',
-        styles[variant].background,
-        `hover:${styles[variant].backgroundActive}`,
+        'w-full flex items-center justify-center gap-4 px-4 py-2 rounded-lg text-white  transition',
+        styles
       )}
       {...props}
     >
       { iconName && <Icon name={iconName} className="w-4 h-4" /> }
       {children}
-      { variant == 'success' && <Icon name="circle-check" className="w-4 h-4" /> }
-      { variant == 'error' && <Icon name="circle-alert" className="w-4 h-4" /> }
+
+      { variant == 'confirm' &&  <Icon name="circle-check" className="w-4 h-4" />}
+      { variant == 'cancel' &&  <Icon name="circle-alert" className="w-4 h-4" />}
     </button>
   )
 }
@@ -45,19 +53,19 @@ export function IconButton({
   ...props
 }: IconButtonProps) {
   
-  let styles = []
+  let styles = ''
 
   switch (variant) {
     case 'close':
-      styles.push(`text-white 
-        ${disabled ? '' : 'hover:text-red-500'}
-      `)
+      styles = `text-white 
+        ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:text-red-500'}
+      `
       break;
 
     default:
-      styles.push(`text-orange-500 
-        ${disabled ? '' : 'hover:text-orange-600'}
-      `)
+      styles = `text-orange-500 
+        ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:text-orange-600'}
+      `
       break;
   }
 
@@ -65,9 +73,8 @@ export function IconButton({
     <button
       className={twMerge(
         'bg-transparent flex items-center justify-center transition',
-        styles.join(' '),
-        border && 'border border-orange-500 hover:border-orange-600 rounded-md p-1 ',
-        disabled && 'opacity-50 cursor-not-allowed',
+        border && 'border border-orange-500 hover:border-orange-600 rounded-md p-1',
+        styles,
       )}
       {...props}
     >
