@@ -3,15 +3,14 @@ import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { Button, IconButton } from './button'
+import { AttendeeTypes } from '../fetches'
 
 export type ModalData = {
   variant?: 'default' | 'success' | 'error'
   title?: string
   message?: string
   button?: string
-  attendee?: {
-    code: string,
-  }
+  attendee?: AttendeeTypes
 }
 
 interface ModalProps {
@@ -68,7 +67,11 @@ export function Modal({ data, showModal, handleCloseModal }: ModalProps) {
                 <p>{data.message}</p>
 
                 { data.attendee &&
-                  <p>Código do participante: <span>{data.attendee.code}</span></p>
+                  <>
+                    <p>Nome do participante: <span>{data.attendee.name}</span></p>
+                    <p>Email do participante: <span>{data.attendee.email}</span></p>
+                    <p>Código do participante: <span>{data.attendee.code}</span></p>
+                  </>
                 }
 
                 {data.variant == 'default' &&

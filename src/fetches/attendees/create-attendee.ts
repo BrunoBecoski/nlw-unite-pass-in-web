@@ -10,9 +10,7 @@ interface CreateAttendeeRequest {
 interface CreateAttendeeResponse {
   successfully: boolean 
   message: string
-  data?: {
-    attendee: AttendeeTypes
-  }
+  attendee?: AttendeeTypes
 }
 
 export async function createAttendee({ name, email }: CreateAttendeeRequest): Promise<CreateAttendeeResponse> {
@@ -34,9 +32,7 @@ export async function createAttendee({ name, email }: CreateAttendeeRequest): Pr
     return {
       successfully: true,
       message: 'Participante criado com sucesso.',
-      data: {
-        attendee: data,
-      }
+      attendee: data.attendee,
     }
   }
 
@@ -44,7 +40,7 @@ export async function createAttendee({ name, email }: CreateAttendeeRequest): Pr
     return {
       successfully: false,
       message: 'Email já está sendo utilizado.',
-      data: undefined,
+      attendee: undefined,
     }
   }
 
@@ -52,13 +48,13 @@ export async function createAttendee({ name, email }: CreateAttendeeRequest): Pr
     return {
       successfully: false,
       message,
-      data: undefined,
+      attendee: undefined,
     }
   }
 
   return {
     successfully: false,
     message: 'Não foi possível criar o participante.',
-    data: undefined,
+    attendee: undefined,
   }
 }

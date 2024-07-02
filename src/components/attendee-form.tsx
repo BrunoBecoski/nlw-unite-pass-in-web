@@ -72,7 +72,7 @@ export function AttendeeForm() {
       return
     }
 
-    const { message, data } = await createAttendee({
+    const { message, attendee } = await createAttendee({
       name: validatedForm.name,
       email: validatedForm.email,
     })
@@ -88,13 +88,11 @@ export function AttendeeForm() {
       return
     }
 
-    if (data) {
+    if (attendee) {
       handleOpenModal({
         title: 'Sucesso ao criar o participante',
         message,
-        attendee: {
-           code: data.attendee.attendee.code
-        },
+        attendee,
         variant: 'success',
         button: 'Sucesso'
       })
