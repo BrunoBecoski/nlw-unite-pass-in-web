@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Icon, IconName } from './icon'
@@ -82,6 +82,117 @@ export function IconButton({
         name={name}
         size={size}
       />
+    </button>
+  )
+}
+
+interface MoreButtonProps {
+  id: string
+  variant: 'event' | 'attendee'
+}
+
+export function MoreButton({ 
+  id,
+  variant
+}: MoreButtonProps) {
+  const [open, setOpen] = useState(false)
+
+  function handleRegisterAttendeeOnEvent() {
+    console.log('register attendee on event: ' + id)
+  }
+
+  function handleEditEvent() {
+    console.log('edit event: ' + id)
+  }
+
+  function handleDeleteEvent() {
+    console.log('delete event: ' + id)
+  }
+
+  function handleRegisterEventOnAttendee() {
+    console.log('register event on attendee: ' + id)
+  }
+
+  function handleEditAttendee() {
+    console.log('edit attendee: ' + id)
+  }
+
+  function handleDeleteAttendee() {
+    console.log('delete attendee: ' + id)
+  }
+
+  return (
+    <button 
+      className="size-7 p-1.5 rounded-md bg-zinc-950 border border-white/10 flex items-center justify-center hover:border-orange-500 transition relative"
+      title="Mais"
+      onClick={() => setOpen(!open)}
+    >
+      <Icon 
+        name="ellipsis"
+        color="white"
+        size="sm"
+      />
+       {open && variant == 'event' &&
+        <div className="w-72 p-1.5 rounded-md bg-zinc-950 border border-white/10 absolute right-8 flex flex-col gap-1 ">
+          <button 
+            className="flex items-center gap-2 hover:text-orange-500"
+            onClick={handleRegisterAttendeeOnEvent}
+          >
+            <Icon name="plus" size="sm"/>
+            Registar um participante no evento
+          </button>
+          
+          <span className="w-full h-[1px] bg-white/10" />
+
+          <button 
+            className="flex items-center gap-2 hover:text-orange-500"
+            onClick={handleEditEvent}
+          >
+            <Icon name="pencil" size="sm" />
+            Editar o evento
+          </button>
+
+          <span className="w-full h-[1px] bg-white/10" />
+          
+          <button className="flex items-center gap-2 hover:text-orange-500"
+            onClick={handleDeleteEvent}
+          >
+            <Icon name="trash" size="sm" />
+            Deletar o evento
+          </button>
+        </div>
+      }
+
+      {open && variant == 'attendee' &&
+        <div className="w-72 p-1.5 rounded-md bg-zinc-950 border border-white/10 absolute right-8 flex flex-col gap-1 ">
+          <button 
+            className="flex items-center gap-2 hover:text-orange-500"
+            onClick={handleRegisterEventOnAttendee}
+          >
+            <Icon name="plus" size="sm" />
+            Registar um evento no participante
+          </button>
+          
+          <span className="w-full h-[1px] bg-white/10" />
+
+          <button 
+            className="flex items-center gap-2 hover:text-orange-500"
+            onClick={handleEditAttendee}
+          >
+            <Icon name="pencil" size="sm" />
+            Editar o participante
+          </button>
+
+          <span className="w-full h-[1px] bg-white/10" />
+          
+          <button className="flex items-center gap-2 hover:text-orange-500"
+            onClick={handleDeleteAttendee}
+          >
+            <Icon name="trash" size="sm" />
+            Deletar o participante
+          </button>
+        </div>
+      }
     </button>
   )
 }

@@ -20,9 +20,6 @@ export type EventTypes = {
   maximumAttendees: number
   startDate: string,
   endDate: string,
-  virtualEvent: boolean,
-  physicalEvent: boolean,
-  checkInAfterStart: boolean
 }
 
 export {

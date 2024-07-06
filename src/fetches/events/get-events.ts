@@ -19,7 +19,7 @@ interface ResponseProps {
 export async function getEvents({ pageIndex, search }: RequestProps): Promise<ResponseProps>{
   const { url, init } = new CreateRequest({
     method: 'GET',
-    pathname: '/events',
+    pathname: 'get/events',
     pageIndex,
     search,
   })

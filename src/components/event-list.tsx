@@ -11,7 +11,7 @@ import { TableCell } from './table/table-cell'
 import { TableRow } from './table/table-row'
 import { TableFoot } from './table/table-foot'
 import { TableSearch } from './table/table-search'
-import { IconButton } from './button'
+import { MoreButton } from './button'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -57,44 +57,52 @@ export function EventList() {
                 <TableHeader style={{ width: 48 }} >
                   <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
                 </TableHeader>
-                <TableHeader>Nome</TableHeader>
-                <TableHeader>Duração</TableHeader>
-                <TableHeader>Online / Presencial</TableHeader>
-                <TableHeader>Vagas</TableHeader>
+                <TableHeader>Slug</TableHeader>
+                <TableHeader>Evento</TableHeader>
+                <TableHeader>Começa</TableHeader>
+                <TableHeader>Termina</TableHeader>
+                <TableHeader>Participantes</TableHeader>
                 <TableHeader style={{ width: 64 }}></TableHeader>
               </tr>
             </thead>
     
             <tbody>
               {events.map((event) => {
+
                 return (
                 <TableRow key={event.id}>
                   <TableCell>
                     <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
                   </TableCell>
+                  
+                  <TableCell>
+                    {event.slug}
+                  </TableCell>
+
                   <TableCell>
                     <div className="flex flex-col gap-1">
                       <span className="font-semibold text-white">{event.title}</span>
-                      <span>{event.slug}</span>
+                      <span>{event.details}</span>
                     </div>
                   </TableCell>
+
                   <TableCell>
                     {dayjs(event.startDate).format('DD/MM/YY')}
-                    {' - '}
+                  </TableCell>
+
+                  <TableCell>
                     {dayjs(event.endDate).format('DD/MM/YY')}
                   </TableCell>
+
                   <TableCell>
-                    {event.virtualEvent ? 'Sim' : 'Não'} 
-                    {' / '}
-                    {event.physicalEvent ? 'Sim' : 'Não'}
+                    {event.attendees} / {event.maximumAttendees}
                   </TableCell>
+
                   <TableCell>
-                    {event.attendees}
-                    {' / '}
-                    {event.maximumAttendees}
-                  </TableCell>
-                  <TableCell>
-                    <IconButton name="ellipsis-vertical" size="sm" border />
+                    <MoreButton 
+                      id={event.id}
+                      variant="event"
+                    />
                   </TableCell>
                 </TableRow>
                 )
