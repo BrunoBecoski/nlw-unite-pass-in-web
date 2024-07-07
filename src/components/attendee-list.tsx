@@ -13,7 +13,7 @@ import { TableCell } from './table/table-cell'
 import { TableRow } from './table/table-row'
 import { TableFoot } from './table/table-foot'
 import { TableSearch } from './table/table-search'
-import { IconButton, MoreButton } from './button'
+import { MoreButton } from './moreButton'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -91,7 +91,7 @@ export function AttendeeList() {
 
                   <TableCell>
                     <MoreButton 
-                      id={attendee.id}
+                      id={attendee.code}
                       variant="attendee"
                     />
                   </TableCell>
