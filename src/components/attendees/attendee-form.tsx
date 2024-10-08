@@ -1,11 +1,11 @@
 import { FormEvent, useState } from 'react'
 import * as  z from 'zod'
 
-import { createAttendee } from '../fetches'
+import { createAttendee } from '../../fetches'
 
-import { FormInput, InputVariants } from './input'
-import { Button } from './button'
-import { Modal, ModalData } from './modal'
+import { FormInput, InputVariants } from '../input'
+import { Button } from '../buttons/button'
+import { Modal, ModalData } from '../modal'
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),

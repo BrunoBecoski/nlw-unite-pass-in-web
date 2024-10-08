@@ -1,6 +1,4 @@
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
-
-import { IconButton } from '../button'
+import { IconButton } from '../buttons/icon-button'
 import { TableCell } from './table-cell'
 
 interface TableFootProps {

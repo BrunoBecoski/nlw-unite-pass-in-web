@@ -1,9 +1,9 @@
 import { useRouter } from './contexts/router-provider'
 import { Header } from './components/header'
-import { AttendeeList } from './components/attendee-list'
-import { EventList } from './components/event-list'
-import { AttendeeForm } from './components/attendee-form'
-import { EventForm } from './components/event-form'
+import { AttendeeList } from './components/attendees/attendee-list'
+import { EventList } from './components/events/event-list'
+import { AttendeeForm } from './components/attendees/attendee-form'
+import { EventForm } from './components/events/event-form'
 
 export function App() {
   const { pathname } = useRouter()

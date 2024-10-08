@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { IconButton } from './button'
+import { IconButton } from './buttons/icon-button'
 import { Icon, IconName } from './icon'
 import { twMerge } from 'tailwind-merge'
 

@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 
-import { Button, IconButton } from './button'
+import { Button } from './buttons/button'
+import { IconButton } from './buttons/icon-button'
 import { AttendeeTypes } from '../fetches'
 
 export type ModalData = {
