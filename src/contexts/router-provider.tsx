@@ -12,8 +12,10 @@ type RouterProviderState = {
   pathname: string,
   pageIndex?: number,
   search?: string,
+  slug?: string
   changePageIndex: (pageIndex: number) => void,
   changeSearch: (search: string) => void,
+  changeSlug: (slug: string) => void,
 }
 
 const initialState: RouterProviderState = {
@@ -22,13 +24,15 @@ const initialState: RouterProviderState = {
   pathname: '/',
   pageIndex: undefined,
   search: undefined,
+  slug: undefined,
   changePageIndex: () => null,
   changeSearch: () => null,
+  changeSlug: () => null,
 }
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
 
-type Routes = 'home' | 'events' | 'attendees' | 'createAttendee' | 'createEvent'
+type Routes = 'home' | 'events' | 'attendees' | 'createAttendee' | 'createEvent' | 'event'
 
 export function RouterProvider({
   children,
@@ -37,6 +41,7 @@ export function RouterProvider({
   const [pathname, setPathname] = useState('/')
   const [pageIndex, setPageIndex] = useState<number | undefined>(undefined)
   const [search, setSearch] = useState<string | undefined>(undefined)
+  const [slug, setSlug] = useState<string | undefined>(undefined)
 
   const [route, setRoute] = useState<Routes>('home')
 
@@ -53,6 +58,9 @@ export function RouterProvider({
         
         case '/participantes':
           return 'attendees'
+
+        case '/evento':
+          return 'event'
         
         default:
           return 'home'
@@ -64,7 +72,7 @@ export function RouterProvider({
   }, [])
 
   function changeRoute(route : Routes) {
-    
+
     setRoute(route)
 
     switch (route) {
@@ -88,6 +96,12 @@ export function RouterProvider({
         updateUrl('/criar/evento')
         break;
 
+      case 'event':
+        if (slug != undefined) {
+          updateUrl(`/evento/${slug}`)
+        }
+        break;
+
       default:
         updateUrl('/')
         break;
@@ -95,6 +109,7 @@ export function RouterProvider({
   }
 
   function updateUrl(pathname: string) {
+    console.log('UPDATE: ' + pathname) 
     const { url } = new CreateUrl({
       pathname
     })
@@ -141,14 +156,26 @@ export function RouterProvider({
     window.history.pushState({}, '', url)
   }
 
+  function changeSlug(slug: string | undefined) {
+    const { url } = new CreateUrl({
+      slug,
+    })
+
+    setSlug(slug)
+
+     window.history.pushState({}, '', url)
+  }
+
   const value: RouterProviderState = {
     route,
     changeRoute,
     pathname,
     pageIndex,
     search,
+    slug,
     changePageIndex,
     changeSearch,
+    changeSlug,
   }
 
   return (

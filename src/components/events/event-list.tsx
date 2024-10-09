@@ -100,7 +100,7 @@ export function EventList() {
 
                   <TableCell>
                     <MoreButton 
-                      id={event.slug}
+                      slug={event.slug}
                       variant="event"
                     />
                   </TableCell>

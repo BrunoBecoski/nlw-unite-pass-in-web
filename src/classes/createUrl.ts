@@ -2,6 +2,7 @@ interface CreateUrlProps {
   pathname?: string
   pageIndex?: number
   search?: string
+  slug?: string
 }
 
 export class CreateUrl {
@@ -16,6 +17,7 @@ export class CreateUrl {
       pageIndex,
       pathname,
       search,
+      slug,
     } = props
 
     if (pathname != undefined) {
@@ -32,6 +34,10 @@ export class CreateUrl {
       this._url.searchParams.set('search', search)
     } else {
       this._url.searchParams.delete('search')
+    }
+
+    if (slug != undefined) {
+      this._url.pathname = `/evento/${slug}`
     }
   }
 

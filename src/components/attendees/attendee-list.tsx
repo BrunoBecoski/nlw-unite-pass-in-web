@@ -91,7 +91,7 @@ export function AttendeeList() {
 
                   <TableCell>
                     <MoreButton 
-                      id={attendee.code}
+                      code={attendee.code}
                       variant="attendee"
                     />
                   </TableCell>

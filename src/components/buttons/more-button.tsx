@@ -1,55 +1,61 @@
 import { useState } from 'react'
 
 import { Icon } from '../icon'
+import { useRouter } from '../../contexts/router-provider'
 
 interface MoreButtonProps {
-  id: string
+  slug?: string
+  code?: string
   variant: 'event' | 'attendee'
 }
 
 export function MoreButton({ 
-  id,
+  slug,
   variant
 }: MoreButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
 
+  const { changeSlug, changeRoute } = useRouter()
+
+
   function handleDetails() {
-    if (variant == 'event') {
-      console.log('details event: ' + id)
+    if (variant == 'event' && slug != undefined) {
+      changeRoute('event')
+      changeSlug(slug)
     }
     
     if (variant == 'attendee') {
-      console.log('details attendee: ' + id)
+      console.log('details attendee: ' + slug)
     }
   }
 
   function handleRegister() {
     if (variant == 'event') {
-      console.log('register attendee on event: ' + id)
+      console.log('register attendee on event: ' + slug)
     }
     
     if (variant == 'attendee') {
-      console.log('register event on attendee: ' + id)
+      console.log('register event on attendee: ' + slug)
     }
   }
 
   function handleEdit() {
     if (variant == 'event') {
-      console.log('edit event: ' + id)
+      console.log('edit event: ' + slug)
     }
     
     if (variant == 'attendee') {
-      console.log('edit attendee: ' + id)
+      console.log('edit attendee: ' + slug)
     }
   }
 
   function handleDelete() {
     if (variant == 'event') {
-      console.log('delete event: ' + id)
+      console.log('delete event: ' + slug)
     }
     
     if (variant == 'attendee') {
-      console.log('delete attendee: ' + id)
+      console.log('delete attendee: ' + slug)
     }
   }
 
