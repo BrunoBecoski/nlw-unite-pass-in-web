@@ -15,13 +15,12 @@ export function MoreButton({
 }: MoreButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { changeSlug, changeRoute } = useRouter()
+  const { changeRoute } = useRouter()
 
 
   function handleDetails() {
     if (variant == 'event' && slug != undefined) {
-      changeRoute('event')
-      changeSlug(slug)
+      changeRoute({ route: 'event', slug })
     }
     
     if (variant == 'attendee') {

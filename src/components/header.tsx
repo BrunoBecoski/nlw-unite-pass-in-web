@@ -10,7 +10,7 @@ export function Header() {
     <div className="flex items-center gap-5 py-2">
       <NavLink
         href="/"
-        onClick={() => changeRoute('home')}
+        onClick={() => changeRoute({ route: 'home' })}
       >
         <img src={nlwUniteIcon} alt="NLW Unite" />
       </NavLink>
@@ -18,7 +18,7 @@ export function Header() {
       <nav className="flex items-center gap-5">
         <NavLink 
           href="/eventos"
-          onClick={() => changeRoute('events')}
+          onClick={() => changeRoute({ route: 'events' })}
           selected={route === 'events'}
         >
           Eventos
@@ -26,7 +26,7 @@ export function Header() {
 
         <NavLink
           href="/participantes"
-          onClick={() => changeRoute('attendees')}
+          onClick={() => changeRoute({ route: 'attendees' })}
           selected={route === 'attendees'}
         >
           Participantes
@@ -34,7 +34,7 @@ export function Header() {
 
         <NavLink
           href="/criar/participante"
-          onClick={() => changeRoute('createAttendee')}
+          onClick={() => changeRoute({ route: 'createAttendee' })}
           selected={route === 'createAttendee'}
         >
           Criar Participante
@@ -42,7 +42,7 @@ export function Header() {
 
         <NavLink
           href="/criar/evento"
-          onClick={() => changeRoute('createEvent')}
+          onClick={() => changeRoute({ route: 'createEvent' })}
           selected={route === 'createEvent'}
         >
           Criar Evento

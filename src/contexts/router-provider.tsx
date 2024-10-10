@@ -8,7 +8,7 @@ interface RouterProviderProps {
 
 type RouterProviderState = {
   route: Routes,
-  changeRoute: (route: Routes) => void,
+  changeRoute: (props: ChangeRoutesProps) => void,
   pathname: string,
   pageIndex?: number,
   search?: string,
@@ -33,6 +33,11 @@ const initialState: RouterProviderState = {
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
 
 type Routes = 'home' | 'events' | 'attendees' | 'createAttendee' | 'createEvent' | 'event'
+
+interface ChangeRoutesProps {
+  route: Routes
+  slug?: string 
+}
 
 export function RouterProvider({
   children,
@@ -71,7 +76,7 @@ export function RouterProvider({
     setSearch(search)
   }, [])
 
-  function changeRoute(route : Routes) {
+  function changeRoute({ route, slug }: ChangeRoutesProps) {
 
     setRoute(route)
 
@@ -98,6 +103,7 @@ export function RouterProvider({
 
       case 'event':
         if (slug != undefined) {
+          changeSlug(slug)
           updateUrl(`/evento/${slug}`)
         }
         break;
