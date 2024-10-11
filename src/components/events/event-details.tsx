@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import dayjs from "dayjs"
 
 import { useRouter } from "../../contexts/router-provider"
 import { getEvent } from "../../fetches/events/get-event"
@@ -29,6 +30,15 @@ export function EventDetails() {
   }, [])
 
   return (
-    <h1>Detalhes do evento {event.title}</h1>
+    <div>
+      <h1>{event.title}</h1>
+      <h2>{event.details}</h2>
+
+      <div>
+        De <p>{dayjs(event.startDate).format("DD [de] MMMM [de] YYYY")}</p>
+        até <p>{dayjs(event.endDate).format("DD [de] MMMM [de] YYYY")}</p>
+      </div>
+
+    </div>
   )
 }
