@@ -3,7 +3,7 @@ import dayjs from "dayjs"
 
 import { useRouter } from "../../contexts/router-provider"
 import { getEvent } from "../../fetches/events/get-event"
-import { EventTypes } from "../../fetches"
+import { EventAndAttendeesType } from "../../fetches"
 import { Table } from "../table/table"
 import { TableHeader } from "../table/table-header"
 import { TableRow } from "../table/table-row"
@@ -11,7 +11,7 @@ import { TableCell } from "../table/table-cell"
 import { MoreButton } from "../buttons/more-button"
 
 export function EventDetails() {
-  const [event, setEvent] = useState<EventTypes>({} as EventTypes )
+  const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType )
 
   const { slug } = useRouter()
 
@@ -35,13 +35,27 @@ export function EventDetails() {
   }, [])
 
   return (
-    <div>
-      <h1>{event.title}</h1>
-      <h2>{event.details}</h2>
+    <div className="space-y-6">
+      <div className="flex justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">{event.title}</h1>
+          <p>{event.details}</p>
+        </div>
+        
+        <div className="text-lg font-semibold italic">
+          <p>{dayjs(event.startDate).format("DD MMMM YYYY")}</p>
+          <p>{dayjs(event.endDate).format("DD MMMM YYYY")}</p>
+        </div>
+      </div>
 
-      <div>
-        De <p>{dayjs(event.startDate).format("DD [de] MMMM [de] YYYY")}</p>
-        até <p>{dayjs(event.endDate).format("DD [de] MMMM [de] YYYY")}</p>
+      <div className="">
+        <h2 className="text-2xl font-semibold">Participantes</h2>
+
+        <div className=" text-sm">
+          <p>{event.checkInAttendees} confirmado</p>
+          <p>{event.totalAttendees} total</p>
+          <p>{event.maximumAttendees} máximo</p>
+        </div>
       </div>
 
       {event.attendees &&
@@ -53,7 +67,8 @@ export function EventDetails() {
               </TableHeader>
               <TableHeader>Código</TableHeader>
               <TableHeader>Participante</TableHeader>
-              <TableHeader>Eventos</TableHeader>
+              <TableHeader>Email</TableHeader>
+              <TableHeader>Confirmado</TableHeader>
               <TableHeader style={{ width: 64 }}></TableHeader>
             </tr>
           </thead>
@@ -71,14 +86,15 @@ export function EventDetails() {
                 </TableCell>
 
                 <TableCell>
-                  <div className="flex flex-col gap-1">
-                    <span className="font-semibold text-white">{attendee.name}</span>
-                    <span>{attendee.email}</span>
-                  </div>
+                  <span className="font-semibold text-white">{attendee.name}</span>
                 </TableCell>
 
                 <TableCell>
-                  {attendee.events}
+                  <span className="font-semibold text-white">{attendee.email}</span>
+                </TableCell>
+
+                <TableCell>
+                  {attendee.checkIn ? 'Sim' : 'Não'}
                 </TableCell>
 
                 <TableCell>
@@ -90,7 +106,6 @@ export function EventDetails() {
               </TableRow>
               )
             })}
-            
           </tbody>
         </Table>
       }

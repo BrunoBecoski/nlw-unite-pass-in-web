@@ -1,4 +1,4 @@
-import { EventTypes } from ".."
+import { EventAndAttendeesType } from ".."
 import { CreateRequest } from "../../classes/createRequest"
 import { fetchApi } from "../fetchApi"
 
@@ -10,9 +10,8 @@ interface ResponseProps {
   successfully: boolean 
   message: string
   data?: {
-    event: EventTypes
+    event: EventAndAttendeesType
   }
-
 }
 
 export async function getEvent({ slug }: RequestProps): Promise<ResponseProps> {

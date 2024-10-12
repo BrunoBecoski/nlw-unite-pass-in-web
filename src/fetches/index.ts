@@ -22,6 +22,25 @@ export type EventTypes = {
   endDate: string,
 }
 
+export type EventAndAttendeesType = {
+  id: string
+  slug: string
+  title: string
+  details: string
+  maximumAttendees: number
+  totalAttendees: number
+  checkInAttendees: number
+  startDate: string
+  endDate: string
+  attendees: {
+    id: string
+    code: string
+    name: string
+    email: string
+    checkIn: boolean
+  }[]
+}
+
 export {
   getEvents,
   createAttendee,
