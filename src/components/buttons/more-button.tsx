@@ -11,7 +11,8 @@ interface MoreButtonProps {
 
 export function MoreButton({ 
   slug,
-  variant
+  code,
+  variant,
 }: MoreButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -24,7 +25,7 @@ export function MoreButton({
     }
     
     if (variant == 'attendee') {
-      console.log('details attendee: ' + slug)
+      changeRoute({ route: 'attendee', code })
     }
   }
 

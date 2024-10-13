@@ -16,7 +16,7 @@ interface GetAttendeeResponse {
   }
 }
 
-export async function getAttendee({ pageIndex, search }: GetAttendeeRequest): Promise<GetAttendeeResponse> {
+export async function getAttendees({ pageIndex, search }: GetAttendeeRequest): Promise<GetAttendeeResponse> {
   const { url, init } = new CreateRequest({
     method: 'GET',
     pathname: '/get/attendees',

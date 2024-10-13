@@ -1,7 +1,10 @@
-import { createAttendee } from './attendees/create-attendee'
-import { getAttendee } from './attendees/get-attendees'
-
 import { getEvents } from './events/get-events'
+import { getEvent } from './events/get-event'
+
+import { getAttendees } from './attendees/get-attendees'
+import { getAttendee } from './attendees/get-attendee'
+import { createAttendee } from './attendees/create-attendee'
+
 
 export type AttendeeTypes = {
   id: string
@@ -41,8 +44,26 @@ export type EventAndAttendeesType = {
   }[]
 }
 
+export type AttendeeAndEventsType = {
+  id: string
+  code: string
+  name: string
+  email: string
+  events: {
+    id: string
+    slug: string
+    title: string
+    details: string
+    startDate: string 
+    endDate: string
+    checkIn: boolean
+  }[]
+}
+
 export {
+  getEvent,
   getEvents,
-  createAttendee,
   getAttendee,
+  getAttendees,
+  createAttendee,
 }

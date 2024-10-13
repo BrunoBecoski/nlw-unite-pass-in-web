@@ -5,7 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
 import { useRouter } from '../../contexts/router-provider'
-import { AttendeeTypes, getAttendee } from '../../fetches'
+import { AttendeeTypes, getAttendees } from '../../fetches'
 
 import { Table } from '../table/table'
 import { TableHeader } from '../table/table-header'
@@ -26,7 +26,7 @@ export function AttendeeList() {
 
   useEffect(() => {
     async function fetch() {
-      const { successfully, message, data } = await getAttendee({ pageIndex, search })
+      const { successfully, message, data } = await getAttendees({ pageIndex, search })
 
       if (successfully == false) {
         alert(message)

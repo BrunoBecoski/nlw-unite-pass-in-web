@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 
 import { useRouter } from "../../contexts/router-provider"
-import { getEvent } from "../../fetches/events/get-event"
-import { EventAndAttendeesType } from "../../fetches"
+import { EventAndAttendeesType, getEvent } from "../../fetches"
+
 import { Table } from "../table/table"
 import { TableHeader } from "../table/table-header"
 import { TableRow } from "../table/table-row"
@@ -11,7 +11,7 @@ import { TableCell } from "../table/table-cell"
 import { MoreButton } from "../buttons/more-button"
 
 export function EventDetails() {
-  const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType )
+  const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType)
 
   const { slug } = useRouter()
 
