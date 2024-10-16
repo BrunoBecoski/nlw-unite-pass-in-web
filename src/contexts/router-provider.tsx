@@ -57,7 +57,7 @@ export function RouterProvider({
   const [route, setRoute] = useState<Routes>('home')
 
   useEffect(() => { 
-    const { pathname, pageIndex, search } = new CreateUrl()
+    const { pathname, pageIndex, search, slug, code } = new CreateUrl()
 
     setRoute(() => {
       switch (pathname) {
@@ -80,9 +80,12 @@ export function RouterProvider({
           return 'home'
       }
     })
+    
     setPathname(pathname)
     setPageIndex(pageIndex)
     setSearch(search)
+    setSlug(slug)
+    setCode(code)
   }, [])
 
   function changeRoute({ route, slug, code }: ChangeRoutesProps) {

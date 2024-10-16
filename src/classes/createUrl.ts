@@ -87,6 +87,18 @@ export class CreateUrl {
     }
   }
 
+  get slug() {
+    if (this._url.pathname.startsWith('/evento/')) {
+      return this._url.pathname.replace('/evento/', '')
+    } 
+  }
+
+  get code() {
+    if (this._url.pathname.startsWith('/participante/')) {
+      return this._url.pathname.replace('/participante/', '')
+    }
+  }
+
   get url() {
     return this._url
   }
