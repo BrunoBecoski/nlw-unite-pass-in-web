@@ -89,8 +89,11 @@ export function AttendeeDetails() {
                   </TableCell>
 
                   <TableCell>
-                    {event.checkIn ? 'Sim' : 'Não'}
-
+                    <input 
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                      type="checkbox"
+                      checked={event.checkIn}
+                    />
                   </TableCell>
 
                   <TableCell>

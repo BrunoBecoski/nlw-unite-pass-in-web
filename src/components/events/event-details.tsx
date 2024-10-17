@@ -66,7 +66,7 @@ export function EventDetails() {
                 <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
               </TableHeader>
               <TableHeader>Código</TableHeader>
-              <TableHeader>Participante</TableHeader>
+              <TableHeader>Nome</TableHeader>
               <TableHeader>Email</TableHeader>
               <TableHeader>Confirmado</TableHeader>
               <TableHeader style={{ width: 64 }}></TableHeader>
@@ -90,11 +90,15 @@ export function EventDetails() {
                 </TableCell>
 
                 <TableCell>
-                  <span className="font-semibold text-white">{attendee.email}</span>
+                  <span className="text-white">{attendee.email}</span>
                 </TableCell>
 
                 <TableCell>
-                  {attendee.checkIn ? 'Sim' : 'Não'}
+                  <input 
+                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                    type="checkbox"
+                    checked={attendee.checkIn}
+                  />
                 </TableCell>
 
                 <TableCell>
