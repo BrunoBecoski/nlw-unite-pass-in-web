@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 
 import { useRouter } from "../../contexts/router-provider"
 import { EventAndAttendeesType, getEvent } from "../../fetches"
+import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventAttendee"
 
 import { Table } from "../table/table"
 import { TableHeader } from "../table/table-header"
@@ -14,6 +15,17 @@ export function EventDetails() {
   const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType)
 
   const { slug } = useRouter()
+
+  async function handleCheckIn(attendeeId: string) {
+    const { successfully, message } = await checkInEventAttendee({
+      attendeeId,
+      eventId: event.id,
+    })
+
+    if (successfully == false) {
+      alert(message)
+    }    
+  }
 
   useEffect(() => {
     async function fetch() {
@@ -98,6 +110,7 @@ export function EventDetails() {
                     className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
                     type="checkbox"
                     checked={attendee.checkIn}
+                    onChange={() => attendee.checkIn === false && handleCheckIn(attendee.id)}
                   />
                 </TableCell>
 
