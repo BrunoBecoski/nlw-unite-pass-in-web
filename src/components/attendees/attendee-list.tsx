@@ -13,13 +13,13 @@ import { TableCell } from '../table/table-cell'
 import { TableRow } from '../table/table-row'
 import { TableFoot } from '../table/table-foot'
 import { TableSearch } from '../table/table-search'
-import { MoreButton } from '../buttons/more-button'
+import { IconButton } from '../buttons/icon-button'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export function AttendeeList() { 
-  const { pageIndex, changePageIndex, search, changeSearch } = useRouter()
+  const { changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<AttendeeTypes[]>([])
@@ -90,9 +90,12 @@ export function AttendeeList() {
                   </TableCell>
 
                   <TableCell>
-                    <MoreButton 
-                      code={attendee.code}
-                      variant="attendee"
+                    <IconButton
+                      onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
+                      name="ellipsis"
+                      border
+                      size="sm"
+                      color="white"
                     />
                   </TableCell>
                 </TableRow>
@@ -111,4 +114,4 @@ export function AttendeeList() {
       }      
     </div>
   )
-}  
+}

@@ -9,12 +9,12 @@ import { Table } from "../table/table";
 import { TableHeader } from "../table/table-header";
 import { TableCell } from "../table/table-cell";
 import { TableRow } from "../table/table-row";
-import { MoreButton } from "../buttons/more-button";
+import { IconButton } from "../buttons/icon-button";
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeAndEventsType>({} as AttendeeAndEventsType)
 
-  const { code } = useRouter()
+  const { changeRoute, code } = useRouter()
 
   async function handleCheckIn(eventId: string) {
     const { successfully, message } = await checkInEventAttendee({
@@ -110,9 +110,12 @@ export function AttendeeDetails() {
                   </TableCell>
 
                   <TableCell>
-                    <MoreButton 
-                      slug={event.slug}
-                      variant="event"
+                    <IconButton
+                      onClick={() => changeRoute({ route: 'event', slug: event.slug })}
+                      name="ellipsis"
+                      border
+                      size="sm"
+                      color="white"
                     />
                   </TableCell>
                 </TableRow>

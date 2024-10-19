@@ -11,13 +11,13 @@ import { TableCell } from '../table/table-cell'
 import { TableRow } from '../table/table-row'
 import { TableFoot } from '../table/table-foot'
 import { TableSearch } from '../table/table-search'
-import { MoreButton } from '../buttons/more-button'
+import { IconButton } from '../buttons/icon-button'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 export function EventList() {
-  const { pageIndex, changePageIndex, search, changeSearch } = useRouter()
+  const { changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<EventTypes[]>([])
@@ -68,7 +68,6 @@ export function EventList() {
     
             <tbody>
               {events.map((event) => {
-
                 return (
                 <TableRow key={event.id}>
                   <TableCell>
@@ -99,9 +98,12 @@ export function EventList() {
                   </TableCell>
 
                   <TableCell>
-                    <MoreButton 
-                      slug={event.slug}
-                      variant="event"
+                    <IconButton
+                      onClick={() => changeRoute({ route: 'event', slug: event.slug })}
+                      name="ellipsis"
+                      border
+                      size="sm"
+                      color="white"
                     />
                   </TableCell>
                 </TableRow>
@@ -119,4 +121,4 @@ export function EventList() {
       }
     </div>
   )
-}  
+}
