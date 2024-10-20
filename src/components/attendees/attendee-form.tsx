@@ -4,7 +4,7 @@ import * as  z from 'zod'
 import { createAttendee } from '../../fetches'
 
 import { FormInput, InputVariants } from '../input'
-import { Button } from '../buttons/button'
+import { Button } from '../button'
 import { Modal, ModalData } from '../modal'
 
 const schema = z.object({

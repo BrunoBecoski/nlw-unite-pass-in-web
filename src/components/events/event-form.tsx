@@ -1,5 +1,5 @@
 import { FormInput } from '../input'
-import { Button } from '../buttons/button'
+import { Button } from '../button'
 
 export function EventForm() {
   return (

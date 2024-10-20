@@ -9,7 +9,7 @@ import { Table } from "../table/table";
 import { TableHeader } from "../table/table-header";
 import { TableCell } from "../table/table-cell";
 import { TableRow } from "../table/table-row";
-import { IconButton } from "../buttons/icon-button";
+import { Button } from "../button";
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeAndEventsType>({} as AttendeeAndEventsType)
@@ -110,12 +110,10 @@ export function AttendeeDetails() {
                   </TableCell>
 
                   <TableCell>
-                    <IconButton
+                    <Button
                       onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                      name="ellipsis"
-                      border
-                      size="sm"
-                      color="white"
+                      iconName="ellipsis"
+                      variant="icon"
                     />
                   </TableCell>
                 </TableRow>

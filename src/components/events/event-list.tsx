@@ -11,7 +11,7 @@ import { TableCell } from '../table/table-cell'
 import { TableRow } from '../table/table-row'
 import { TableFoot } from '../table/table-foot'
 import { TableSearch } from '../table/table-search'
-import { IconButton } from '../buttons/icon-button'
+import { Button } from '../button'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -98,12 +98,10 @@ export function EventList() {
                   </TableCell>
 
                   <TableCell>
-                    <IconButton
+                    <Button
                       onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                      name="ellipsis"
-                      border
-                      size="sm"
-                      color="white"
+                      iconName="ellipsis"
+                      variant="icon"
                     />
                   </TableCell>
                 </TableRow>
