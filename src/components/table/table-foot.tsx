@@ -1,4 +1,4 @@
-import { IconButton } from '../buttons/icon-button'
+import { Button } from '../button'
 import { TableCell } from './table-cell'
 
 interface TableFootProps {
@@ -47,29 +47,33 @@ export function TableFoot({
             <span>Página {pageIndex ? pageIndex : 1} de {totalPages}</span>
 
             <div className="flex gap-1.5">
-              <IconButton
+              <Button
+                variant="icon"
+                iconName="chevrons-left"
                 title="Ir para a primeira página"
                 onClick={goToFirstPage}
                 disabled={pageIndex === 1}
-                name="chevrons-left"
               />
 
-              <IconButton
-                name="chevron-left"
+              <Button
+                variant="icon"
+                iconName="chevron-left"
                 title="Ir para a página anterior"
                 onClick={goToPreviousPage}
                 disabled={pageIndex === 1}
               />
 
-              <IconButton
-                name="chevron-right"
+              <Button
+                variant="icon"
+                iconName="chevron-right"
                 title="Ir para a próxima página"
                 onClick={goToNextPage}
                 disabled={currentPageIndex  >= totalPages}
               />
               
-              <IconButton
-                name="chevrons-right"
+              <Button
+                variant="icon"
+                iconName="chevrons-right"
                 title="Ir para a última página"
                 onClick={goToLastPage}
                 disabled={currentPageIndex >= totalPages}

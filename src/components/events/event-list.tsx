@@ -101,7 +101,7 @@ export function EventList() {
                     <Button
                       onClick={() => changeRoute({ route: 'event', slug: event.slug })}
                       iconName="ellipsis"
-                      variant="icon"
+                      variant="iconBorder"
                     />
                   </TableCell>
                 </TableRow>
