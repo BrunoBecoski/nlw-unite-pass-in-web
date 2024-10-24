@@ -1,4 +1,4 @@
-import { SearchInput } from '../input'
+import { Input } from '../input'
 
 interface TableSearchProps {
   title: string
@@ -19,11 +19,11 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
     <div className="flex gap-3 items-center">
       <h1 className="text-2xl font-bold first-letter:uppercase">{title}</h1>
       
-      <SearchInput
+      <Input
+        iconName="search"
+        id="search"
         placeholder={`Buscar ${title}...`}
-        initialValue={search}
-        onSearch={handleSearch}
-        onErase={handleErase}
+        defaultValue={search}
       />
     </div>
   )

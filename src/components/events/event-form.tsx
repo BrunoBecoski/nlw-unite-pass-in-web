@@ -1,4 +1,4 @@
-import { FormInput } from '../input'
+import { Input } from '../input'
 import { Button } from '../button'
 
 export function EventForm() {
@@ -9,19 +9,19 @@ export function EventForm() {
       </h1>
 
       <form className="flex flex-col gap-4">
-        <FormInput
+        <Input
           id="title"
           label="Titulo"
           iconName="minus"
         />
 
-        <FormInput
+        <Input
           id="details"
           label="Detalhes"
           iconName="text"
         />
 
-        <FormInput
+        <Input
           id="maximumAttendees"
           label="Máximos de participantes"
           iconName="users"

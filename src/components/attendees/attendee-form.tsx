@@ -3,7 +3,7 @@ import * as  z from 'zod'
 
 import { createAttendee } from '../../fetches'
 
-import { FormInput, InputVariants } from '../input'
+import { Input, InputVariants } from '../input'
 import { Button } from '../button'
 import { Modal, ModalData } from '../modal'
 
@@ -123,7 +123,7 @@ export function AttendeeForm() {
       </h1>
 
       <form  onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
-        <FormInput
+        <Input
           id="name"
           label="Nome"
           iconName="user"
@@ -131,7 +131,7 @@ export function AttendeeForm() {
           variant={formStatus.name?.variant}
         />
 
-        <FormInput
+        <Input
           id="email"
           label="Email"
           iconName="mail"
