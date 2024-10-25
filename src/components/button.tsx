@@ -13,10 +13,15 @@ const button = tv({
       icon: 'bg-transparent text-white flex items-center justify-center transition hover:text-orange-500 rounded-md p-1',
       iconBorder: 'text-white flex items-center justify-center transition bg-zinc-950 border border-white/10 hover:border-orange-500 hover:text-orange-500 rounded-md p-1',
     },
+
+    size: {
+      default: 'w-fit'
+    }
   },
 
   defaultVariants : {
     variant: 'primary',
+    size: 'default'
   }
 })
 

@@ -6,7 +6,7 @@ import { Icon, IconName } from './icon'
 export type InputVariants = 'default' | 'success' | 'error'
 
 const input = tv({
-  base: 'px-3 py-1.5 border rounded-lg text-sm flex items-center gap-3',
+  base: 'px-4 py-2 border rounded-lg text-sm flex items-center gap-3',
 
   variants: {
     variant: {

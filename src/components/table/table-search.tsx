@@ -1,3 +1,6 @@
+import { useState } from 'react'
+
+import { Button } from '../button'
 import { Input } from '../input'
 
 interface TableSearchProps {
@@ -7,12 +10,10 @@ interface TableSearchProps {
 }
 
 export function TableSearch({ title, search = '', setSearch }: TableSearchProps) {
-  function handleSearch(search: string) {
-    setSearch(search)
-  }
+  const [value, setValue] = useState(search)
 
-  function handleErase() {
-    setSearch('')
+  function handleSearch() {
+    setSearch(value)
   }
 
   return (
@@ -23,8 +24,11 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
         iconName="search"
         id="search"
         placeholder={`Buscar ${title}...`}
-        defaultValue={search}
+        defaultValue={value}
+        onChange={(event) => setValue(event.target.value)}
       />
+      
+      <Button onClick={handleSearch}>Pesquisar</Button>
     </div>
   )
 } 
