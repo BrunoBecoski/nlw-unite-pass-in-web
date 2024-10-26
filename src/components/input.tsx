@@ -6,7 +6,7 @@ import { Icon, IconName } from './icon'
 export type InputVariants = 'default' | 'success' | 'error'
 
 const input = tv({
-  base: 'px-4 py-2 border rounded-lg text-sm flex items-center gap-3',
+  base: 'px-3 py-2 border rounded-lg text-sm flex items-center gap-3',
 
   variants: {
     variant: {
@@ -14,6 +14,10 @@ const input = tv({
       success: 'border-emerald-200/50 focus-within:border-emerald-500 text-emerald-300 focus-within:text-emerald-500',
       error: 'border-red-200/50 focus-within:border-red-500 text-red-300 focus-within:text-red-500',
     }
+  },
+
+  defaultVariants: {
+    variant: 'primary',
   }
 })
 

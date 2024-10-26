@@ -21,7 +21,7 @@ const button = tv({
 
   defaultVariants : {
     variant: 'primary',
-    size: 'default'
+    size: 'default',
   }
 })
 
