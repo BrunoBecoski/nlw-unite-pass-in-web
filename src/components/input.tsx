@@ -3,7 +3,7 @@ import { tv, type VariantProps } from 'tailwind-variants'
 
 import { Icon, IconName } from './icon'
 
-export type InputVariants = 'default' | 'success' | 'error'
+export type InputVariants = 'primary' | 'success' | 'error'
 
 const input = tv({
   base: 'px-3 py-2 border rounded-lg text-sm flex items-center gap-3',
@@ -13,7 +13,7 @@ const input = tv({
       primary: 'border-orange-200/50 focus-within:border-orange-500 text-orange-300 focus-within:text-orange-500',
       success: 'border-emerald-200/50 focus-within:border-emerald-500 text-emerald-300 focus-within:text-emerald-500',
       error: 'border-red-200/50 focus-within:border-red-500 text-red-300 focus-within:text-red-500',
-    }
+    },
   },
 
   defaultVariants: {
@@ -25,12 +25,14 @@ interface InputProps extends ComponentProps<'input'>, VariantProps<typeof input>
   id: string
   label?: string
   iconName: IconName
+  message?: string
 }
 
 export function Input({ 
   label,
   iconName,
   variant,
+  message,
   ...props
 }: InputProps) {
   return (
@@ -48,6 +50,8 @@ export function Input({
           {...props}
         />
       </div>
+
+      { message && <span className="text-white/80 text-xs text-right">{message}</span> }
     </div>
   )
 }

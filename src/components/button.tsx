@@ -8,14 +8,15 @@ const button = tv({
 
   variants: {
     variant: {
-      primary: 'w-full bg-orange-500 hover:bg-orange-400',
+      primary: 'bg-orange-500 hover:bg-orange-400',
       secondary: '',
-      icon: 'bg-transparent text-white flex items-center justify-center transition hover:text-orange-500 rounded-md p-1',
-      iconBorder: 'text-white flex items-center justify-center transition bg-zinc-950 border border-white/10 hover:border-orange-500 hover:text-orange-500 rounded-md p-1',
+      icon: 'bg-transparent hover:text-orange-500 rounded-md p-1',
+      iconBorder: 'bg-zinc-950 border border-white/10 hover:border-orange-500 hover:text-orange-500 rounded-md p-1',
     },
 
     size: {
-      default: 'w-fit'
+      default: 'w-fit',
+      full: 'w-full',
     }
   },
 
@@ -30,10 +31,10 @@ interface ButtonProps extends ComponentProps<'button'>, VariantProps<typeof butt
   children?: ReactNode
 }
 
-export function Button({ iconName, children, variant, ...props }: ButtonProps) {
+export function Button({ iconName, children, variant, size, ...props }: ButtonProps) {
   return (
     <button
-      className={button({ variant })}
+      className={button({ variant, size })}
       {...props}
     >
       { iconName && <Icon name={iconName} size="sm" /> }

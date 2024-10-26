@@ -141,7 +141,8 @@ export function AttendeeForm() {
 
         <Button
           type="submit"
-          variant="confirm"
+          variant="primary"
+          size="full"
         >
           Criar participante
         </ Button>
