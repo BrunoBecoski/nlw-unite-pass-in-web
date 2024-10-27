@@ -22,7 +22,6 @@ const input = tv({
 })
 
 interface InputProps extends ComponentProps<'input'>, VariantProps<typeof input> {
-  id: string
   label?: string
   iconName: IconName
   message?: string
@@ -37,7 +36,7 @@ export function Input({
 }: InputProps) {
   return (
     <div className="flex flex-col gap-2 w-min">
-      { label && <label htmlFor={props.id}>{label}</label> }
+      { label && <label htmlFor={props.name}>{label}</label> }
       
       <div className={input({ variant })}>
         <Icon 
@@ -46,6 +45,7 @@ export function Input({
         />
 
         <input
+          id={props.name}
           className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
           {...props}
         />

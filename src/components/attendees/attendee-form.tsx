@@ -63,7 +63,7 @@ export function AttendeeForm() {
     event.preventDefault()
     
     setFormStatus({} as FormStatusProps)
-    
+
     const form = new FormData(event.currentTarget)
 
     const validatedForm = formValidation(form)
@@ -124,7 +124,7 @@ export function AttendeeForm() {
 
       <form  onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
         <Input
-          id="name"
+          name="name"
           label="Nome"
           iconName="user"
           message={formStatus.name?.message}
@@ -132,7 +132,7 @@ export function AttendeeForm() {
         />
 
         <Input
-          id="email"
+          name="email"
           label="Email"
           iconName="mail"
           message={formStatus.email?.message}
