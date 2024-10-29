@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { twMerge } from 'tailwind-merge'
+import { tv, type VariantProps } from 'tailwind-variants'
 
 import { Button } from './button'
 import { IconButton } from './buttons/icon-button'
@@ -14,20 +14,35 @@ export type ModalData = {
   attendee?: AttendeeTypes
 }
 
-interface ModalProps {
+const modal = tv({
+  slots: {
+    div_1: 'fixed inset-0 flex items-center justify-center',
+    div_2: 'flex flex-col items-center justify-between min-w-96 min-h-96 bg-zinc-950 text-white p-6 rounded-lg relative border',
+    title: 'text-xl font-bold my-4 text-center'
+  },
+
+  variants: {
+    variant: {
+      default: 'bg-orange-950/50 border-orange-500 text-orange-500',
+      success: 'bg-emerald-950/50 border-emerald-500 text-emerald-50',
+      error: 'bg-red-950/50 border-red-500 text-red-500',
+    }
+  },
+
+  defaultVariants: {
+    variant: 'default',
+  }
+})
+
+interface ModalProps extends VariantProps<typeof modal> {
   showModal: boolean
   handleCloseModal: () => void
   data: ModalData
 }
 
-export function Modal({ data, showModal, handleCloseModal }: ModalProps) {
-  let styles = []
+export function Modal({ data, showModal, handleCloseModal, variant,    }: ModalProps) {
 
-  switch (data.variant) {
-    case 'success': styles.push('bg-emerald-950/50', 'border-emerald-500', 'text-emerald-500'); break;
-    case 'error': styles.push('bg-red-950/50', 'border-red-500', 'text-red-500'); break;
-    default:  styles.push('bg-orange-950/50', 'border-orange-500', 'text-orange-500'); break;
-  }
+  const { div_1, div_2, title  } = modal({ variant })
 
   useEffect(() => {
     if (showModal == true) {
@@ -41,15 +56,8 @@ export function Modal({ data, showModal, handleCloseModal }: ModalProps) {
     <div>
       { showModal &&
         createPortal(
-          <div className={twMerge(
-            'fixed inset-0 flex items-center justify-center',
-            styles[0],
-          )}>
-            <div className={twMerge(
-              'flex flex-col items-center justify-between min-w-96 min-h-96 bg-zinc-950 text-white p-6 rounded-lg relative border',
-              styles[1],
-            )}
-            >
+          <div className={div_1()}>
+            <div className={div_2()}>
               <IconButton 
                 name="x"
                 onClick={handleCloseModal}
@@ -58,10 +66,7 @@ export function Modal({ data, showModal, handleCloseModal }: ModalProps) {
                 className="absolute top-2 right-2"
               />
 
-                <h2 className={twMerge(
-                  'text-xl font-bold my-4 text-center',
-                  styles[2]
-                )}>
+                <h2 className={title()}>
                   {data.title}
                 </h2>
 
@@ -76,15 +81,15 @@ export function Modal({ data, showModal, handleCloseModal }: ModalProps) {
                 }
 
                 {data.variant == 'default' &&
-                  <Button onClick={handleCloseModal} variant="default">{data.button}</Button>
+                  <Button onClick={handleCloseModal}>{data.button}</Button>
                 }
 
                 {data.variant == 'success' &&
-                  <Button onClick={handleCloseModal} variant="confirm">{data.button}</Button>
+                  <Button onClick={handleCloseModal}>{data.button}</Button>
                 }
 
                 {data.variant == 'error' &&
-                  <Button onClick={handleCloseModal} variant="cancel">{data.button}</Button>
+                  <Button onClick={handleCloseModal}>{data.button}</Button>
                 }
               </div>
 
