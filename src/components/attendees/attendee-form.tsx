@@ -5,7 +5,6 @@ import { createAttendee } from '../../fetches'
 
 import { Input, InputVariants } from '../input'
 import { Button } from '../button'
-import { Modal, ModalData } from '../modal'
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
@@ -25,8 +24,6 @@ interface FormStatusProps {
 
 export function AttendeeForm() {
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
-  const [showModal, setShowModal] = useState(false)
-  const [modalData, setModalData] = useState({} as ModalData)
   
   function formValidation(form: FormData) {
     const name = form.get('name')
@@ -78,45 +75,20 @@ export function AttendeeForm() {
     })
 
     if (message == 'Email já está sendo utilizado.') {
-      handleOpenModal({
-        title: 'Erro ao criar o participante',
-        message,
-        variant: 'error',
-        button: 'Tentar novamente'
-      })
+      alert('Erro ao criar o participante')
 
       return
     }
 
     if (attendee) {
-      handleOpenModal({
-        title: 'Sucesso ao criar o participante',
-        message,
-        attendee,
-        variant: 'success',
-        button: 'Sucesso'
-      })
+      alert('Sucesso ao criar o participante')
       
     }
   }
 
-  function handleOpenModal(data: ModalData) {
-    setShowModal(true)
-    setModalData(data)
-  }
-
-  function handleCloseModal() {
-    setShowModal(false)
-    setModalData({})
-  }
-
   return (
     <div className="flex flex-col items-center gap-4">
-      <Modal
-        data={modalData}
-        showModal={showModal}
-        handleCloseModal={handleCloseModal}
-      />
+
 
       <h1 className="text-2xl font-bold">
         Criar participante
