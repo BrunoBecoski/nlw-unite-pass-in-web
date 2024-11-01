@@ -82,7 +82,8 @@ export function AttendeeForm() {
 
     if (attendee) {
       alert('Sucesso ao criar o participante')
-      
+
+      return
     }
   }
 

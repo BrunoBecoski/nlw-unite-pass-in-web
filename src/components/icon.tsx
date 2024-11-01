@@ -9,6 +9,7 @@ export type IconName = keyof typeof dynamicIconImports;
 const icon = tv({
   variants: {
     color: {
+      default: '',
       transparent: 'text-transparent',
       white: 'text-white',
       emerald: 'text-emerald-400',
@@ -20,11 +21,17 @@ const icon = tv({
       default: 'size-6',
       sm: 'size-4',
     },
+
+    animation: {
+      default: '',
+      spin: 'animate-spin'
+    }
   },
 
   defaultVariants: {
-    color: 'orange',
+    color: 'default',
     size: 'default',
+    animation: 'default',
   }
 })
 
@@ -32,12 +39,12 @@ interface IconProps extends VariantProps<typeof icon> {
   name?: IconName
 }
 
-export const Icon = ({ name = 'code-xml', color, size  }: IconProps) => {
+export const Icon = ({ name = 'code-xml', color, size, animation }: IconProps) => {
   const LucideIcon = lazy(dynamicIconImports[name])
 
   return (
     <Suspense fallback={fallback}>
-      <LucideIcon className={icon({ color, size })} />
+      <LucideIcon className={icon({ color, size, animation })} />
     </Suspense>
   )
 }
