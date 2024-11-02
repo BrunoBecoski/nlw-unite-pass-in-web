@@ -24,6 +24,7 @@ interface FormStatusProps {
 
 export function AttendeeForm() {
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
+  const [isLoading, setIsLoading] = useState(false)
   
   function formValidation(form: FormData) {
     const name = form.get('name')
@@ -57,6 +58,7 @@ export function AttendeeForm() {
   }
  
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    setIsLoading(true)
     event.preventDefault()
     
     setFormStatus({} as FormStatusProps)
@@ -75,12 +77,21 @@ export function AttendeeForm() {
     })
 
     if (message == 'Email já está sendo utilizado.') {
-      alert('Erro ao criar o participante')
+      setIsLoading(false)
+      alert('Email já está sendo utilizado.')
+
+      return
+    }
+
+    if (message == 'Não foi possível criar o participante.') {
+      setIsLoading(false)
+      alert('Não foi possível criar o participante.')
 
       return
     }
 
     if (attendee) {
+      setIsLoading(false)
       alert('Sucesso ao criar o participante')
 
       return
@@ -116,6 +127,7 @@ export function AttendeeForm() {
           type="submit"
           variant="primary"
           size="full"
+          isLoading={isLoading}
         >
           Criar participante
         </ Button>
