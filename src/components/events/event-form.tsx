@@ -1,37 +1,118 @@
 import { FormEvent, useState } from 'react'
 import * as  z from 'zod'
 
-import { Input } from '../input'
+import { Input, InputVariants } from '../input'
 import { Button } from '../button'
 
 const schema = z.object({
-  title: z.string({ message: 'Titulo obrigatório' }).min(4),
-  details: z.string({ message: 'Detalhes obrigatório' }),
-  maximumAttendees: z.number({ message: 'Máximos de participantes obrigatório' }).int().positive(),
-  startDate: z.string({ message: 'Date de inicio obrigatório' }).min(10),
-  endDate: z.string({ message: 'Date de fim obrigatório' }).min(10),
+  title: z.string({ message: 'Titulo obrigatório' }).min(4, { message: 'Mínimo 4 caracteres' }),
+  details: z.string({ message: 'Detalhes obrigatório' }).min(4, { message: 'Mínimo 4 caracteres' }),
+  maximumAttendees: z.number({ message: 'Máximos de participantes obrigatório' }),
+  startDate: z.string({ message: 'Data de inicio obrigatório' }).min(10, { message: 'Selecione uma data' }),
+  endDate: z.string({ message: 'Data de fim obrigatório' }).min(10, { message: 'Selecione uma data' }),
 })
 
+interface FormStatusProps {
+  title: {
+    message: string
+    variant: InputVariants
+  }
+  details: {
+    message: string
+    variant: InputVariants
+  }
+  maximumAttendees: {
+    message: string
+    variant: InputVariants
+  }
+  startDate: {
+    message: string
+    variant: InputVariants
+  }
+  endDate: {
+    message: string
+    variant: InputVariants
+  }
+}
+
 export function EventForm() {
+  const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    setIsLoading(true)
-    event.preventDefault()
-    
-    const form = new FormData(event.currentTarget)
-
+  function formValidation(form: FormData) {
     const title = form.get('title')
     const details = form.get('details')
-    const maximumAttendees = form.get('maximumAttendees')
+    const maximumAttendees = Number(form.get('maximumAttendees'))
     const startDate = form.get('startDate')
     const endDate = form.get('endDate')
 
-    console.log(title)
-    console.log(details)
     console.log(maximumAttendees)
-    console.log(startDate)
-    console.log(endDate)
+
+    const result = schema.safeParse({
+      title,
+      details,
+      maximumAttendees,
+      startDate,
+      endDate,
+    })
+
+    console.log(result)
+
+    if (result.success === false) {
+      const { title, details, maximumAttendees, startDate, endDate } = result.error.format()
+
+      setFormStatus({
+        title:  {
+          variant: title ? 'error' : 'success',
+          message: title?._errors[0] ? title._errors[0] : 'Titulo valido',
+        },
+        details: { 
+          variant: details ? 'error' : 'success',
+          message: details?._errors[0] ? details._errors[0] : 'Detalhes valido',
+        },
+        maximumAttendees: { 
+          variant: maximumAttendees ? 'error' : 'success',
+          message: maximumAttendees?._errors[0] ? maximumAttendees._errors[0] : 'Máximos de participantes valido',
+        },
+        startDate: { 
+          variant: startDate ? 'error' : 'success',
+          message: startDate?._errors[0] ? startDate._errors[0] : 'Data de inicio valido',
+        },
+        endDate: { 
+          variant: endDate ? 'error' : 'success',
+          message: endDate?._errors[0] ? endDate._errors[0] : 'Data de fim valido',
+        }
+      })
+
+    } else {
+      return {
+        title: result.data.title,
+        details: result.data.details,
+        maximumAttendees: result.data.maximumAttendees,
+        startDate: result.data.startDate,
+        endDate: result.data.endDate,
+      }
+    }
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    setIsLoading(true)
+
+    event.preventDefault()
+    
+    setFormStatus({} as FormStatusProps)
+
+    const form = new FormData(event.currentTarget)
+
+    const validatedForm = formValidation(form)
+
+    if (validatedForm === undefined) {
+      setIsLoading(false)
+
+      return
+    }
+
+    console.log(validatedForm)
 
     setIsLoading(false)
   }
@@ -47,33 +128,43 @@ export function EventForm() {
         <Input
           name="title"
           label="Titulo"
-          iconName="minus"
+          iconName="type"
+          message={formStatus.title?.message}
+          variant={formStatus.title?.variant}
         />
 
         <Input
           name="details"
           label="Detalhes"
           iconName="text"
+          message={formStatus.details?.message}
+          variant={formStatus.details?.variant}
         />
 
         <Input
           name="maximumAttendees"
           label="Máximos de participantes"
           iconName="users"
+          message={formStatus.maximumAttendees?.message}
+          variant={formStatus.maximumAttendees?.variant}
         />
 
         <Input 
           name="startDate"
           label="Data de inicio"
-          iconName="calendar"
+          iconName="calendar-days"
           type="date"
-          />
+          message={formStatus.startDate?.message}
+          variant={formStatus.startDate?.variant}
+        />
 
         <Input
           name="endDate"
           label="Data de fim"
-          iconName="calendar"
+          iconName="calendar-days"
           type="date"
+          message={formStatus.endDate?.message}
+          variant={formStatus.endDate?.variant}
         />
 
         <Button

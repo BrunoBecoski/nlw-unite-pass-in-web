@@ -23,7 +23,7 @@ const input = tv({
 
 interface InputProps extends ComponentProps<'input'>, VariantProps<typeof input> {
   label?: string
-  iconName: IconName
+  iconName?: IconName
   message?: string
 }
 
@@ -39,16 +39,30 @@ export function Input({
       { label && <label htmlFor={props.name}>{label}</label> }
       
       <div className={input({ variant })}>
-        <Icon 
-          name={iconName} 
-          size="sm"
-        />
+        { iconName &&
+          <label htmlFor={props.name}>
+            <Icon 
+              name={iconName} 
+              size="sm"
+            />
+          </label>
+        }
 
-        <input
-          id={props.name}
-          className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
-          {...props}
-        />
+        { props.type === 'date'? (
+          <input
+            id={props.name}
+            className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0 w-44" 
+            min={String(new Date().toISOString().split("T")[0])}
+            onFocus={(e) => e.target.showPicker && e.target.showPicker()}
+            {...props}
+          />
+        ) : ( 
+          <input
+            id={props.name}
+            className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
+            {...props}
+          />
+        )}
       </div>
 
       { message && <span className="text-white/80 text-xs text-right">{message}</span> }

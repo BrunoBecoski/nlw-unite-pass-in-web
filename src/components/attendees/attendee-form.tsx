@@ -68,6 +68,8 @@ export function AttendeeForm() {
     const validatedForm = formValidation(form)
 
     if (validatedForm == undefined) {
+      setIsLoading(false)
+      
       return
     }
 
