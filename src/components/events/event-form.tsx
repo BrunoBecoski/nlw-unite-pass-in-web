@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react'
 import * as  z from 'zod'
 
+import { createEvent } from '../../fetches/events/create-event'
 import { Input, InputVariants } from '../input'
 import { Button } from '../button'
 
@@ -95,14 +96,14 @@ export function EventForm() {
     }
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     setIsLoading(true)
 
-    event.preventDefault()
+    e.preventDefault()
     
     setFormStatus({} as FormStatusProps)
 
-    const form = new FormData(event.currentTarget)
+    const form = new FormData(e.currentTarget)
 
     const validatedForm = formValidation(form)
 
@@ -112,7 +113,17 @@ export function EventForm() {
       return
     }
 
-    console.log(validatedForm)
+    const { message, event } = await createEvent({
+      title: validatedForm.title,
+      details: validatedForm.details,
+      maximumAttendees: validatedForm.maximumAttendees,
+      startDate: validatedForm.startDate,
+      endDate: validatedForm.endDate,
+    })
+
+    console.log(event)
+
+    alert(message)
 
     setIsLoading(false)
   }
