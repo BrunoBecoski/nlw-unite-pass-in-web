@@ -31,30 +31,14 @@ export async function createAttendee({ name, email }: CreateAttendeeRequest): Pr
   if (successfully == true) {
     return {
       successfully: true,
-      message: 'Participante criado com sucesso.',
+      message: 'Participante criado com sucesso!',
       attendee: data.attendee,
     }
   }
 
-  if (message == 'Another attendee with same email already exists.') {
-    return {
-      successfully: false,
-      message: 'Email já está sendo utilizado.',
-      attendee: undefined,
-    }
-  }
-
-  if (message != undefined) {
-    return {
-      successfully: false,
-      message,
-      attendee: undefined,
-    }
-  }
-
   return {
-    successfully: false,
-    message: 'Não foi possível criar o participante.',
+    message,
+    successfully,
     attendee: undefined,
   }
 }

@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import * as  z from 'zod'
 
 import { createAttendee } from '../../fetches'
+import { useRouter } from '../../contexts/router-provider'
 
 import { Input, InputVariants } from '../input'
 import { Button } from '../button'
@@ -25,6 +26,8 @@ interface FormStatusProps {
 export function AttendeeForm() {
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { changeRoute } = useRouter()
   
   function formValidation(form: FormData) {
     const name = form.get('name')
@@ -73,28 +76,27 @@ export function AttendeeForm() {
       return
     }
 
-    const { message, attendee } = await createAttendee({
+    const { successfully, message, attendee } = await createAttendee({
       name: validatedForm.name,
       email: validatedForm.email,
     })
 
-    if (message == 'Email já está sendo utilizado.') {
+    if (successfully == false || attendee == undefined) {
       setIsLoading(false)
-      alert('Email já está sendo utilizado.')
+
+      alert(message)
 
       return
     }
 
-    if (message == 'Não foi possível criar o participante.') {
+    if  (successfully === true)  {
       setIsLoading(false)
-      alert('Não foi possível criar o participante.')
 
-      return
-    }
+      const response = confirm(message)
 
-    if (attendee) {
-      setIsLoading(false)
-      alert('Sucesso ao criar o participante')
+      if (response) {
+        changeRoute({ route: 'attendee', code: attendee.code })
+      }
 
       return
     }
