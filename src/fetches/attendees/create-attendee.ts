@@ -37,8 +37,8 @@ export async function createAttendee({ name, email }: CreateAttendeeRequest): Pr
   }
 
   return {
-    message,
     successfully,
+    message,
     attendee: undefined,
   }
 }

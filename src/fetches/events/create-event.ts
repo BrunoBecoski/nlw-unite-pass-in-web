@@ -6,8 +6,8 @@ interface CreateEventRequest {
   title: string
   details: string
   maximumAttendees: number
-  startDate: string
-  endDate: string
+  startDate: Date
+  endDate: Date
 }
 
 interface CreateEventResponse {
@@ -31,7 +31,7 @@ export async function createEvent({ title, details, maximumAttendees, startDate,
       endDate,
     })
   })
-  
+
   const { successfully, message, data } = await fetchApi({ url, init })
 
   if (successfully == true) {
@@ -43,8 +43,8 @@ export async function createEvent({ title, details, maximumAttendees, startDate,
   }
 
   return {
-    successfully: false,
-    message: 'Não foi possível criar o evento.',
+    successfully,
+    message,
     event: undefined,
   }
 }

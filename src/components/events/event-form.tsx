@@ -2,6 +2,8 @@ import { FormEvent, useState } from 'react'
 import * as  z from 'zod'
 
 import { createEvent } from '../../fetches/events/create-event'
+import { useRouter } from '../../contexts/router-provider'
+
 import { Input, InputVariants } from '../input'
 import { Button } from '../button'
 
@@ -9,8 +11,8 @@ const schema = z.object({
   title: z.string({ message: 'Titulo obrigatório' }).min(4, { message: 'Mínimo 4 caracteres' }),
   details: z.string({ message: 'Detalhes obrigatório' }).min(4, { message: 'Mínimo 4 caracteres' }),
   maximumAttendees: z.number({ message: 'Máximos de participantes obrigatório' }),
-  startDate: z.string({ message: 'Data de inicio obrigatório' }).min(10, { message: 'Selecione uma data' }),
-  endDate: z.string({ message: 'Data de fim obrigatório' }).min(10, { message: 'Selecione uma data' }),
+  startDate: z.date({ message: 'Data de inicio obrigatório' }),
+  endDate: z.date({ message: 'Data de fim obrigatório' }),
 })
 
 interface FormStatusProps {
@@ -40,14 +42,14 @@ export function EventForm() {
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
 
+  const { changeRoute } = useRouter()
+
   function formValidation(form: FormData) {
     const title = form.get('title')
     const details = form.get('details')
     const maximumAttendees = Number(form.get('maximumAttendees'))
     const startDate = form.get('startDate')
     const endDate = form.get('endDate')
-
-    console.log(maximumAttendees)
 
     const result = schema.safeParse({
       title,
@@ -56,8 +58,6 @@ export function EventForm() {
       startDate,
       endDate,
     })
-
-    console.log(result)
 
     if (result.success === false) {
       const { title, details, maximumAttendees, startDate, endDate } = result.error.format()
@@ -113,7 +113,7 @@ export function EventForm() {
       return
     }
 
-    const { message, event } = await createEvent({
+    const { successfully, message, event } = await createEvent({
       title: validatedForm.title,
       details: validatedForm.details,
       maximumAttendees: validatedForm.maximumAttendees,
@@ -121,11 +121,25 @@ export function EventForm() {
       endDate: validatedForm.endDate,
     })
 
-    console.log(event)
+    if (successfully == false || event == undefined) {
+      setIsLoading(false)
 
-    alert(message)
+      alert(message)
 
-    setIsLoading(false)
+      return
+    }
+
+    if (successfully === true) {
+      setIsLoading(false)
+
+      const response = confirm(message)
+
+      if (response) {
+        changeRoute({ route: 'event', slug: event.slug })
+      }
+
+      return
+    }
   }
 
   return (

@@ -89,7 +89,7 @@ export function AttendeeForm() {
       return
     }
 
-    if  (successfully === true)  {
+    if (successfully === true)  {
       setIsLoading(false)
 
       const response = confirm(message)
@@ -104,7 +104,6 @@ export function AttendeeForm() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-
 
       <h1 className="text-2xl font-bold">
         Criar participante
