@@ -11,8 +11,8 @@ const schema = z.object({
   title: z.string({ message: 'Titulo obrigatório' }).min(4, { message: 'Mínimo 4 caracteres' }),
   details: z.string({ message: 'Detalhes obrigatório' }).min(4, { message: 'Mínimo 4 caracteres' }),
   maximumAttendees: z.number({ message: 'Máximos de participantes obrigatório' }),
-  startDate: z.date({ message: 'Data de inicio obrigatório' }),
-  endDate: z.date({ message: 'Data de fim obrigatório' }),
+  startDate: z.coerce.date({ message: 'Data de inicio obrigatório' }),
+  endDate: z.coerce.date({ message: 'Data de fim obrigatório' }),
 })
 
 interface FormStatusProps {
