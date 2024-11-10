@@ -35,6 +35,7 @@ export type EventAndAttendeesType = {
   checkInAttendees: number
   startDate: string
   endDate: string
+  total: number
   attendees: {
     id: string
     code: string
@@ -49,6 +50,7 @@ export type AttendeeAndEventsType = {
   code: string
   name: string
   email: string
+  total: number
   events: {
     id: string
     slug: string

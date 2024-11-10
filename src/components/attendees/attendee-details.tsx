@@ -10,11 +10,13 @@ import { TableHeader } from "../table/table-header";
 import { TableCell } from "../table/table-cell";
 import { TableRow } from "../table/table-row";
 import { Button } from "../button";
+import { TableSearch } from "../table/table-search";
+import { TableFoot } from "../table/table-foot";
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeAndEventsType>({} as AttendeeAndEventsType)
 
-  const { changeRoute, code } = useRouter()
+  const { code, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   async function handleCheckIn(eventId: string) {
     const { successfully, message } = await checkInEventAttendee({
@@ -31,7 +33,7 @@ export function AttendeeDetails() {
     async function fetch() {
       if (code != undefined) {
 
-        const { successfully, message, data } = await getAttendee({ code })
+        const { successfully, message, data } = await getAttendee({ code, pageIndex, search })
         
         if (successfully == false) {
           alert(message)
@@ -44,7 +46,7 @@ export function AttendeeDetails() {
     }
 
     fetch()
-  }, [])
+  }, [pageIndex, search])
 
   return (
     <div className="space-y-6">
@@ -56,6 +58,13 @@ export function AttendeeDetails() {
       </div>
 
       <h2 className="text-2xl font-semibold">Eventos</h2>
+
+
+      <TableSearch
+        title="participantes"
+        search={search}
+        setSearch={changeSearch}
+      />
 
       {attendee.events &&
         <Table>
@@ -120,6 +129,13 @@ export function AttendeeDetails() {
               )
             })}
           </tbody>
+
+          <TableFoot
+            length={attendee.events.length}
+            total={attendee.total}
+            pageIndex={pageIndex}
+            setPageIndex={changePageIndex}
+          />
         </Table>
       }
     </div>

@@ -10,11 +10,13 @@ import { TableHeader } from "../table/table-header"
 import { TableRow } from "../table/table-row"
 import { TableCell } from "../table/table-cell"
 import { Button } from "../button"
+import { TableSearch } from "../table/table-search"
+import { TableFoot } from "../table/table-foot"
 
 export function EventDetails() {
   const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType)
 
-  const { changeRoute, slug } = useRouter()
+  const { slug, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   async function handleCheckIn(attendeeId: string) {
     const { successfully, message } = await checkInEventAttendee({
@@ -31,7 +33,7 @@ export function EventDetails() {
     async function fetch() {
       if (slug != undefined) {
 
-        const { successfully, message, data } = await getEvent({ slug })
+        const { successfully, message, data } = await getEvent({ slug, pageIndex, search })
         
         if (successfully == false) {
           alert(message)
@@ -44,7 +46,7 @@ export function EventDetails() {
     }
 
     fetch()
-  }, [])
+  }, [pageIndex, search])
 
   return (
     <div className="space-y-6">
@@ -69,6 +71,12 @@ export function EventDetails() {
           <p>{event.maximumAttendees} máximo</p>
         </div>
       </div>
+
+      <TableSearch
+        title="participantes"
+        search={search}
+        setSearch={changeSearch}
+      />
 
       {event.attendees &&
         <Table>
@@ -125,6 +133,13 @@ export function EventDetails() {
               )
             })}
           </tbody>
+
+          <TableFoot
+            length={event.attendees.length}
+            total={event.total}
+            pageIndex={pageIndex}
+            setPageIndex={changePageIndex}
+          />
         </Table>
       }
     </div>

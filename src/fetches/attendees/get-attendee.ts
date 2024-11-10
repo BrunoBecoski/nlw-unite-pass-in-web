@@ -4,6 +4,8 @@ import { fetchApi } from "../fetchApi"
 
 interface RequestProps {
   code: string
+  pageIndex?: number
+  search?: string
 }
 
 interface ResponseProps {
@@ -14,10 +16,12 @@ interface ResponseProps {
   }
 }
 
-export async function getAttendee({ code }: RequestProps): Promise<ResponseProps> {
+export async function getAttendee({ code, pageIndex, search }: RequestProps): Promise<ResponseProps> {
   const { url, init } = new CreateRequest({
     method: 'GET',
     pathname: `/get/attendee/${code}`,
+    pageIndex,
+    search,
   })
 
   const { successfully, message, data } = await fetchApi({ url, init })
