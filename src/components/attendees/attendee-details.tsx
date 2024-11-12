@@ -51,14 +51,17 @@ export function AttendeeDetails() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">{attendee.name}</h1>
-          <p>{attendee.email}</p>
+        <div className="flex items-center justify-between w-full">
+          <div>
+            <h1 className="text-2xl font-bold">{attendee.name}</h1>
+            <p>{attendee.email}</p>
+          </div>
+
+          <Button onClick={() => {navigator.clipboard.writeText(attendee.code)}} variant="primary" >{attendee.code}</Button>
         </div>
       </div>
 
       <h2 className="text-2xl font-semibold">Eventos</h2>
-
 
       <TableSearch
         title="participantes"
@@ -121,7 +124,7 @@ export function AttendeeDetails() {
                   <TableCell>
                     <Button
                       onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                      iconName="ellipsis"
+                      iconName="eye"
                       variant="iconBorder"
                     />
                   </TableCell>

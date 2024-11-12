@@ -50,26 +50,31 @@ export function EventDetails() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between w-full">
         <div>
           <h1 className="text-2xl font-bold">{event.title}</h1>
           <p>{event.details}</p>
         </div>
-        
-        <div className="text-lg font-semibold italic">
-          <p>{dayjs(event.startDate).format("DD MMMM YYYY")}</p>
-          <p>{dayjs(event.endDate).format("DD MMMM YYYY")}</p>
-        </div>
+
+        <Button onClick={() => {navigator.clipboard.writeText(event.slug)}} variant="primary">{event.slug}</Button>
       </div>
 
-      <div className="">
-        <h2 className="text-2xl font-semibold">Participantes</h2>
+      <div className="flex items-center justify-between w-full">
+        <div>
+          <h2 className="text-2xl font-semibold">Participantes</h2>
 
-        <div className=" text-sm">
-          <p>{event.checkInAttendees} confirmado</p>
-          <p>{event.totalAttendees} total</p>
-          <p>{event.maximumAttendees} máximo</p>
+          <div className=" text-sm">
+            <p>{event.checkInAttendees} confirmado</p>
+            <p>{event.totalAttendees} total</p>
+            <p>{event.maximumAttendees} máximo</p>
+          </div>
         </div>
+
+
+        <div className="text-lg font-semibold italic">
+            <p>{dayjs(event.startDate).format("DD MMMM YYYY")}</p>
+            <p>{dayjs(event.endDate).format("DD MMMM YYYY")}</p>
+          </div>
       </div>
 
       <TableSearch
@@ -125,7 +130,7 @@ export function EventDetails() {
                 <TableCell>
                   <Button
                     onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
-                    iconName="ellipsis"
+                    iconName="eye"
                     variant="iconBorder"
                   />
                 </TableCell>
