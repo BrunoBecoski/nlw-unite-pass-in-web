@@ -12,6 +12,7 @@ import { TableCell } from "../table/table-cell"
 import { Button } from "../button"
 import { TableSearch } from "../table/table-search"
 import { TableFoot } from "../table/table-foot"
+import { deleteEvent } from "../../fetches/events/delete-event"
 
 export function EventDetails() {
   const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType)
@@ -27,6 +28,23 @@ export function EventDetails() {
     if (successfully == false) {
       alert(message)
     }    
+  }
+
+  async function handleDelete() {
+    const { successfully, message } = await deleteEvent({ id: event.id })
+
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully === true) {
+
+      const response = confirm(message)
+
+      if (response) {
+        changeRoute({ route: 'events' })
+      }
+    }
   }
 
   useEffect(() => {
@@ -76,6 +94,8 @@ export function EventDetails() {
             <p>{dayjs(event.endDate).format("DD MMMM YYYY")}</p>
           </div>
       </div>
+
+      <Button onClick={handleDelete}>Deletar evento</Button>
 
       <TableSearch
         title="participantes"

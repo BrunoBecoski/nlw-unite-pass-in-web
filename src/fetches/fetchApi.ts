@@ -6,12 +6,21 @@ interface FetchApiRequest {
 interface FetchApiResponse {
   successfully: boolean
   message: string
-  data: any
+  data?: any
 }
 
 export async function fetchApi({ url, init }: FetchApiRequest): Promise<FetchApiResponse> {
   try {
     const response = await fetch(url, init)
+
+    if (init.method == 'DELETE') {
+      if (response.ok == true) {
+        return {
+          successfully: true,
+          message: response.statusText,
+        }
+      }
+    }
 
     const data = await response.json()
 
