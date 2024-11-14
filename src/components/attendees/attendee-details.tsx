@@ -12,6 +12,7 @@ import { TableRow } from "../table/table-row";
 import { Button } from "../button";
 import { TableSearch } from "../table/table-search";
 import { TableFoot } from "../table/table-foot";
+import { deleteAttendee } from "../../fetches/attendees/delete-attendee";
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeAndEventsType>({} as AttendeeAndEventsType)
@@ -27,6 +28,22 @@ export function AttendeeDetails() {
     if (successfully == false) {
       alert(message)
     }    
+  }
+
+  async function handleDelete() {
+    const { successfully, message } = await deleteAttendee({ id: attendee.id })
+
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully == true) {
+      const response = confirm(message)
+
+      if (response) {
+        changeRoute({ route: 'attendees' })
+      }
+    }
   }
 
   useEffect(() => {
@@ -62,6 +79,8 @@ export function AttendeeDetails() {
       </div>
 
       <h2 className="text-2xl font-semibold">Eventos</h2>
+
+      <Button onClick={handleDelete}>Deletar participante</Button>
 
       <TableSearch
         title="participantes"

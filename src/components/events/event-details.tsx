@@ -37,8 +37,7 @@ export function EventDetails() {
       alert(message)
     }
 
-    if (successfully === true) {
-
+    if (successfully == true) {
       const response = confirm(message)
 
       if (response) {
