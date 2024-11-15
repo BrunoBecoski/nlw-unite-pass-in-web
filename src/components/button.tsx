@@ -9,6 +9,7 @@ const button = tv({
   variants: {
     variant: {
       primary: 'bg-orange-500 enabled:hover:bg-orange-400',
+      secondary: 'bg-zinc-500 enabled:hover:bg-zinc-400',
       icon: 'bg-transparent hover:text-orange-500 rounded-md p-1',
       iconBorder: 'bg-zinc-950 border border-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500 rounded-md p-1',
     },

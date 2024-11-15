@@ -31,16 +31,15 @@ export function EventDetails() {
   }
 
   async function handleDelete() {
-    const { successfully, message } = await deleteEvent({ id: event.id })
-
-    if (successfully == false) {
-      alert(message)
-    }
-
-    if (successfully == true) {
-      const response = confirm(message)
-
-      if (response) {
+    if (confirm(`Deletar evento ${event.title}`) == true) {
+      const { successfully, message } = await deleteEvent({ id: event.id })
+      
+      if (successfully == false) {
+        alert(message)
+      }
+  
+      if (successfully == true) {
+        alert(message)
         changeRoute({ route: 'events' })
       }
     }
@@ -73,13 +72,12 @@ export function EventDetails() {
           <p>{event.details}</p>
         </div>
 
-        <Button onClick={() => {navigator.clipboard.writeText(event.slug)}} variant="primary">{event.slug}</Button>
+      <Button onClick={handleDelete} variant="secondary" iconName="trash">Deletar evento</Button>
+
       </div>
 
       <div className="flex items-center justify-between w-full">
         <div>
-          <h2 className="text-2xl font-semibold">Participantes</h2>
-
           <div className=" text-sm">
             <p>{event.checkInAttendees} confirmado</p>
             <p>{event.totalAttendees} total</p>
@@ -93,8 +91,6 @@ export function EventDetails() {
             <p>{dayjs(event.endDate).format("DD MMMM YYYY")}</p>
           </div>
       </div>
-
-      <Button onClick={handleDelete}>Deletar evento</Button>
 
       <TableSearch
         title="participantes"

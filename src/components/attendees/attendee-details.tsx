@@ -31,16 +31,15 @@ export function AttendeeDetails() {
   }
 
   async function handleDelete() {
-    const { successfully, message } = await deleteAttendee({ id: attendee.id })
-
-    if (successfully == false) {
-      alert(message)
-    }
-
-    if (successfully == true) {
-      const response = confirm(message)
-
-      if (response) {
+    if (confirm(`Deletar participante ${attendee.name}`) == true) {
+      const { successfully, message } = await deleteAttendee({ id: attendee.id })
+      
+      if (successfully == false) {
+        alert(message)
+      }
+      
+      if (successfully == true) {
+        alert(message)
         changeRoute({ route: 'attendees' })
       }
     }
@@ -74,16 +73,12 @@ export function AttendeeDetails() {
             <p>{attendee.email}</p>
           </div>
 
-          <Button onClick={() => {navigator.clipboard.writeText(attendee.code)}} variant="primary" >{attendee.code}</Button>
+          <Button onClick={handleDelete} iconName="trash" variant="secondary">Deletar participante</Button>
         </div>
       </div>
 
-      <h2 className="text-2xl font-semibold">Eventos</h2>
-
-      <Button onClick={handleDelete}>Deletar participante</Button>
-
       <TableSearch
-        title="participantes"
+        title="Eventos"
         search={search}
         setSearch={changeSearch}
       />

@@ -1,5 +1,5 @@
 import { useRouter } from '../contexts/router-provider';
-import { NavLink } from './buttons/nav-link';
+import { NavLink } from './nav-link';
 
 import nlwUniteIcon from '../assets/nlw-unite-icon.svg';
 
