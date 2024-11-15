@@ -68,28 +68,23 @@ export function EventDetails() {
     <div className="space-y-6">
       <div className="flex items-center justify-between w-full">
         <div>
-          <h1 className="text-2xl font-bold">{event.title}</h1>
-          <p>{event.details}</p>
+          <h1 className="text-5xl font-bold italic">{event.title}</h1>
+          
+          <span className="italic">{dayjs(event.startDate).format("DD/MM/YYYY")}</span>
+          <span> - </span>
+          <span className="italic">{dayjs(event.endDate).format("DD/MM/YYYY")}</span>
+          
+          <p className="text-lg">{event.details}</p>
         </div>
 
       <Button onClick={handleDelete} variant="secondary" iconName="trash">Deletar evento</Button>
 
       </div>
-
-      <div className="flex items-center justify-between w-full">
-        <div>
-          <div className=" text-sm">
-            <p>{event.checkInAttendees} confirmado</p>
-            <p>{event.totalAttendees} total</p>
-            <p>{event.maximumAttendees} máximo</p>
-          </div>
-        </div>
-
-
-        <div className="text-lg font-semibold italic">
-            <p>{dayjs(event.startDate).format("DD MMMM YYYY")}</p>
-            <p>{dayjs(event.endDate).format("DD MMMM YYYY")}</p>
-          </div>
+  
+      <div className="flex flex-col gap-2 text-sm">
+        <span>Participantes: {event.totalAttendees}</span>
+        <span>Confirmado: {event.checkInAttendees}</span>
+        <span>Máximo: {event.maximumAttendees}</span>
       </div>
 
       <TableSearch

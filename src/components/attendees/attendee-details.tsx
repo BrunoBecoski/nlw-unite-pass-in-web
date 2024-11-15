@@ -69,7 +69,7 @@ export function AttendeeDetails() {
       <div className="flex justify-between">
         <div className="flex items-center justify-between w-full">
           <div>
-            <h1 className="text-2xl font-bold">{attendee.name}</h1>
+            <h1 className="text-5xl font-bold italic">{attendee.name}</h1>
             <p>{attendee.email}</p>
           </div>
 
