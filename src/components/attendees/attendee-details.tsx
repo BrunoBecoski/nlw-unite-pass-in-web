@@ -77,83 +77,91 @@ export function AttendeeDetails() {
         </div>
       </div>
 
-      <TableSearch
-        title="Eventos"
-        search={search}
-        setSearch={changeSearch}
-      />
+      {
+        attendee.events?.length >= 1 ? (
+          <>
+            <TableSearch
+              title="Eventos"
+              search={search}
+              setSearch={changeSearch}
+            />
 
-      {attendee.events &&
-        <Table>
-          <thead>
-            <tr className="border-b border-white/10">
-              <TableHeader style={{ width: 48 }} >
-                <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-              </TableHeader>
-              <TableHeader>Slug</TableHeader>
-              <TableHeader>Evento</TableHeader>
-              <TableHeader>Começa</TableHeader>
-              <TableHeader>Termina</TableHeader>
-              <TableHeader>Confirmado</TableHeader>
-              <TableHeader style={{ width: 64 }}></TableHeader>
-            </tr>
-          </thead>
+            {attendee.events &&
+              <Table>
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <TableHeader style={{ width: 48 }} >
+                      <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                    </TableHeader>
+                    <TableHeader>Slug</TableHeader>
+                    <TableHeader>Evento</TableHeader>
+                    <TableHeader>Começa</TableHeader>
+                    <TableHeader>Termina</TableHeader>
+                    <TableHeader>Confirmado</TableHeader>
+                    <TableHeader style={{ width: 64 }}></TableHeader>
+                  </tr>
+                </thead>
 
-          <tbody>
-            {attendee.events.map((event) => {
-              return (
-                <TableRow key={event.id}>
-                  <TableCell>
-                    <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-                  </TableCell>
-                  
-                  <TableCell>
-                    {event.slug}
-                  </TableCell>
+                <tbody>
+                  {attendee.events.map((event) => {
+                    return (
+                      <TableRow key={event.id}>
+                        <TableCell>
+                          <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                        </TableCell>
+                        
+                        <TableCell>
+                          {event.slug}
+                        </TableCell>
 
-                  <TableCell>
-                    <div className="flex flex-col gap-1">
-                      <span className="font-semibold text-white">{event.title}</span>
-                      <span>{event.details}</span>
-                    </div>
-                  </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col gap-1">
+                            <span className="font-semibold text-white">{event.title}</span>
+                            <span>{event.details}</span>
+                          </div>
+                        </TableCell>
 
-                  <TableCell>
-                    {dayjs(event.startDate).format('DD/MM/YY')}
-                  </TableCell>
+                        <TableCell>
+                          {dayjs(event.startDate).format('DD/MM/YY')}
+                        </TableCell>
 
-                  <TableCell>
-                    {dayjs(event.endDate).format('DD/MM/YY')}
-                  </TableCell>
+                        <TableCell>
+                          {dayjs(event.endDate).format('DD/MM/YY')}
+                        </TableCell>
 
-                  <TableCell>
-                    <input 
-                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
-                      type="checkbox"
-                      checked={event.checkIn}
-                      onChange={() => event.checkIn === false && handleCheckIn(event.id)}
-                    />
-                  </TableCell>
+                        <TableCell>
+                          <input 
+                            className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                            type="checkbox"
+                            checked={event.checkIn}
+                            onChange={() => event.checkIn === false && handleCheckIn(event.id)}
+                          />
+                        </TableCell>
 
-                  <TableCell>
-                    <Button
-                      onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                      iconName="eye"
-                      variant="iconBorder"
-                    />
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-          </tbody>
+                        <TableCell>
+                          <Button
+                            onClick={() => changeRoute({ route: 'event', slug: event.slug })}
+                            iconName="eye"
+                            variant="iconBorder"
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </tbody>
 
-          <TableFoot
-            length={attendee.events.length}
-            total={attendee.total}
-            pageIndex={pageIndex}
-            setPageIndex={changePageIndex}
-          />
-        </Table>
+                <TableFoot
+                  length={attendee.events.length}
+                  total={attendee.total}
+                  pageIndex={pageIndex}
+                  setPageIndex={changePageIndex}
+                />
+              </Table>
+            }
+          </>
+        ) : (
+          <h1 className="text-2xl font-bold">Nenhum evento do participante</h1>
+        )
       }
     </div>
   )

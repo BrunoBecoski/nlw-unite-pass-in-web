@@ -87,75 +87,83 @@ export function EventDetails() {
         <span>Máximo: {event.maximumAttendees}</span>
       </div>
 
-      <TableSearch
-        title="participantes"
-        search={search}
-        setSearch={changeSearch}
-      />
+      {
+        event.attendees?.length >= 1 ? (
+          <>
+            <TableSearch
+              title="participantes"
+              search={search}
+              setSearch={changeSearch}
+            />
 
-      {event.attendees &&
-        <Table>
-          <thead>
-            <tr className="border-b border-white/10">
-              <TableHeader style={{ width: 48 }} >
-                <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-              </TableHeader>
-              <TableHeader>Código</TableHeader>
-              <TableHeader>Nome</TableHeader>
-              <TableHeader>Email</TableHeader>
-              <TableHeader>Confirmado</TableHeader>
-              <TableHeader style={{ width: 64 }}></TableHeader>
-            </tr>
-          </thead>
+            {event.attendees &&
+              <Table>
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <TableHeader style={{ width: 48 }} >
+                      <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                    </TableHeader>
+                    <TableHeader>Código</TableHeader>
+                    <TableHeader>Nome</TableHeader>
+                    <TableHeader>Email</TableHeader>
+                    <TableHeader>Confirmado</TableHeader>
+                    <TableHeader style={{ width: 64 }}></TableHeader>
+                  </tr>
+                </thead>
 
-          <tbody>
-            {event.attendees.map((attendee) => {
-              return (
-              <TableRow key={attendee.id}>
-                <TableCell>
-                  <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-                </TableCell>
+                <tbody>
+                  {event.attendees.map((attendee) => {
+                    return (
+                    <TableRow key={attendee.id}>
+                      <TableCell>
+                        <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                      </TableCell>
 
-                <TableCell>
-                  {attendee.code}
-                </TableCell>
+                      <TableCell>
+                        {attendee.code}
+                      </TableCell>
 
-                <TableCell>
-                  <span className="font-semibold text-white">{attendee.name}</span>
-                </TableCell>
+                      <TableCell>
+                        <span className="font-semibold text-white">{attendee.name}</span>
+                      </TableCell>
 
-                <TableCell>
-                  <span className="text-white">{attendee.email}</span>
-                </TableCell>
+                      <TableCell>
+                        <span className="text-white">{attendee.email}</span>
+                      </TableCell>
 
-                <TableCell>
-                  <input 
-                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
-                    type="checkbox"
-                    checked={attendee.checkIn}
-                    onChange={() => attendee.checkIn === false && handleCheckIn(attendee.id)}
-                  />
-                </TableCell>
+                      <TableCell>
+                        <input 
+                          className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                          type="checkbox"
+                          checked={attendee.checkIn}
+                          onChange={() => attendee.checkIn === false && handleCheckIn(attendee.id)}
+                        />
+                      </TableCell>
 
-                <TableCell>
-                  <Button
-                    onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
-                    iconName="eye"
-                    variant="iconBorder"
-                  />
-                </TableCell>
-              </TableRow>
-              )
-            })}
-          </tbody>
+                      <TableCell>
+                        <Button
+                          onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
+                          iconName="eye"
+                          variant="iconBorder"
+                        />
+                      </TableCell>
+                    </TableRow>
+                    )
+                  })}
+                </tbody>
 
-          <TableFoot
-            length={event.attendees.length}
-            total={event.total}
-            pageIndex={pageIndex}
-            setPageIndex={changePageIndex}
-          />
-        </Table>
+                <TableFoot
+                  length={event.attendees.length}
+                  total={event.total}
+                  pageIndex={pageIndex}
+                  setPageIndex={changePageIndex}
+                />
+              </Table>
+            }
+          </>
+        ) : ( 
+         <h1 className="text-2xl font-bold">Nenhum participante do evento</h1>
+        )
       }
     </div>
   )
