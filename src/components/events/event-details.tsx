@@ -68,7 +68,10 @@ export function EventDetails() {
     <div className="space-y-6">
       <div className="flex items-center justify-between w-full">
         <div>
-          <h1 className="text-5xl font-bold italic">{event.title}</h1>
+          <div className="flex items-center gap-10">
+            <h1 className="text-5xl font-bold italic">{event.title}</h1>
+            <Button title="Copiar" iconName="copy" onClick={() => navigator.clipboard.writeText(event.slug)}> {event.slug}</Button>
+          </div>
           
           <span className="italic">{dayjs(event.startDate).format("DD/MM/YYYY")}</span>
           <span> - </span>

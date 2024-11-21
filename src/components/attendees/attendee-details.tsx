@@ -69,7 +69,10 @@ export function AttendeeDetails() {
       <div className="flex justify-between">
         <div className="flex items-center justify-between w-full">
           <div>
-            <h1 className="text-5xl font-bold italic">{attendee.name}</h1>
+            <div className="flex items-center gap-10">
+              <h1 className="text-5xl font-bold italic">{attendee.name}</h1>
+              <Button title="Copiar" iconName="copy" onClick={() => navigator.clipboard.writeText(attendee.code)}> {attendee.code}</Button>
+            </div>
             <p>{attendee.email}</p>
           </div>
 
