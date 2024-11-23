@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import { useRouter } from "../../contexts/router-provider";
 import { AttendeeAndEventsType, getAttendee } from "../../fetches";
 import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventAttendee";
+import { deleteAttendee } from "../../fetches/attendees/delete-attendee";
+import { updateAttendeeCode } from "../../fetches/attendees/update-attendee-code";
 
 import { Table } from "../table/table";
 import { TableHeader } from "../table/table-header";
@@ -12,7 +14,6 @@ import { TableRow } from "../table/table-row";
 import { Button } from "../button";
 import { TableSearch } from "../table/table-search";
 import { TableFoot } from "../table/table-foot";
-import { deleteAttendee } from "../../fetches/attendees/delete-attendee";
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeAndEventsType>({} as AttendeeAndEventsType)
@@ -42,6 +43,22 @@ export function AttendeeDetails() {
         alert(message)
         changeRoute({ route: 'attendees' })
       }
+    }
+  }
+
+  async function handleUpdateAttendeeCode() {
+    const { successfully, message, code } = await updateAttendeeCode({ id: attendee.id })
+
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully == true &&  code != undefined) {
+      alert(message)
+
+      setAttendee({ ...attendee, code })
+
+      changeRoute({ route: "attendee", code })
     }
   }
 
@@ -76,7 +93,11 @@ export function AttendeeDetails() {
             <p>{attendee.email}</p>
           </div>
 
-          <Button onClick={handleDelete} iconName="trash" variant="secondary">Deletar participante</Button>
+          <div className="flex gap-5">
+            <Button onClick={handleUpdateAttendeeCode}>Gera novo código</Button>
+
+            <Button onClick={handleDelete} iconName="trash" variant="secondary">Deletar participante</Button>
+          </div>
         </div>
       </div>
 
