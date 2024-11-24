@@ -42,6 +42,10 @@ export function AttendeeDetails() {
 
   const { code, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
+  async function handleShowForm() {
+    setShowForm(!showForm)
+  }
+
   async function handleCheckIn(eventId: string) {
     const { successfully, message } = await checkInEventAttendee({
       attendeeId: attendee.id,
@@ -51,10 +55,6 @@ export function AttendeeDetails() {
     if (successfully == false) {
       alert(message)
     }
-  }
-
-  async function handleShowForm() {
-    setShowForm(!showForm)
   }
 
   async function handleUpdateAttendeeCode() {
@@ -179,38 +179,38 @@ export function AttendeeDetails() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-start justify-between w-full">
 
           {
             showForm ? (
               <form  onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
-              <Input
-                name="name"
-                label="Nome"
-                iconName="user"
-                defaultValue={attendee.name}
-                message={formStatus.name?.message}
-                variant={formStatus.name?.variant}
-              />
-      
-              <Input
-                name="email"
-                label="Email"
-                iconName="mail"
-                defaultValue={attendee.email}
-                message={formStatus.email?.message}
-                variant={formStatus.email?.variant}
-              />
-      
-              <Button
-                type="submit"
-                variant="primary"
-                size="full"
-                isLoading={isLoading}
-              >
-                Atualizar participante
-              </ Button>
-            </form>
+                <Input
+                  name="name"
+                  label="Nome"
+                  iconName="user"
+                  defaultValue={attendee.name}
+                  message={formStatus.name?.message}
+                  variant={formStatus.name?.variant}
+                />
+        
+                <Input
+                  name="email"
+                  label="Email"
+                  iconName="mail"
+                  defaultValue={attendee.email}
+                  message={formStatus.email?.message}
+                  variant={formStatus.email?.variant}
+                />
+        
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="full"
+                  isLoading={isLoading}
+                >
+                  Atualizar participante
+                </Button>
+              </form>
             ) : (
               <div>
                 <div className="flex items-center gap-10">
