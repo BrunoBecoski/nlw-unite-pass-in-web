@@ -1,31 +1,31 @@
 import { CreateRequest } from '../../classes/createRequest'
 import { fetchApi } from '../fetchApi'
 
-interface CheckInEventAttendeeRequest {
-  eventId: string
-  attendeeId: string
+interface RegisterEventAttendeeRequest {
+  slug: string
+  code: string
 }
 
-interface CheckInEventAttendeeResponse {
-  successfully: boolean 
+interface RegisterEventAttendeeResponse {
+  successfully: boolean
   message: string
 }
 
-export async function checkInEventAttendee({ eventId, attendeeId }: CheckInEventAttendeeRequest): Promise<CheckInEventAttendeeResponse> {
+export async function registerEventAttendee({ slug, code }: RegisterEventAttendeeRequest): Promise<RegisterEventAttendeeResponse> {
   const { url, init } = new CreateRequest({
     headers: {
       'Content-Type': 'application/json'
     },
     method: 'GET',
-    pathname: `/check-in/event/${eventId}/attendee/${attendeeId}`,
+    pathname: `/register/event/${slug}/attendee/${code}`,
   })
-  
+
   const { successfully, message } = await fetchApi({ url, init })
 
   if (successfully == true) {
     return {
       successfully: true,
-      message: 'Check-in criado com sucesso.',
+      message: 'Participante registrado no evento com sucesso.'
     }
   }
 
@@ -38,6 +38,6 @@ export async function checkInEventAttendee({ eventId, attendeeId }: CheckInEvent
 
   return {
     successfully: false,
-    message: 'Não foi possível criar o check-in.',
+    message: 'Não foi possível registrar o participante no evento.'
   }
 }
