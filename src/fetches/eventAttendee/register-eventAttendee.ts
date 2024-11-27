@@ -9,6 +9,14 @@ interface RegisterEventAttendeeRequest {
 interface RegisterEventAttendeeResponse {
   successfully: boolean
   message: string
+  data?: {
+    eventAttendee: {
+      eventId: string
+      attendeeId: string
+      checkIn: boolean
+      createdAt: Date
+    } 
+  }
 }
 
 export async function registerEventAttendee({ slug, code }: RegisterEventAttendeeRequest): Promise<RegisterEventAttendeeResponse> {
@@ -20,24 +28,21 @@ export async function registerEventAttendee({ slug, code }: RegisterEventAttende
     pathname: `/register/event/${slug}/attendee/${code}`,
   })
 
-  const { successfully, message } = await fetchApi({ url, init })
+  const { successfully, message, data } = await fetchApi({ url, init })
 
-  if (successfully == true) {
+  if (successfully == true || data != undefined) {
     return {
       successfully: true,
-      message: 'Participante registrado no evento com sucesso.'
-    }
-  }
-
-  if (message != undefined) {
-    return {
-      successfully: false,
-      message,
+      message: 'Participante registrado no evento com sucesso.',
+      data: {
+        eventAttendee: data.eventAttendee,
+      }
     }
   }
 
   return {
     successfully: false,
-    message: 'Não foi possível registrar o participante no evento.'
+    message,
+    data: undefined,
   }
 }
