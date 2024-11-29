@@ -8,6 +8,7 @@ import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventA
 import { deleteAttendee } from "../../fetches/attendees/delete-attendee";
 import { updateAttendeeCode } from "../../fetches/attendees/update-attendee-code";
 import { updateAttendee } from "../../fetches/attendees/upodate-attendee";
+import { registerEventAttendee } from "../../fetches/eventAttendee/register-eventAttendee";
 
 import { Input, InputVariants } from "../input";
 import { Table } from "../table/table";
@@ -162,24 +163,47 @@ export function AttendeeDetails() {
     }
   }
 
-  useEffect(() => {
-    async function fetch() {
-      if (code != undefined) {
+  async function handleRegisterAttendeeEvent(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
 
-        const { successfully, message, data } = await getAttendee({ code, pageIndex, search })
-        
-        if (successfully == false) {
-          alert(message)
-        }
-        
-        if (successfully == true && data != undefined) {
-          setAttendee(data.attendee)
-        } 
-      }
+    const form = new FormData(e.currentTarget)
+    const slug = form.get('slug')?.toString()
+
+    if (slug == null || code == undefined) {
+      return
     }
 
-    fetch()
+    const { successfully, message } = await registerEventAttendee({ code, slug })
+
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully == true) {
+      alert(message)
+      setShowRegister(false)
+      fetchAttendee()
+    }
+  }
+
+  useEffect(() => {
+    fetchAttendee()
   }, [pageIndex, search])
+
+  async function fetchAttendee() {
+    if (code != undefined) {
+
+      const { successfully, message, data } = await getAttendee({ code, pageIndex, search })
+      
+      if (successfully == false) {
+        alert(message)
+      }
+      
+      if (successfully == true && data != undefined) {
+        setAttendee(data.attendee)
+      } 
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -250,9 +274,9 @@ export function AttendeeDetails() {
 
             {attendee.events &&
               showRegister ? (
-                <form onSubmit={handleShowRegister} className="flex flex-col gap-2">
-                  <Input name="code" label="Slug do evento" />
-                  <Button type="submit">Adicionar participante no evento</Button>
+                <form onSubmit={handleRegisterAttendeeEvent} className="flex flex-col gap-2">
+                  <Input name="slug" label="Slug do evento" />
+                  <Button type="submit">Adicionar evento no participante</Button>
                 </form>
               ) : (
                 <Table>
@@ -332,9 +356,9 @@ export function AttendeeDetails() {
           <>
             <h1 className="text-2xl font-bold">Participante nào está em nenhum evento</h1>
 
-            <form onSubmit={handleShowRegister} className="flex flex-col gap-2">
-              <Input name="code" label="Slug do evento" />
-              <Button type="submit">Adicionar participante no evento</Button>
+            <form onSubmit={handleRegisterAttendeeEvent} className="flex flex-col gap-2">
+              <Input name="slug" label="Slug do evento" />
+              <Button type="submit">Adicionar evento no participante</Button>
             </form>
           </>
         )
