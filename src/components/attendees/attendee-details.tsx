@@ -37,6 +37,7 @@ interface FormStatusProps {
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeAndEventsType>({} as AttendeeAndEventsType)
   const [showForm, setShowForm] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -44,6 +45,10 @@ export function AttendeeDetails() {
 
   async function handleShowForm() {
     setShowForm(!showForm)
+  }
+
+  function handleShowRegister() {
+    setShowRegister(!showRegister)
   }
 
   async function handleCheckIn(eventId: string) {
@@ -224,9 +229,7 @@ export function AttendeeDetails() {
 
           <div className="flex flex-col items-end gap-4 ">
             <Button onClick={handleShowForm} iconName="pencil">Editar participante</Button>
-
             <Button onClick={handleUpdateAttendeeCode} iconName="repeat">Gera novo código</Button>
-
             <Button onClick={handleDelete} iconName="trash" variant="secondary">Deletar participante</Button>
           </div>
         </div>
@@ -235,87 +238,105 @@ export function AttendeeDetails() {
       {
         attendee.events?.length >= 1 ? (
           <>
-            <TableSearch
-              title="Eventos"
-              search={search}
-              setSearch={changeSearch}
-            />
+            <div className="flex justify-between">
+              <TableSearch
+                title="Eventos"
+                search={search}
+                setSearch={changeSearch}
+              />
+
+              <Button onClick={handleShowRegister}>Adicionar evento</Button>
+            </div>
 
             {attendee.events &&
-              <Table>
-                <thead>
-                  <tr className="border-b border-white/10">
-                    <TableHeader style={{ width: 48 }} >
-                      <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-                    </TableHeader>
-                    <TableHeader>Slug</TableHeader>
-                    <TableHeader>Evento</TableHeader>
-                    <TableHeader>Começa</TableHeader>
-                    <TableHeader>Termina</TableHeader>
-                    <TableHeader>Confirmado</TableHeader>
-                    <TableHeader style={{ width: 64 }}></TableHeader>
-                  </tr>
-                </thead>
+              showRegister ? (
+                <form onSubmit={handleShowRegister} className="flex flex-col gap-2">
+                  <Input name="code" label="Slug do evento" />
+                  <Button type="submit">Adicionar participante no evento</Button>
+                </form>
+              ) : (
+                <Table>
+                  <thead>
+                    <tr className="border-b border-white/10">
+                      <TableHeader style={{ width: 48 }} >
+                        <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                      </TableHeader>
+                      <TableHeader>Slug</TableHeader>
+                      <TableHeader>Evento</TableHeader>
+                      <TableHeader>Começa</TableHeader>
+                      <TableHeader>Termina</TableHeader>
+                      <TableHeader>Confirmado</TableHeader>
+                      <TableHeader style={{ width: 64 }}></TableHeader>
+                    </tr>
+                  </thead>
 
-                <tbody>
-                  {attendee.events.map((event) => {
-                    return (
-                      <TableRow key={event.id}>
-                        <TableCell>
-                          <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
-                        </TableCell>
-                        
-                        <TableCell>
-                          {event.slug}
-                        </TableCell>
+                  <tbody>
+                    {attendee.events.map((event) => {
+                      return (
+                        <TableRow key={event.id}>
+                          <TableCell>
+                            <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                          </TableCell>
+                          
+                          <TableCell>
+                            {event.slug}
+                          </TableCell>
 
-                        <TableCell>
-                          <div className="flex flex-col gap-1">
-                            <span className="font-semibold text-white">{event.title}</span>
-                            <span>{event.details}</span>
-                          </div>
-                        </TableCell>
+                          <TableCell>
+                            <div className="flex flex-col gap-1">
+                              <span className="font-semibold text-white">{event.title}</span>
+                              <span>{event.details}</span>
+                            </div>
+                          </TableCell>
 
-                        <TableCell>
-                          {dayjs(event.startDate).format('DD/MM/YY')}
-                        </TableCell>
+                          <TableCell>
+                            {dayjs(event.startDate).format('DD/MM/YY')}
+                          </TableCell>
 
-                        <TableCell>
-                          {dayjs(event.endDate).format('DD/MM/YY')}
-                        </TableCell>
+                          <TableCell>
+                            {dayjs(event.endDate).format('DD/MM/YY')}
+                          </TableCell>
 
-                        <TableCell>
-                          <input 
-                            className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
-                            type="checkbox"
-                            checked={event.checkIn}
-                            onChange={() => event.checkIn === false && handleCheckIn(event.id)}
-                          />
-                        </TableCell>
+                          <TableCell>
+                            <input 
+                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                              type="checkbox"
+                              checked={event.checkIn}
+                              onChange={() => event.checkIn === false && handleCheckIn(event.id)}
+                            />
+                          </TableCell>
 
-                        <TableCell>
-                          <Button
-                            onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                            iconName="eye"
-                            variant="iconBorder"
-                          />
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </tbody>
+                          <TableCell>
+                            <Button
+                              onClick={() => changeRoute({ route: 'event', slug: event.slug })}
+                              iconName="eye"
+                              variant="iconBorder"
+                            />
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                  </tbody>
 
-                <TableFoot
-                  length={attendee.events.length}
-                  total={attendee.total}
-                  pageIndex={pageIndex}
-                  setPageIndex={changePageIndex}
-                />
-              </Table>
+                  <TableFoot
+                    length={attendee.events.length}
+                    total={attendee.total}
+                    pageIndex={pageIndex}
+                    setPageIndex={changePageIndex}
+                  />
+                </Table>
+                )
             }
           </>
         ) : (
-          <h1 className="text-2xl font-bold">Participante nào está em nenhum evento</h1>
+          <>
+            <h1 className="text-2xl font-bold">Participante nào está em nenhum evento</h1>
+
+            <form onSubmit={handleShowRegister} className="flex flex-col gap-2">
+              <Input name="code" label="Slug do evento" />
+              <Button type="submit">Adicionar participante no evento</Button>
+            </form>
+          </>
         )
       }
     </div>
