@@ -1,12 +1,12 @@
 import { CreateRequest } from '../../classes/createRequest'
 import { fetchApi } from '../fetchApi'
 
-interface RegisterEventAttendeeRequest {
+interface CreateEventAttendeeRequest {
   slug: string
   code: string
 }
 
-interface RegisterEventAttendeeResponse {
+interface CreateEventAttendeeResponse {
   successfully: boolean
   message: string
   data?: {
@@ -19,13 +19,13 @@ interface RegisterEventAttendeeResponse {
   }
 }
 
-export async function registerEventAttendee({ slug, code }: RegisterEventAttendeeRequest): Promise<RegisterEventAttendeeResponse> {
+export async function createEventAttendee({ slug, code }: CreateEventAttendeeRequest): Promise<CreateEventAttendeeResponse> {
   const { url, init } = new CreateRequest({
     headers: {
       'Content-Type': 'application/json'
     },
     method: 'GET',
-    pathname: `/register/event/${slug}/attendee/${code}`,
+    pathname: `/create/event/${slug}/attendee/${code}`,
   })
 
   const { successfully, message, data } = await fetchApi({ url, init })

@@ -7,7 +7,7 @@ import { EventAndAttendeesType, getEvent } from "../../fetches"
 import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventAttendee"
 import { deleteEvent } from "../../fetches/events/delete-event"
 import { updateEvent } from "../../fetches/events/update-event"
-import { registerEventAttendee } from "../../fetches/eventAttendee/register-eventAttendee"
+import { createEventAttendee } from "../../fetches/eventAttendee/create-eventAttendee"
 
 import { Input, InputVariants } from "../input"
 import { Table } from "../table/table"
@@ -198,7 +198,7 @@ export function EventDetails() {
       return
     }
 
-    const { successfully, message } = await registerEventAttendee({ code, slug })
+    const { successfully, message } = await createEventAttendee({ code, slug })
 
     if (successfully == false) {
       alert(message)

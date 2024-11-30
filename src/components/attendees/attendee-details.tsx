@@ -8,7 +8,7 @@ import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventA
 import { deleteAttendee } from "../../fetches/attendees/delete-attendee";
 import { updateAttendeeCode } from "../../fetches/attendees/update-attendee-code";
 import { updateAttendee } from "../../fetches/attendees/upodate-attendee";
-import { registerEventAttendee } from "../../fetches/eventAttendee/register-eventAttendee";
+import { createEventAttendee } from "../../fetches/eventAttendee/create-eventAttendee";
 
 import { Input, InputVariants } from "../input";
 import { Table } from "../table/table";
@@ -173,7 +173,7 @@ export function AttendeeDetails() {
       return
     }
 
-    const { successfully, message } = await registerEventAttendee({ code, slug })
+    const { successfully, message } = await createEventAttendee({ code, slug })
 
     if (successfully == false) {
       alert(message)
