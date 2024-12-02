@@ -7,8 +7,9 @@ import { AttendeeAndEventsType, getAttendee } from "../../fetches";
 import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventAttendee";
 import { deleteAttendee } from "../../fetches/attendees/delete-attendee";
 import { updateAttendeeCode } from "../../fetches/attendees/update-attendee-code";
-import { updateAttendee } from "../../fetches/attendees/upodate-attendee";
+import { updateAttendee } from "../../fetches/attendees/update-attendee";
 import { createEventAttendee } from "../../fetches/eventAttendee/create-eventAttendee";
+import { deleteEventAttendee } from "../../fetches/eventAttendee/delete-eventAttendee";
 
 import { Input, InputVariants } from "../input";
 import { Table } from "../table/table";
@@ -136,7 +137,7 @@ export function AttendeeDetails() {
 
     if (validatedForm == undefined) {
       setIsLoading(false)
-      
+
       return
     }
 
@@ -182,6 +183,25 @@ export function AttendeeDetails() {
     if (successfully == true) {
       alert(message)
       setShowRegister(false)
+      fetchAttendee()
+    }
+  }
+
+  async function handleDeleteEventAttendee(slug: string) {
+    const response = confirm(`Remover o participante do evento?`)
+
+    if (response == false || code == undefined) {
+      return
+    }
+
+    const { successfully, message } = await deleteEventAttendee({ slug, code })
+
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully == true) {
+      alert(message)
       fetchAttendee()
     }
   }
@@ -290,7 +310,8 @@ export function AttendeeDetails() {
                       <TableHeader>Começa</TableHeader>
                       <TableHeader>Termina</TableHeader>
                       <TableHeader>Confirmado</TableHeader>
-                      <TableHeader style={{ width: 64 }}></TableHeader>
+                      <TableHeader>Ver detalhes</TableHeader>
+                      <TableHeader>Remover</TableHeader>
                     </tr>
                   </thead>
 
@@ -321,7 +342,7 @@ export function AttendeeDetails() {
                             {dayjs(event.endDate).format('DD/MM/YY')}
                           </TableCell>
 
-                          <TableCell>
+                          <TableCell className="text-center">
                             <input 
                               className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
                               type="checkbox"
@@ -331,11 +352,23 @@ export function AttendeeDetails() {
                           </TableCell>
 
                           <TableCell>
-                            <Button
-                              onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                              iconName="eye"
-                              variant="iconBorder"
-                            />
+                            <div className="flex justify-center">
+                              <Button
+                                onClick={() => changeRoute({ route: 'event', slug: event.slug })}
+                                iconName="eye"
+                                variant="iconBorder"
+                              />
+                            </div>
+                          </TableCell>
+
+                          <TableCell>
+                            <div className="flex justify-center">
+                              <Button
+                                onClick={() => handleDeleteEventAttendee(event.slug)}
+                                iconName="trash-2"
+                                variant="iconBorder"
+                              />
+                            </div>
                           </TableCell>
                         </TableRow>
                       )

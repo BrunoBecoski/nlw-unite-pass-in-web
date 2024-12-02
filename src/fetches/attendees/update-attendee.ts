@@ -1,6 +1,6 @@
 import { CreateRequest } from '../../classes/createRequest'
 import { fetchApi } from '../fetchApi'
-import { AttendeeTypes } from '../'
+import { AttendeeTypes } from '..'
 
 interface UpdateAttendeeRequest {
   id: string
