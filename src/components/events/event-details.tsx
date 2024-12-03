@@ -8,6 +8,7 @@ import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventA
 import { deleteEvent } from "../../fetches/events/delete-event"
 import { updateEvent } from "../../fetches/events/update-event"
 import { createEventAttendee } from "../../fetches/eventAttendee/create-eventAttendee"
+import { deleteEventAttendee } from "../../fetches/eventAttendee/delete-eventAttendee"
 
 import { Input, InputVariants } from "../input"
 import { Table } from "../table/table"
@@ -211,6 +212,25 @@ export function EventDetails() {
     }
   }
 
+  async function handleDeleteEventAttendee(code: string) {
+    const response = confirm(`Remover participante do evento?`)
+
+    if (response == false || slug == undefined) {
+      return
+    }
+
+    const { successfully, message } = await deleteEventAttendee({ slug, code })
+
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully == true) {
+      alert(message)
+      fetchEvent()
+    }
+  }
+
   useEffect(() => {
     fetchEvent()
   }, [pageIndex, search])
@@ -355,7 +375,8 @@ export function EventDetails() {
                       <TableHeader>Nome</TableHeader>
                       <TableHeader>Email</TableHeader>
                       <TableHeader>Confirmado</TableHeader>
-                      <TableHeader style={{ width: 64 }}></TableHeader>
+                      <TableHeader>Ver detalhes</TableHeader>
+                      <TableHeader>Remover</TableHeader>
                     </tr>
                   </thead>
 
@@ -379,7 +400,7 @@ export function EventDetails() {
                           <span className="text-white">{attendee.email}</span>
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="text-center">
                           <input 
                             className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
                             type="checkbox"
@@ -389,11 +410,23 @@ export function EventDetails() {
                         </TableCell>
 
                         <TableCell>
-                          <Button
-                            onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
-                            iconName="eye"
-                            variant="iconBorder"
-                          />
+                          <div className="flex justify-center">
+                            <Button
+                              onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
+                              iconName="eye"
+                              variant="iconBorder"
+                            />
+                          </div>
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="flex justify-center">
+                            <Button
+                              onClick={() => handleDeleteEventAttendee(attendee.code)}
+                              iconName="trash-2"
+                              variant="iconBorder"
+                            />
+                          </div>
                         </TableCell>
                       </TableRow>
                       )
