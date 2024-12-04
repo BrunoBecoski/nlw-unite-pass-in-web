@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent,useEffect, useState } from "react"
 import dayjs from "dayjs"
 import { z } from "zod"
 
@@ -56,6 +56,8 @@ export function EventDetails() {
   const [showRegister, setShowRegister] = useState(false)
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
+  const [isCheck, setIsCheck] = useState(false)
+  const [isCheckArray, setIsCheckArray] = useState<string[]>([])
 
   const { slug, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
@@ -250,6 +252,46 @@ export function EventDetails() {
     }
   }
 
+  function handleCheck(e: ChangeEvent<HTMLInputElement>) {
+    const name = e.target.name
+    const checked = e.target.checked
+
+    if (name == 'checkbox') {
+      let newIsCheckArray: string[] = []
+
+      if (checked == true) {
+         newIsCheckArray = event.attendees.map(attendee => attendee.code)
+      }
+
+      setIsCheckArray(newIsCheckArray)
+      setIsCheck(checked)
+
+      return
+    }
+
+    const codeCheck = isCheckArray.includes(name)
+
+    let newIsCheckArray: string[] = []
+
+    if (codeCheck == false) {
+      newIsCheckArray = [ ...isCheckArray, name ]
+    }
+
+    if (codeCheck == true) {
+      newIsCheckArray = isCheckArray.filter(code => code != name)
+    }
+
+    setIsCheckArray(newIsCheckArray)
+
+    if (newIsCheckArray.length == 0) {
+      setIsCheck(false)
+    } else {
+      setIsCheck(true)
+    }
+  }
+  
+  useEffect(() => { console.log(isCheckArray) }, [isCheckArray])
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between">
@@ -369,7 +411,7 @@ export function EventDetails() {
                   <thead>
                     <tr className="border-b border-white/10">
                       <TableHeader style={{ width: 48 }} >
-                        <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                        <input name="checkbox" className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" checked={isCheck} onChange={handleCheck}/>
                       </TableHeader>
                       <TableHeader>Código</TableHeader>
                       <TableHeader>Nome</TableHeader>
@@ -385,7 +427,7 @@ export function EventDetails() {
                       return (
                       <TableRow key={attendee.id}>
                         <TableCell>
-                          <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                          <input name={attendee.code} className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" onChange={handleCheck}/>
                         </TableCell>
 
                         <TableCell>
