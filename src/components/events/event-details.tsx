@@ -427,7 +427,13 @@ export function EventDetails() {
                       return (
                       <TableRow key={attendee.id}>
                         <TableCell>
-                          <input name={attendee.code} className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" onChange={handleCheck}/>
+                          <input
+                            name={attendee.code}
+                            className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                            type="checkbox"
+                            onChange={handleCheck} 
+                            checked={isCheckArray.includes(attendee.code)}
+                          />
                         </TableCell>
 
                         <TableCell>
