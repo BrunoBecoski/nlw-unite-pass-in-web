@@ -234,6 +234,8 @@ export function EventDetails() {
   }
 
   useEffect(() => {
+    setIsCheck(false) 
+    setIsCheckArray([])
     fetchEvent()
   }, [pageIndex, search])
   
@@ -399,6 +401,26 @@ export function EventDetails() {
 
               <Button onClick={handleShowRegister}>Adicionar participante</Button>
             </div>
+
+            {isCheck && 
+              <div className="flex gap-8">
+                <Button
+                  onClick={() => confirm('Confirmar todos os participantes marcados')}
+                  iconName="check"
+                  variant="primary"
+                >
+                  Confirmar
+                </Button>
+
+                <Button
+                  onClick={() => confirm('Remover todos os participantes marcados')}
+                  iconName="trash-2"
+                  variant="primary"
+                >
+                  Remover
+                </Button>
+              </div>
+            }
 
             {event.attendees &&
                showRegister ? (
