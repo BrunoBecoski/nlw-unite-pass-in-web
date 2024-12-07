@@ -70,14 +70,20 @@ export function EventDetails() {
   }
 
   async function handleCheckIn(attendeeId: string) {
-    const { successfully, message } = await checkInEventAttendee({
-      attendeeId,
-      eventId: event.id,
-    })
+    const response = confirm('Confirmar participante no evento?')
 
-    if (successfully == false) {
-      alert(message)
-    }    
+    if (response == true) {
+      const { successfully, message } = await checkInEventAttendee({
+        attendeeId,
+        eventId: event.id,
+      })
+
+      if (successfully == false) {
+        alert(message)
+      }
+      
+      fetchEvent()
+    }
   }
 
   async function handleDelete() {
@@ -233,6 +239,102 @@ export function EventDetails() {
     }
   }
 
+  function handleCheck(e: ChangeEvent<HTMLInputElement>) {
+    const name = e.target.name
+    const checked = e.target.checked
+
+    if (name == 'checkbox') {
+      let newIsCheckArray: string[] = []
+
+      if (checked == true) {
+         newIsCheckArray = event.attendees.map(attendee => attendee.id)
+      }
+
+      setIsCheckArray(newIsCheckArray)
+      setIsCheck(checked)
+
+      return
+    }
+
+    const idCheck = isCheckArray.includes(name)
+
+    let newIsCheckArray: string[] = []
+
+    if (idCheck == false) {
+      newIsCheckArray = [ ...isCheckArray, name ]
+    }
+
+    if (idCheck == true) {
+      newIsCheckArray = isCheckArray.filter(id => id != name)
+    }
+
+    setIsCheckArray(newIsCheckArray)
+
+    if (newIsCheckArray.length == 0) {
+      setIsCheck(false)
+    } else {
+      setIsCheck(true)
+    }
+  }
+
+  async function handleCheckAll() {
+    const response = confirm('Confirmar todos os participantes marcados?')
+
+    if (response == true) {
+      isCheckArray.forEach(async (attendeeId)  => {
+        const { successfully, message } = await checkInEventAttendee({
+          attendeeId,
+          eventId: event.id,
+        })
+    
+        if (successfully == false) {
+          alert(message)
+        }
+
+        if (successfully == true) {
+          setIsCheck(false) 
+          setIsCheckArray([])
+          fetchEvent()
+        }
+      })
+    }
+  }
+
+  async function handleDeleteAll() {
+    const response = confirm('Remover todos os participantes marcados?')
+
+    if (response == false || slug == undefined ) {
+      return
+    }
+
+    if (response == true) {
+      isCheckArray.forEach(async (attendeeId)  => {
+        const code = event.attendees.find(attendee => attendee.id == attendeeId)?.code
+
+        if (code) {
+          const { successfully, message } = await deleteEventAttendee({
+            slug,
+            code,
+          })
+
+          console.log(successfully)
+          console.log(message)
+
+          if (successfully == false) {
+            alert(message)
+          }
+  
+          if (successfully == true) {
+            setIsCheck(false) 
+            setIsCheckArray([])
+            fetchEvent()
+          }
+        }
+        
+      })
+    }
+  }
+
   useEffect(() => {
     setIsCheck(false) 
     setIsCheckArray([])
@@ -253,46 +355,6 @@ export function EventDetails() {
       } 
     }
   }
-
-  function handleCheck(e: ChangeEvent<HTMLInputElement>) {
-    const name = e.target.name
-    const checked = e.target.checked
-
-    if (name == 'checkbox') {
-      let newIsCheckArray: string[] = []
-
-      if (checked == true) {
-         newIsCheckArray = event.attendees.map(attendee => attendee.code)
-      }
-
-      setIsCheckArray(newIsCheckArray)
-      setIsCheck(checked)
-
-      return
-    }
-
-    const codeCheck = isCheckArray.includes(name)
-
-    let newIsCheckArray: string[] = []
-
-    if (codeCheck == false) {
-      newIsCheckArray = [ ...isCheckArray, name ]
-    }
-
-    if (codeCheck == true) {
-      newIsCheckArray = isCheckArray.filter(code => code != name)
-    }
-
-    setIsCheckArray(newIsCheckArray)
-
-    if (newIsCheckArray.length == 0) {
-      setIsCheck(false)
-    } else {
-      setIsCheck(true)
-    }
-  }
-  
-  useEffect(() => { console.log(isCheckArray) }, [isCheckArray])
 
   return (
     <div className="space-y-6">
@@ -405,17 +467,17 @@ export function EventDetails() {
             {isCheck && 
               <div className="flex gap-8">
                 <Button
-                  onClick={() => confirm('Confirmar todos os participantes marcados')}
-                  iconName="check"
+                  iconName="square-check"
                   variant="primary"
+                  onClick={handleCheckAll}
                 >
                   Confirmar
                 </Button>
 
                 <Button
-                  onClick={() => confirm('Remover todos os participantes marcados')}
                   iconName="trash-2"
                   variant="primary"
+                  onClick={handleDeleteAll}
                 >
                   Remover
                 </Button>
@@ -450,11 +512,11 @@ export function EventDetails() {
                       <TableRow key={attendee.id}>
                         <TableCell>
                           <input
-                            name={attendee.code}
+                            name={attendee.id}
                             className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
                             type="checkbox"
                             onChange={handleCheck} 
-                            checked={isCheckArray.includes(attendee.code)}
+                            checked={isCheckArray.includes(attendee.id)}
                           />
                         </TableCell>
 
