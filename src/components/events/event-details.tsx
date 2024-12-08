@@ -261,7 +261,7 @@ export function EventDetails() {
     let newIsCheckArray: string[] = []
 
     if (idCheck == false) {
-      newIsCheckArray = [ ...isCheckArray, name ]
+      newIsCheckArray = [...isCheckArray, name]
     }
 
     if (idCheck == true) {
@@ -317,9 +317,6 @@ export function EventDetails() {
             code,
           })
 
-          console.log(successfully)
-          console.log(message)
-
           if (successfully == false) {
             alert(message)
           }
@@ -330,7 +327,6 @@ export function EventDetails() {
             fetchEvent()
           }
         }
-        
       })
     }
   }
@@ -495,7 +491,13 @@ export function EventDetails() {
                   <thead>
                     <tr className="border-b border-white/10">
                       <TableHeader style={{ width: 48 }} >
-                        <input name="checkbox" className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" checked={isCheck} onChange={handleCheck}/>
+                        <input
+                          name="checkbox"
+                          type="checkbox"
+                          className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                          checked={isCheck}
+                          onChange={handleCheck}
+                        />
                       </TableHeader>
                       <TableHeader>Código</TableHeader>
                       <TableHeader>Nome</TableHeader>
@@ -509,58 +511,58 @@ export function EventDetails() {
                   <tbody>
                     {event.attendees.map((attendee) => {
                       return (
-                      <TableRow key={attendee.id}>
-                        <TableCell>
-                          <input
-                            name={attendee.id}
-                            className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
-                            type="checkbox"
-                            onChange={handleCheck} 
-                            checked={isCheckArray.includes(attendee.id)}
-                          />
-                        </TableCell>
-
-                        <TableCell>
-                          {attendee.code}
-                        </TableCell>
-
-                        <TableCell>
-                          <span className="font-semibold text-white">{attendee.name}</span>
-                        </TableCell>
-
-                        <TableCell>
-                          <span className="text-white">{attendee.email}</span>
-                        </TableCell>
-
-                        <TableCell className="text-center">
-                          <input 
-                            className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
-                            type="checkbox"
-                            checked={attendee.checkIn}
-                            onChange={() => attendee.checkIn === false && handleCheckIn(attendee.id)}
-                          />
-                        </TableCell>
-
-                        <TableCell>
-                          <div className="flex justify-center">
-                            <Button
-                              onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
-                              iconName="eye"
-                              variant="iconBorder"
+                        <TableRow key={attendee.id}>
+                          <TableCell>
+                            <input
+                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                              type="checkbox"
+                              name={attendee.id}
+                              onChange={handleCheck} 
+                              checked={isCheckArray.includes(attendee.id)}
                             />
-                          </div>
-                        </TableCell>
+                          </TableCell>
 
-                        <TableCell>
-                          <div className="flex justify-center">
-                            <Button
-                              onClick={() => handleDeleteEventAttendee(attendee.code)}
-                              iconName="trash-2"
-                              variant="iconBorder"
+                          <TableCell>
+                            {attendee.code}
+                          </TableCell>
+
+                          <TableCell>
+                            <span className="font-semibold text-white">{attendee.name}</span>
+                          </TableCell>
+
+                          <TableCell>
+                            <span className="text-white">{attendee.email}</span>
+                          </TableCell>
+
+                          <TableCell className="text-center">
+                            <input 
+                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                              type="checkbox"
+                              checked={attendee.checkIn}
+                              onChange={() => attendee.checkIn === false && handleCheckIn(attendee.id)}
                             />
-                          </div>
-                        </TableCell>
-                      </TableRow>
+                          </TableCell>
+
+                          <TableCell>
+                            <div className="flex justify-center">
+                              <Button
+                                onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
+                                iconName="eye"
+                                variant="iconBorder"
+                              />
+                            </div>
+                          </TableCell>
+
+                          <TableCell>
+                            <div className="flex justify-center">
+                              <Button
+                                onClick={() => handleDeleteEventAttendee(attendee.code)}
+                                iconName="trash-2"
+                                variant="iconBorder"
+                              />
+                            </div>
+                          </TableCell>
+                        </TableRow>
                       )
                     })}
                   </tbody>

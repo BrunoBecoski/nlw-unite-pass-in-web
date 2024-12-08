@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { z } from "zod";
 import dayjs from "dayjs";
 
@@ -42,6 +42,8 @@ export function AttendeeDetails() {
   const [showRegister, setShowRegister] = useState(false)
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
+  const [isCheck, setIsCheck] = useState(false)
+  const [isCheckArray, setIsCheckArray] = useState<string[]>([])
 
   const { code, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
@@ -54,13 +56,19 @@ export function AttendeeDetails() {
   }
 
   async function handleCheckIn(eventId: string) {
-    const { successfully, message } = await checkInEventAttendee({
-      attendeeId: attendee.id,
-      eventId,
-    })
+    const response = confirm('Confirmar participante no evento?')
 
-    if (successfully == false) {
-      alert(message)
+    if (response == true) {
+      const { successfully, message } = await checkInEventAttendee({
+        attendeeId: attendee.id,
+        eventId,
+      })
+  
+      if (successfully == false) {
+        alert(message)
+      }
+
+      fetchAttendee()
     }
   }
 
@@ -206,7 +214,102 @@ export function AttendeeDetails() {
     }
   }
 
+ function handleCheck(e: ChangeEvent<HTMLInputElement>) {
+    const name = e.target.name
+    const checked = e.target.checked
+
+    if (name == 'checkbox') {
+      let newIsCheckArray: string[] = []
+
+      if (checked == true) {
+        newIsCheckArray = attendee.events.map(event => event.id)
+      }
+
+      setIsCheckArray(newIsCheckArray)
+      setIsCheck(checked)
+
+      return
+    }
+
+    const idCheck = isCheckArray.includes(name)
+
+    let newIsCheckArray: string[] = []
+
+    if (idCheck == false) {
+      newIsCheckArray = [...isCheckArray, name]
+    }
+
+    if (idCheck == true) {
+      newIsCheckArray = isCheckArray.filter(id => id != name)
+    }
+
+    setIsCheckArray(newIsCheckArray)
+
+    if (newIsCheckArray.length == 0) {
+      setIsCheck(false)
+    } else {
+      setIsCheck(true)
+    }
+  }
+
+  async function handleCheckAll() {
+    const response = confirm('Confirmar todos os eventos marcados?')
+
+    if (response == true) {
+      isCheckArray.forEach(async (eventId) => {
+        const { successfully, message } = await checkInEventAttendee({
+          eventId,
+          attendeeId: attendee.id
+        })
+        
+        if (successfully == false) {
+          alert(message)
+        }
+
+        if (successfully == true) {
+          setIsCheck(false)
+          setIsCheckArray([])
+          fetchAttendee()
+        }
+      })
+    }
+  }
+
+  async function handleDeleteAll() {
+    const response = confirm('Remover todos os eventos marcados?')
+
+    if (response == false || code == undefined ) {
+      return
+    }
+
+    if (response == true) {
+      isCheckArray.forEach(async (eventId) => {
+
+        const slug = attendee.events.find(event => event.id == eventId)?.slug
+
+        if (slug) {
+          const { successfully, message } = await deleteEventAttendee({
+            slug,
+            code
+          })
+        
+          if (successfully == false) {
+            alert(message)
+          }
+
+          if (successfully == true) {
+            setIsCheck(false)
+            setIsCheckArray([])
+            fetchAttendee()
+          }
+        }
+      })
+    }
+  }
+
   useEffect(() => {
+    setIsCheck(false) 
+    setIsCheckArray([])
     fetchAttendee()
   }, [pageIndex, search])
 
@@ -292,6 +395,26 @@ export function AttendeeDetails() {
               <Button onClick={handleShowRegister}>Adicionar evento</Button>
             </div>
 
+            {isCheck &&
+              <div className="flex gap-8">
+                <Button
+                  iconName="square-check"
+                  variant="primary"
+                  onClick={handleCheckAll}
+                >
+                  Confirmar
+                </Button>
+                
+                <Button
+                  iconName="trash-2"
+                  variant="primary"
+                  onClick={handleDeleteAll}
+                >
+                  Remover
+                </Button>
+              </div>
+            }
+
             {attendee.events &&
               showRegister ? (
                 <form onSubmit={handleRegisterAttendeeEvent} className="flex flex-col gap-2">
@@ -303,7 +426,13 @@ export function AttendeeDetails() {
                   <thead>
                     <tr className="border-b border-white/10">
                       <TableHeader style={{ width: 48 }} >
-                        <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                        <input
+                          type="checkbox"
+                          name="checkbox"
+                          className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                          checked={isCheck}
+                          onChange={handleCheck}
+                        />
                       </TableHeader>
                       <TableHeader>Slug</TableHeader>
                       <TableHeader>Evento</TableHeader>
@@ -320,7 +449,13 @@ export function AttendeeDetails() {
                       return (
                         <TableRow key={event.id}>
                           <TableCell>
-                            <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                            <input 
+                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                              type="checkbox"
+                              name={event.id}
+                              onChange={handleCheck}
+                              checked={isCheckArray.includes(event.id)}
+                            />
                           </TableCell>
                           
                           <TableCell>
