@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -21,6 +21,46 @@ export function EventList() {
 
   const [total, setTotal] = useState(0)
   const [events, setEvents] = useState<EventTypes[]>([])
+  const [isCheck, setIsCheck] = useState(false)
+  const [isCheckArray, setIsCheckArray] = useState<string[]>([])
+
+  function handleCheck(e: ChangeEvent<HTMLInputElement>) {
+    const name = e.target.name
+    const checked = e.target.checked
+
+    if (name == 'checkbox') {
+      let newIsCheckArray: string[] = []
+
+      if (checked == true) {
+         newIsCheckArray = events.map(event => event.id)
+      }
+
+      setIsCheckArray(newIsCheckArray)
+      setIsCheck(checked)
+
+      return
+    }
+
+    const idCheck = isCheckArray.includes(name)
+
+    let newIsCheckArray: string[] = []
+
+    if (idCheck == false) {
+      newIsCheckArray = [...isCheckArray, name]
+    }
+
+    if (idCheck == true) {
+      newIsCheckArray = isCheckArray.filter(id => id != name)
+    }
+
+    setIsCheckArray(newIsCheckArray)
+
+    if (newIsCheckArray.length == 0) {
+      setIsCheck(false)
+    } else {
+      setIsCheck(true)
+    }
+  }
 
   useEffect(() => {
     async function fetch() {
@@ -55,7 +95,13 @@ export function EventList() {
             <thead>
               <tr className="border-b border-white/10">
                 <TableHeader style={{ width: 48 }} >
-                  <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                  <input
+                    name="checkbox"
+                    type="checkbox"
+                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox"
+                    checked={isCheck}
+                    onChange={handleCheck}
+                  />
                 </TableHeader>
                 <TableHeader>Slug</TableHeader>
                 <TableHeader>Evento</TableHeader>
@@ -71,7 +117,13 @@ export function EventList() {
                 return (
                 <TableRow key={event.id}>
                   <TableCell>
-                    <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                    <input 
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                      type="checkbox"
+                      name={event.id}
+                      onChange={handleCheck}
+                      checked={isCheckArray.includes(event.id)}                  
+                    />
                   </TableCell>
                   
                   <TableCell>
