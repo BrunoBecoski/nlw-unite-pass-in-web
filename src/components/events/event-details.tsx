@@ -3,12 +3,15 @@ import dayjs from "dayjs"
 import { z } from "zod"
 
 import { useRouter } from "../../contexts/router-provider"
-import { EventAndAttendeesType, getEvent } from "../../fetches"
-import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventAttendee"
-import { deleteEvent } from "../../fetches/events/delete-event"
-import { updateEvent } from "../../fetches/events/update-event"
-import { createEventAttendee } from "../../fetches/eventAttendee/create-eventAttendee"
-import { deleteEventAttendee } from "../../fetches/eventAttendee/delete-eventAttendee"
+import { 
+  checkInEventAttendee,
+  createEventAttendee,
+  deleteEvent,
+  deleteEventAttendee,
+  EventAndAttendeesType,
+  getEvent,
+  updateEvent
+} from "../../fetches"
 
 import { Input, InputVariants } from "../input"
 import { Table } from "../table/table"

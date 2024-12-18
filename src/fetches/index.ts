@@ -1,10 +1,19 @@
+import { createEvent } from './events/create-event'
+import { deleteEvent } from './events/delete-event'
 import { getEvents } from './events/get-events'
 import { getEvent } from './events/get-event'
+import { updateEvent } from './events/update-event'
 
-import { getAttendees } from './attendees/get-attendees'
-import { getAttendee } from './attendees/get-attendee'
 import { createAttendee } from './attendees/create-attendee'
+import { deleteAttendee } from './attendees/delete-attendee'
+import { getAttendee } from './attendees/get-attendee'
+import { getAttendees } from './attendees/get-attendees'
+import { updateAttendeeCode } from './attendees/update-attendee-code'
+import { updateAttendee } from './attendees/update-attendee'
 
+import { checkInEventAttendee } from './eventAttendee/checkIn-eventAttendee'
+import { createEventAttendee } from './eventAttendee/create-eventAttendee'
+import { deleteEventAttendee } from './eventAttendee/delete-eventAttendee'
 
 export type AttendeeTypes = {
   id: string
@@ -63,9 +72,18 @@ export type AttendeeAndEventsType = {
 }
 
 export {
-  getEvent,
+  createEvent,
+  deleteEvent,
   getEvents,
+  getEvent,
+  updateEvent,
+  createAttendee,
+  deleteAttendee,
   getAttendee,
   getAttendees,
-  createAttendee,
+  updateAttendeeCode,
+  updateAttendee,
+  checkInEventAttendee,
+  createEventAttendee,
+  deleteEventAttendee,
 }

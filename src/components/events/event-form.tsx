@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react'
 import * as  z from 'zod'
 
-import { createEvent } from '../../fetches/events/create-event'
+import { createEvent } from '../../fetches'
 import { useRouter } from '../../contexts/router-provider'
 
 import { Input, InputVariants } from '../input'

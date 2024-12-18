@@ -4,7 +4,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useRouter } from '../../contexts/router-provider'
-import { EventTypes, getEvents } from '../../fetches'
+import { deleteEvent, EventTypes, getEvents } from '../../fetches'
 import { Table } from '../table/table'
 import { TableHeader } from '../table/table-header'
 import { TableCell } from '../table/table-cell'
@@ -62,9 +62,38 @@ export function EventList() {
     }
   }
 
+  async function handleDeleteAll() {
+    const response = confirm('Remover todos os eventos marcados?')
+
+    if (response == false ) {
+      return
+    }
+
+    if (response == true) {
+      isCheckArray.forEach(async (id)  => {
+        const { successfully, message } = await deleteEvent({ id })
+
+        if (successfully == false) {
+          alert(message)
+        }
+
+        if (successfully == true) {
+          setIsCheck(false) 
+          setIsCheckArray([])
+          fetchEvents()
+        }
+      }
+    )}
+  }
+
   useEffect(() => {
-    async function fetch() {
-      const { successfully, message, data } = await getEvents({ pageIndex, search })
+    setIsCheck(false) 
+    setIsCheckArray([])
+    fetchEvents()
+  }, [pageIndex, search])
+
+  async function fetchEvents() {
+    const { successfully, message, data } = await getEvents({ pageIndex, search })
       
     if (successfully == false) {
       alert(message)
@@ -76,9 +105,6 @@ export function EventList() {
     } 
   }
 
-    fetch()
-  }, [pageIndex, search])
-
   return (
     <div className="flex flex-col gap-4">
       <TableSearch 
@@ -86,6 +112,19 @@ export function EventList() {
         search={search}
         setSearch={changeSearch}
       />
+
+      {isCheck && 
+        <div className="flex gap-8">
+          <Button
+            iconName="trash-2"
+            variant="primary"
+            onClick={handleDeleteAll}
+          >
+            Remover
+          </Button>
+        </div>
+      }
+
 
       {events.length === 0 
         ?
@@ -98,7 +137,7 @@ export function EventList() {
                   <input
                     name="checkbox"
                     type="checkbox"
-                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox"
+                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
                     checked={isCheck}
                     onChange={handleCheck}
                   />
