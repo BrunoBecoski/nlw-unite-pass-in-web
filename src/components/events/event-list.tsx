@@ -157,8 +157,8 @@ export function EventList() {
                 <TableRow key={event.id}>
                   <TableCell>
                     <input 
-                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
                       type="checkbox"
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
                       name={event.id}
                       onChange={handleCheck}
                       checked={isCheckArray.includes(event.id)}                  

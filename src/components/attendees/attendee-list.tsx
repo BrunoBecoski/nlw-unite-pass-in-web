@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -23,23 +23,63 @@ export function AttendeeList() {
 
   const [total, setTotal] = useState(0)
   const [attendees, setAttendees] = useState<AttendeeTypes[]>([])
+  const [isCheck, setIsCheck] = useState(false)
+  const [isCheckArray, setIsCheckArray] = useState<string[]>([])
 
-  useEffect(() => {
-    async function fetch() {
-      const { successfully, message, data } = await getAttendees({ pageIndex, search })
+  function handleCheck(e: ChangeEvent<HTMLInputElement>) {
+    const name = e.target.name
+    const checked = e.target.checked
 
-      if (successfully == false) {
-        alert(message)
+    if (name == 'checkbox') {
+      let newIsCheckArray: string[] = []
+
+      if (checked == true) {
+        newIsCheckArray = attendees.map(attendee => attendee.id)
       }
 
-      if (successfully == true && data != undefined) {
-        setAttendees(data.attendees)
-        setTotal(data.total)
-      } 
+      setIsCheckArray(newIsCheckArray)
+      setIsCheck(checked)
+
+      return
     }
 
-    fetch()
+    const idCheck = isCheckArray.includes(name)
+
+    let newIsCheckArray: string[] = []
+
+    if (idCheck == false) {
+      newIsCheckArray = [...isCheckArray, name]
+    }
+
+    if (idCheck == true) {
+      newIsCheckArray = isCheckArray.filter(id => id != name)
+    }
+
+    setIsCheckArray(newIsCheckArray)
+
+    if (newIsCheckArray.length == 0) {
+      setIsCheck(false)
+    } else {
+      setIsCheck(true)
+    }
+  }
+
+  useEffect(() => {
+    fetchAttendees()
   }, [pageIndex, search])
+
+  async function fetchAttendees() {
+    const { successfully, message, data } = await getAttendees({ pageIndex, search })
+
+    if (successfully == false) {
+      alert(message)
+    }
+
+    if (successfully == true && data != undefined) {
+      setAttendees(data.attendees)
+      setTotal(data.total)
+    } 
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -57,7 +97,13 @@ export function AttendeeList() {
             <thead>
               <tr className="border-b border-white/10">
                 <TableHeader style={{ width: 48 }} >
-                  <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                  <input
+                    name="checkbox"
+                    type="checkbox"
+                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                    checked={isCheck}
+                    onChange={handleCheck}
+                  />
                 </TableHeader>
                 <TableHeader>Código</TableHeader>
                 <TableHeader>Participante</TableHeader>
@@ -71,7 +117,13 @@ export function AttendeeList() {
                 return (
                 <TableRow key={attendee.id}>
                   <TableCell>
-                    <input className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" type="checkbox" />
+                    <input 
+                      type="checkbox"
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                      name={attendee.id}
+                      onChange={handleCheck}
+                      checked={isCheckArray.includes(attendee.id)}
+                    />
                   </TableCell>
 
                   <TableCell>
