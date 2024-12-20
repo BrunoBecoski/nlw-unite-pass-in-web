@@ -3,13 +3,16 @@ import { z } from "zod";
 import dayjs from "dayjs";
 
 import { useRouter } from "../../contexts/router-provider";
-import { AttendeeAndEventsType, getAttendee } from "../../fetches";
-import { checkInEventAttendee } from "../../fetches/eventAttendee/checkIn-eventAttendee";
-import { deleteAttendee } from "../../fetches/attendees/delete-attendee";
-import { updateAttendeeCode } from "../../fetches/attendees/update-attendee-code";
-import { updateAttendee } from "../../fetches/attendees/update-attendee";
-import { createEventAttendee } from "../../fetches/eventAttendee/create-eventAttendee";
-import { deleteEventAttendee } from "../../fetches/eventAttendee/delete-eventAttendee";
+import {
+  AttendeeAndEventsType,
+  checkInEventAttendee,
+  createEventAttendee,
+  deleteAttendee,
+  deleteEventAttendee,
+  getAttendee,
+  updateAttendee,
+  updateAttendeeCode
+} from "../../fetches";
 
 import { Input, InputVariants } from "../input";
 import { Table } from "../table/table";

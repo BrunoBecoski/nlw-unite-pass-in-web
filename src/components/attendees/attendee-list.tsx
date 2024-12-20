@@ -5,8 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
 import { useRouter } from '../../contexts/router-provider'
-import { AttendeeTypes, getAttendees } from '../../fetches'
-
+import { AttendeeTypes, deleteAttendee, getAttendees } from '../../fetches'
 import { Table } from '../table/table'
 import { TableHeader } from '../table/table-header'
 import { TableCell } from '../table/table-cell'
@@ -64,6 +63,30 @@ export function AttendeeList() {
     }
   }
 
+  async function handleDeleteAll() {
+    const response = confirm('Remover todos os participantes marcados?')
+
+    if (response == false) {
+      return
+    }
+
+    if (response == true) {
+      isCheckArray.forEach(async (id) => {
+        const { successfully, message } = await deleteAttendee({ id })
+
+        if (successfully == false) {
+          alert(message)
+        }
+
+        if (successfully == true) {
+          setIsCheck(false)
+          setIsCheckArray([])
+          fetchAttendees()
+        }
+      })
+    }
+  }
+
   useEffect(() => {
     fetchAttendees()
   }, [pageIndex, search])
@@ -88,6 +111,18 @@ export function AttendeeList() {
         search={search}
         setSearch={changeSearch}
       />
+
+      {isCheck &&
+        <div className="flex flex-col gap-4">
+          <Button
+            iconName="trash-2"
+            variant="primary"
+            onClick={handleDeleteAll}
+          >
+            Remover
+          </Button>
+        </div>
+      }
 
       {attendees.length === 0
         ?
