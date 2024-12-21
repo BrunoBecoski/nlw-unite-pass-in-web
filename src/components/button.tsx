@@ -20,7 +20,7 @@ const button = tv({
     }
   },
 
-  defaultVariants : {
+  defaultVariants: {
     variant: 'primary',
     size: 'default',
   }

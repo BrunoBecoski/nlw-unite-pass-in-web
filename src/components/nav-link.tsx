@@ -1,11 +1,29 @@
 import { ComponentProps, ReactNode, useEffect, useRef } from 'react'
+import { tv, VariantProps } from 'tailwind-variants'
 
 interface NavLinkProps extends ComponentProps<'a'> {
   children: ReactNode
   selected?: boolean
 }
 
-export function NavLink({ children, selected = false, ...props }: NavLinkProps) {
+const a = tv({
+  base: 'font-medium text-sm border-b',
+
+  variants: {
+    selected: {
+      true: 'text-white border-orange-300',
+      false: 'text-gray-200 border-transparent'
+    }
+  },
+
+  defaultVariants: {
+    selected: false,
+  }
+})
+
+interface NavLinkProps extends ComponentProps<'a'>, VariantProps<typeof a> {}
+
+export function NavLink({ children, selected, ...props }: NavLinkProps) {
   const anchorRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
@@ -16,10 +34,7 @@ export function NavLink({ children, selected = false, ...props }: NavLinkProps) 
 
   return (
     <a 
-      className={`shadow-white
-        font-medium text-sm border-b
-        ${selected ? 'border-orange-400' : 'border-transparent'}
-      `} 
+      className={a({ selected })}
       ref={anchorRef} 
       {...props}
     >
