@@ -10,7 +10,7 @@ const input = tv({
 
   variants: {
     variant: {
-      primary: 'border-orange-200/50 focus-within:border-orange-500 text-orange-300 focus-within:text-orange-500',
+      primary: 'border-zinc-600 focus-within:border-orange-400 text-emerald-200 focus-within:text-orange-400',
       success: 'border-emerald-200/50 focus-within:border-emerald-500 text-emerald-300 focus-within:text-emerald-500',
       error: 'border-red-200/50 focus-within:border-red-500 text-red-300 focus-within:text-red-500',
     },
