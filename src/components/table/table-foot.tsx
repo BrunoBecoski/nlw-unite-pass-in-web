@@ -42,29 +42,29 @@ export function TableFoot({
           Mostrando {length} de {total} items
         </TableCell>
 
-        <TableCell className="text-right" colSpan={3}>
+        <TableCell className="text-right" colSpan={5}>
           <div className="inline-flex items-center gap-8">
             <span>Página {pageIndex ? pageIndex : 1} de {totalPages}</span>
 
             <div className="flex gap-1.5">
               <Button
-                variant="icon"
+                variant="chevron"
                 iconName="chevrons-left"
                 title="Ir para a primeira página"
                 onClick={goToFirstPage}
-                disabled={pageIndex === 1}
+                disabled={pageIndex === 1 || pageIndex === undefined}
               />
 
               <Button
-                variant="icon"
+                variant="chevron"
                 iconName="chevron-left"
                 title="Ir para a página anterior"
                 onClick={goToPreviousPage}
-                disabled={pageIndex === 1}
+                disabled={pageIndex === 1 || pageIndex === undefined}
               />
 
               <Button
-                variant="icon"
+                variant="chevron"
                 iconName="chevron-right"
                 title="Ir para a próxima página"
                 onClick={goToNextPage}
@@ -72,7 +72,7 @@ export function TableFoot({
               />
               
               <Button
-                variant="icon"
+                variant="chevron"
                 iconName="chevrons-right"
                 title="Ir para a última página"
                 onClick={goToLastPage}

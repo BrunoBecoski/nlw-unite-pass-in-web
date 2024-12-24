@@ -10,8 +10,9 @@ const button = tv({
     variant: {
       primary: 'bg-orange-300 enabled:hover:bg-orange-400 text-emerald-950',
       secondary: 'bg-zinc-300 enabled:hover:bg-zinc-400 text-emerald-950',
-      icon: 'bg-transparent hover:text-orange-400 rounded-md p-1',
-      iconBorder: 'text-emerald-200 bg-zinc-950 border border-white/10 enabled:hover:border-orange-400 enabled:hover:text-orange-400 rounded-md p-1',
+      icon: 'bg-transparent enabled:hover:text-orange-400 rounded-md p-1',
+      iconBorder: 'text-white bg-zinc-950 border border-white/10 enabled:hover:border-orange-400 enabled:hover:text-orange-400 rounded-md p-1',
+      chevron: 'p-1.5 border border-white/10 bg-white/10 enabled:hover:border-orange-400 enabled:hover:text-orange-400'
     },
 
     size: {
@@ -33,11 +34,18 @@ interface ButtonProps extends ComponentProps<'button'>, VariantProps<typeof butt
 }
 
 export function Button({ iconName, children, variant, size, isLoading = false, ...props }: ButtonProps) {
+  
+  let disabled = props.disabled 
+
+  if (isLoading) {
+    disabled = isLoading
+  }
+  
   return (
     <button
       className={button({ variant, size })}
       {...props}
-      disabled={isLoading}
+      disabled={disabled}
     > 
     {isLoading ? (
       <Icon 
