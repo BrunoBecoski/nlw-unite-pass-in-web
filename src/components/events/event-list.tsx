@@ -144,8 +144,8 @@ export function EventList() {
                 </TableHeader>
                 <TableHeader>Slug</TableHeader>
                 <TableHeader>Evento</TableHeader>
-                <TableHeader>Começa</TableHeader>
-                <TableHeader>Termina</TableHeader>
+                <TableHeader>Data de Início</TableHeader>
+                <TableHeader>Data de Fim</TableHeader>
                 <TableHeader>Participantes</TableHeader>
                 <TableHeader style={{ width: 64 }}></TableHeader>
               </tr>
@@ -191,7 +191,7 @@ export function EventList() {
                   <TableCell>
                     <Button
                       onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                      iconName="eye"
+                      iconName="ellipsis"
                       variant="iconBorder"
                     />
                   </TableCell>

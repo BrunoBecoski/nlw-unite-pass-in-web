@@ -223,25 +223,6 @@ export function EventDetails() {
     }
   }
 
-  async function handleDeleteEventAttendee(code: string) {
-    const response = confirm(`Remover participante do evento?`)
-
-    if (response == false || slug == undefined) {
-      return
-    }
-
-    const { successfully, message } = await deleteEventAttendee({ slug, code })
-
-    if (successfully == false) {
-      alert(message)
-    }
-
-    if (successfully == true) {
-      alert(message)
-      fetchEvent()
-    }
-  }
-
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const name = e.target.name
     const checked = e.target.checked
@@ -505,9 +486,8 @@ export function EventDetails() {
                       <TableHeader>Código</TableHeader>
                       <TableHeader>Nome</TableHeader>
                       <TableHeader>Email</TableHeader>
-                      <TableHeader>Confirmado</TableHeader>
-                      <TableHeader>Ver detalhes</TableHeader>
-                      <TableHeader>Remover</TableHeader>
+                      <TableHeader>Check-in</TableHeader>
+                      <TableHeader style={{ width: 64 }}></TableHeader>
                     </tr>
                   </thead>
 
@@ -537,30 +517,20 @@ export function EventDetails() {
                             <span className="text-white">{attendee.email}</span>
                           </TableCell>
 
-                          <TableCell className="text-center">
-                            <input 
-                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
-                              type="checkbox"
-                              checked={attendee.checkIn}
-                              onChange={() => attendee.checkIn === false && handleCheckIn(attendee.id)}
-                            />
+                          <TableCell>
+                          {attendee.checkIn ? (
+                              <Button variant="tertiary" iconName="square-check" disabled>Confirmado</Button>
+                            ) : (
+                              <Button variant="primary" iconName="square" onClick={() => handleCheckIn(attendee.id)}>Confirmar</Button>
+                            )
+                          }
                           </TableCell>
 
                           <TableCell>
                             <div className="flex justify-center">
                               <Button
                                 onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
-                                iconName="eye"
-                                variant="iconBorder"
-                              />
-                            </div>
-                          </TableCell>
-
-                          <TableCell>
-                            <div className="flex justify-center">
-                              <Button
-                                onClick={() => handleDeleteEventAttendee(attendee.code)}
-                                iconName="trash-2"
+                                iconName="ellipsis"
                                 variant="iconBorder"
                               />
                             </div>

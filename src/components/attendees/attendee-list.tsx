@@ -179,7 +179,7 @@ export function AttendeeList() {
                   <TableCell>
                     <Button
                       onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
-                      iconName="eye"
+                      iconName="ellipsis"
                       variant="iconBorder"
                     />
                   </TableCell>

@@ -198,26 +198,7 @@ export function AttendeeDetails() {
     }
   }
 
-  async function handleDeleteEventAttendee(slug: string) {
-    const response = confirm(`Remover o participante do evento?`)
-
-    if (response == false || code == undefined) {
-      return
-    }
-
-    const { successfully, message } = await deleteEventAttendee({ slug, code })
-
-    if (successfully == false) {
-      alert(message)
-    }
-
-    if (successfully == true) {
-      alert(message)
-      fetchAttendee()
-    }
-  }
-
- function handleCheck(e: ChangeEvent<HTMLInputElement>) {
+  function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const name = e.target.name
     const checked = e.target.checked
 
@@ -439,11 +420,10 @@ export function AttendeeDetails() {
                       </TableHeader>
                       <TableHeader>Slug</TableHeader>
                       <TableHeader>Evento</TableHeader>
-                      <TableHeader>Começa</TableHeader>
-                      <TableHeader>Termina</TableHeader>
-                      <TableHeader>Confirmado</TableHeader>
-                      <TableHeader>Ver detalhes</TableHeader>
-                      <TableHeader>Remover</TableHeader>
+                      <TableHeader>Data de Início</TableHeader>
+                      <TableHeader>Data de Fim</TableHeader>
+                      <TableHeader>Check-in</TableHeader>
+                      <TableHeader style={{ width: 64 }}></TableHeader>
                     </tr>
                   </thead>
 
@@ -480,30 +460,20 @@ export function AttendeeDetails() {
                             {dayjs(event.endDate).format('DD/MM/YY')}
                           </TableCell>
 
-                          <TableCell className="text-center">
-                            <input 
-                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
-                              type="checkbox"
-                              checked={event.checkIn}
-                              onChange={() => event.checkIn === false && handleCheckIn(event.id)}
-                            />
+                          <TableCell>
+                            {event.checkIn ? (
+                                <Button variant="tertiary" iconName="square-check" disabled>Confirmado</Button>
+                              ) : (
+                                <Button variant="primary" iconName="square" onClick={() => handleCheckIn(attendee.id)}>Confirmar</Button>
+                              )
+                            }
                           </TableCell>
 
                           <TableCell>
                             <div className="flex justify-center">
                               <Button
                                 onClick={() => changeRoute({ route: 'event', slug: event.slug })}
-                                iconName="eye"
-                                variant="iconBorder"
-                              />
-                            </div>
-                          </TableCell>
-
-                          <TableCell>
-                            <div className="flex justify-center">
-                              <Button
-                                onClick={() => handleDeleteEventAttendee(event.slug)}
-                                iconName="trash-2"
+                                iconName="ellipsis"
                                 variant="iconBorder"
                               />
                             </div>
