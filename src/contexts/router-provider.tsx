@@ -21,9 +21,9 @@ type RouterProviderState = {
 }
 
 const initialState: RouterProviderState = {
-  route: 'home',
+  route: 'events',
   changeRoute: () => null,
-  pathname: '/',
+  pathname: '/eventos',
   pageIndex: undefined,
   search: undefined,
   slug: undefined,
@@ -36,7 +36,7 @@ const initialState: RouterProviderState = {
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
 
-type Routes = 'home' | 'events' | 'attendees' | 'createAttendee' | 'createEvent' | 'event' | 'attendee'
+export type Routes = 'events' | 'attendees' | 'createAttendee' | 'createEvent' | 'event' | 'attendee'
 
 interface ChangeRoutesProps {
   route: Routes
@@ -48,22 +48,19 @@ export function RouterProvider({
   children,
   ...props
 }: RouterProviderProps) {
-  const [pathname, setPathname] = useState('/')
+  const [pathname, setPathname] = useState('/eventos')
   const [pageIndex, setPageIndex] = useState<number | undefined>(undefined)
   const [search, setSearch] = useState<string | undefined>(undefined)
   const [slug, setSlug] = useState<string | undefined>(undefined)
   const [code, setCode] = useState<string | undefined>(undefined)
 
-  const [route, setRoute] = useState<Routes>('home')
+  const [route, setRoute] = useState<Routes>('events')
 
   useEffect(() => { 
     const { pathname, pageIndex, search, slug, code } = new CreateUrl()
 
     setRoute(() => {
       switch (pathname) {
-        case '/':
-          return 'home'
-          
         case '/eventos':
           return 'events'
         
@@ -77,7 +74,7 @@ export function RouterProvider({
           return 'attendee'
         
         default:
-          return 'home'
+          return 'events'
       }
     })
     
@@ -93,10 +90,6 @@ export function RouterProvider({
     setRoute(route)
 
     switch (route) {
-      case 'home':
-        updateUrl('/')
-        break;
-        
       case 'events':
         updateUrl('/eventos')
         break;
@@ -128,7 +121,7 @@ export function RouterProvider({
         break;
 
       default:
-        updateUrl('/')
+        updateUrl('/eventos')
         break;
     }
   }
