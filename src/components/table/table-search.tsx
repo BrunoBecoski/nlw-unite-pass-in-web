@@ -23,7 +23,7 @@ export function TableSearch({ title, search = '', setSearch }: TableSearchProps)
   }
 
   return (
-    <form className="flex gap-3 items-center" onClick={handleSearch}>
+    <form className="flex gap-3 items-center" onSubmit={handleSearch}>
       <h1 className="text-2xl font-bold first-letter:uppercase">{title}</h1>
       
       <Input

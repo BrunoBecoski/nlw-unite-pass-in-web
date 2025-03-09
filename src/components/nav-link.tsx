@@ -7,12 +7,12 @@ interface NavLinkProps extends ComponentProps<'a'> {
 }
 
 const a = tv({
-  base: 'font-medium text-sm border-b',
+  base: 'font-bold text-md border-b-2 hover:text-white',
 
   variants: {
     selected: {
-      true: 'text-white border-orange-300',
-      false: 'text-gray-200 border-transparent'
+      true: 'text-white border-orange-400',
+      false: 'text-gray-300 border-transparent'
     }
   },
 

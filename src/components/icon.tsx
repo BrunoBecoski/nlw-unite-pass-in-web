@@ -12,9 +12,9 @@ const icon = tv({
       default: '',
       transparent: 'text-transparent',
       white: 'text-white',
-      emerald: 'text-emerald-300',
-      orange: 'text-orange-300',
-      red: 'text-red-400',
+      emerald: 'text-emerald-500',
+      orange: 'text-orange-500',
+      red: 'text-red-500',
     },
 
     size: {
