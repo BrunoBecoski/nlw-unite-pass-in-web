@@ -59,25 +59,30 @@ export function RouterProvider({
   useEffect(() => { 
     const { pathname, pageIndex, search, slug, code } = new CreateUrl()
 
-    setRoute(() => {
-      switch (pathname) {
-        case '/eventos':
-          return 'events'
+    switch (pathname) {
+      case '/eventos':
+        setRoute('events')
+        break;
         
-        case '/participantes':
-          return 'attendees'
-
-        case '/evento':
-          return 'event'
-
-        case '/participante':
-          return 'attendee'
+      case '/participantes':
+        setRoute('attendees')
+        break;
         
-        default:
-          return 'events'
-      }
-    })
-    
+      case '/evento':
+        setRoute('event')
+        break;
+
+      case '/participante':
+        setRoute('attendee')
+        break;
+        
+      default:
+        setRoute('events')
+        setPathname('/eventos')
+        updateUrl('/eventos')
+        break;
+    } 
+
     setPathname(pathname)
     setPageIndex(pageIndex)
     setSearch(search)
@@ -87,28 +92,31 @@ export function RouterProvider({
 
   function changeRoute({ route, slug, code }: ChangeRoutesProps) {
 
-    setRoute(route)
-
     switch (route) {
       case 'events':
+        setRoute(route)
         updateUrl('/eventos')
         break;
         
       case 'attendees':
+        setRoute(route)
         updateUrl('/participantes')
         break;
       
       case 'createAttendee':
+        setRoute(route)
         updateUrl('/criar/participante')
         break;
 
       case 'createEvent':
+        setRoute(route)
         updateUrl('/criar/evento')
         break;
 
       case 'event':
         if (slug != undefined) {
           changeSlug(slug)
+          setRoute(route)
           updateUrl(`/evento/${slug}`)
         }
         break;
@@ -116,11 +124,13 @@ export function RouterProvider({
       case 'attendee':
         if (code != undefined) {
           changeCode(code)
+          setRoute(route)
           updateUrl(`/participante/${code}`)
         }
         break;
 
       default:
+        setRoute(route)
         updateUrl('/eventos')
         break;
     }
@@ -130,7 +140,7 @@ export function RouterProvider({
     const { url } = new CreateUrl({
       pathname
     })
-    
+
     setPathname(pathname)
     setPageIndex(undefined)
     setSearch(undefined)
