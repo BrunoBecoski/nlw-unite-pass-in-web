@@ -106,22 +106,21 @@ export function AttendeeList() {
 
   return (
     <div className="flex flex-col gap-4">
-      <TableSearch
-        title="participantes"
-        search={search}
-        setSearch={changeSearch}
-      />
-
-      {isCheck &&
-        <div className="flex flex-col gap-4">
+      {isCheck
+        ?
           <Button
             iconName="trash-2"
             variant="primary"
             onClick={handleDeleteAll}
-          >
+            >
             Remover
           </Button>
-        </div>
+        :
+          <TableSearch
+            title="participantes"
+            search={search}
+            setSearch={changeSearch}
+          />
       }
 
       {attendees.length === 0

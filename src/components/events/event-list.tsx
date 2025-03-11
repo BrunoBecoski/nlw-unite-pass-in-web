@@ -107,14 +107,8 @@ export function EventList() {
 
   return (
     <div className="flex flex-col gap-4">
-      <TableSearch 
-        title="eventos"
-        search={search}
-        setSearch={changeSearch}
-      />
-
-      {isCheck && 
-        <div className="flex gap-8">
+      {isCheck 
+        ?
           <Button
             iconName="trash-2"
             variant="primary"
@@ -122,9 +116,13 @@ export function EventList() {
           >
             Remover
           </Button>
-        </div>
+        :
+          <TableSearch 
+            title="eventos"
+            search={search}
+            setSearch={changeSearch}
+          />
       }
-
 
       {events.length === 0 
         ?
