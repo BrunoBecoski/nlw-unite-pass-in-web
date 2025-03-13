@@ -88,6 +88,8 @@ export function AttendeeList() {
   }
 
   useEffect(() => {
+    setIsCheck(false) 
+    setIsCheckArray([])
     fetchAttendees()
   }, [pageIndex, search])
 
@@ -106,22 +108,23 @@ export function AttendeeList() {
 
   return (
     <div className="flex flex-col gap-4">
-      {isCheck
-        ?
+      <div className="flex gap-8">
+        {isCheck &&
           <Button
             iconName="trash-2"
             variant="primary"
             onClick={handleDeleteAll}
-            >
-            Remover
+          >
+            Deletar participantes
           </Button>
-        :
-          <TableSearch
-            title="participantes"
-            search={search}
-            setSearch={changeSearch}
-          />
-      }
+        }
+
+        <TableSearch
+          title="participantes"
+          search={search}
+          setSearch={changeSearch}
+        />
+      </div>
 
       {attendees.length === 0
         ?

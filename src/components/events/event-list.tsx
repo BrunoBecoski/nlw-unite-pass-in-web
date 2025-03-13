@@ -107,22 +107,23 @@ export function EventList() {
 
   return (
     <div className="flex flex-col gap-4">
-      {isCheck 
-        ?
+      <div className="flex gap-8">
+        {isCheck &&
           <Button
             iconName="trash-2"
             variant="primary"
             onClick={handleDeleteAll}
           >
-            Remover
+            Deletar eventos
           </Button>
-        :
-          <TableSearch 
-            title="eventos"
-            search={search}
-            setSearch={changeSearch}
-          />
-      }
+        }
+          
+        <TableSearch 
+          title="eventos"
+          search={search}
+          setSearch={changeSearch}
+        />
+      </div>
 
       {events.length === 0 
         ?
