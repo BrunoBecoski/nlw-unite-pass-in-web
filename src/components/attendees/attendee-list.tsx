@@ -108,7 +108,7 @@ export function AttendeeList() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-8">
+      <div className="flex gap-8 justify-between">
         {isCheck &&
           <Button
             iconName="trash-2"
@@ -124,6 +124,13 @@ export function AttendeeList() {
           search={search}
           setSearch={changeSearch}
         />
+
+        <Button
+          title="Navegar para Criar Participante"
+          onClick={() => changeRoute({ route: 'createAttendee' })}
+        >
+            Criar participante
+        </Button>
       </div>
 
       {attendees.length === 0
@@ -143,7 +150,8 @@ export function AttendeeList() {
                   />
                 </TableHeader>
                 <TableHeader>Código</TableHeader>
-                <TableHeader>Participante</TableHeader>
+                <TableHeader>Nome</TableHeader>
+                <TableHeader>Email</TableHeader>
                 <TableHeader>Eventos</TableHeader>
                 <TableHeader style={{ width: 64 }}></TableHeader>
               </tr>
@@ -168,10 +176,11 @@ export function AttendeeList() {
                   </TableCell>
 
                   <TableCell>
-                    <div className="flex flex-col gap-1">
-                      <span className="font-semibold text-white">{attendee.name}</span>
-                      <span>{attendee.email}</span>
-                    </div>
+                    <span className="font-semibold text-white">{attendee.name}</span>
+                  </TableCell>
+
+                  <TableCell>
+                    {attendee.email}
                   </TableCell>
 
                   <TableCell>
@@ -180,6 +189,7 @@ export function AttendeeList() {
 
                   <TableCell>
                     <Button
+                      title={`Navegar para o participante ${attendee.name}`}
                       onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
                       iconName="ellipsis"
                       variant="iconBorder"

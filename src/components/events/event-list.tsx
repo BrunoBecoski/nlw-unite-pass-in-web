@@ -107,7 +107,7 @@ export function EventList() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-8">
+      <div className="flex gap-8 justify-between">
         {isCheck &&
           <Button
             iconName="trash-2"
@@ -123,6 +123,13 @@ export function EventList() {
           search={search}
           setSearch={changeSearch}
         />
+
+        <Button
+          title="Navegar para Criar Evento"
+          onClick={() => changeRoute({ route: 'createEvent' })}
+        >
+          Criar evento
+        </Button>
       </div>
 
       {events.length === 0 
@@ -142,7 +149,7 @@ export function EventList() {
                   />
                 </TableHeader>
                 <TableHeader>Slug</TableHeader>
-                <TableHeader>Evento</TableHeader>
+                <TableHeader>Título</TableHeader>
                 <TableHeader>Data de Início</TableHeader>
                 <TableHeader>Data de Fim</TableHeader>
                 <TableHeader>Participantes</TableHeader>
@@ -153,7 +160,7 @@ export function EventList() {
             <tbody>
               {events.map((event) => {
                 return (
-                <TableRow key={event.id}>
+                <TableRow key={event.id} onClick={() => confirm(event.title)}>
                   <TableCell>
                     <input 
                       type="checkbox"
@@ -169,10 +176,7 @@ export function EventList() {
                   </TableCell>
 
                   <TableCell>
-                    <div className="flex flex-col gap-1">
-                      <span className="font-semibold text-white">{event.title}</span>
-                      <span>{event.details}</span>
-                    </div>
+                    <span className="font-semibold text-white" title={event.details}>{event.title}</span>
                   </TableCell>
 
                   <TableCell>
@@ -189,6 +193,7 @@ export function EventList() {
 
                   <TableCell>
                     <Button
+                      title={`Navegar para o evento ${event.title}`}
                       onClick={() => changeRoute({ route: 'event', slug: event.slug })}
                       iconName="ellipsis"
                       variant="iconBorder"
