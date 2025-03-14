@@ -35,7 +35,7 @@ export function Input({
   ...props
 }: InputProps) {
   return (
-    <div className="flex flex-col gap-2 w-min">
+    <div className="flex flex-col gap-1 w-min">
       { label && <label htmlFor={props.name}>{label}</label> }
       
       <div className={input({ variant })}>
@@ -51,7 +51,7 @@ export function Input({
         { props.type === 'date'? (
           <input
             id={props.name}
-            className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0 w-44" 
+            className="bg-transparent text-white flex-1 outline-none border-0 p-0 text-sm focus:ring-0" 
             min={String(new Date().toISOString().split("T")[0])}
             onFocus={(e) => e.target.showPicker && e.target.showPicker()}
             {...props}

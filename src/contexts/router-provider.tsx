@@ -36,7 +36,7 @@ const initialState: RouterProviderState = {
 
 const RouterProviderContext = createContext<RouterProviderState>(initialState)
 
-export type Routes = 'events' | 'attendees' | 'createAttendee' | 'createEvent' | 'event' | 'attendee'
+export type Routes = 'events' | 'attendees' | 'event' | 'attendee'
 
 interface ChangeRoutesProps {
   route: Routes
@@ -103,16 +103,6 @@ export function RouterProvider({
         updateUrl('/participantes')
         break;
       
-      case 'createAttendee':
-        setRoute(route)
-        updateUrl('/criar/participante')
-        break;
-
-      case 'createEvent':
-        setRoute(route)
-        updateUrl('/criar/evento')
-        break;
-
       case 'event':
         if (slug != undefined) {
           changeSlug(slug)
