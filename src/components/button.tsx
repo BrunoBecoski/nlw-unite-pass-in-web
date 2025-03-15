@@ -13,18 +13,25 @@ const button = tv({
       tertiary: 'bg-emerald-400 enabled:hover:bg-emerald-500',
       icon: 'bg-transparent enabled:hover:text-orange-500 rounded-md p-1',
       iconBorder: 'text-white bg-zinc-950 border border-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500 rounded-md p-1',
-      chevron: 'text-white p-1.5 border border-white/10 bg-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500'
+      chevron: 'text-white p-1.5 border border-white/10 bg-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500',
+      close: 'text-zinc-400 hover:text-white'
     },
 
     size: {
       default: 'w-fit',
       full: 'w-full',
+    },
+
+    iconSize: {
+      default: 'default',
+      sm: 'sm',
     }
   },
 
   defaultVariants: {
     variant: 'primary',
     size: 'default',
+    iconSize: 'sm',
   }
 })
 
@@ -34,7 +41,7 @@ interface ButtonProps extends ComponentProps<'button'>, VariantProps<typeof butt
   isLoading?: boolean
 }
 
-export function Button({ iconName, children, variant, size, isLoading = false, ...props }: ButtonProps) {
+export function Button({ iconName, children, variant, size, iconSize = 'sm', isLoading = false, ...props }: ButtonProps) {
   
   let disabled = props.disabled 
 
@@ -56,7 +63,7 @@ export function Button({ iconName, children, variant, size, isLoading = false, .
       />
     ) : (
         <>
-          { iconName && <Icon name={iconName} size="sm"/> }
+          { iconName && <Icon name={iconName} size={iconSize} /> }
           {children}
         </>
       )

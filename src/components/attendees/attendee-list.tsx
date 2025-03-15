@@ -13,6 +13,7 @@ import { TableRow } from '../table/table-row'
 import { TableFoot } from '../table/table-foot'
 import { TableSearch } from '../table/table-search'
 import { Button } from '../button'
+import { AttendeeModal } from './attendee-modal'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -24,6 +25,7 @@ export function AttendeeList() {
   const [attendees, setAttendees] = useState<AttendeeTypes[]>([])
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const name = e.target.name
@@ -127,7 +129,7 @@ export function AttendeeList() {
 
         <Button
           title="Navegar para Criar Participante"
-          onClick={() => changeRoute({ route: 'createAttendee' })}
+          onClick={() => setModalIsOpen(!modalIsOpen)}
         >
             Criar participante
         </Button>
@@ -209,6 +211,8 @@ export function AttendeeList() {
             />
           </Table>
       }      
+
+      <AttendeeModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} />
     </div>
   )
 }
