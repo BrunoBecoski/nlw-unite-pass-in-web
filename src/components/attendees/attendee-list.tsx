@@ -127,11 +127,8 @@ export function AttendeeList() {
           setSearch={changeSearch}
         />
 
-        <Button
-          title="Navegar para Criar Participante"
-          onClick={() => setModalIsOpen(!modalIsOpen)}
-        >
-            Criar participante
+        <Button onClick={() => setModalIsOpen(true)}>
+          Criar participante
         </Button>
       </div>
 

@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react'
+import { tv, VariantProps } from 'tailwind-variants'
 import * as  z from 'zod'
 
 import { createAttendee } from '../../fetches'
@@ -6,7 +7,6 @@ import { useRouter } from '../../contexts/router-provider'
 
 import { Input, InputVariants } from '../input'
 import { Button } from '../button'
-import { tv, VariantProps } from 'tailwind-variants'
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
