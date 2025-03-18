@@ -5,7 +5,6 @@ import { z } from "zod"
 import { useRouter } from "../../contexts/router-provider"
 import { 
   checkInEventAttendee,
-  createEventAttendee,
   deleteEvent,
   deleteEventAttendee,
   EventAndAttendeesType,
@@ -21,6 +20,7 @@ import { TableCell } from "../table/table-cell"
 import { Button } from "../button"
 import { TableSearch } from "../table/table-search"
 import { TableFoot } from "../table/table-foot"
+import { AddAttendee } from "./add-attendee"
 
 const schema = z.object({
   title: z.string({ message: 'Titulo obrigatório' }).min(4, { message: 'Mínimo 4 caracteres' }),
@@ -56,7 +56,6 @@ interface FormStatusProps {
 export function EventDetails() {
   const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType)
   const [showForm, setShowForm] = useState(false)
-  const [showRegister, setShowRegister] = useState(false)
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
   const [isCheck, setIsCheck] = useState(false)
@@ -66,10 +65,6 @@ export function EventDetails() {
 
   function handleShowForm() {
     setShowForm(!showForm)
-  }
-
-  function handleShowRegister() {
-    setShowRegister(!showRegister)
   }
 
   async function handleCheckIn(attendeeId: string) {
@@ -197,29 +192,6 @@ export function EventDetails() {
       alert(message)
 
       return
-    }
-  }
-
-  async function handleRegisterEventAttendee(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-
-    const form = new FormData(e.currentTarget)
-    const code = form.get('code')?.toString()
-
-    if (code == null || slug == undefined) {
-      return
-    }
-
-    const { successfully, message } = await createEventAttendee({ code, slug })
-
-    if (successfully == false) {
-      alert(message)
-    }
-
-    if (successfully == true) {
-      alert(message)
-      setShowRegister(false)
-      fetchEvent()
     }
   }
 
@@ -440,8 +412,8 @@ export function EventDetails() {
                 search={search}
                 setSearch={changeSearch}
               />
-
-              <Button onClick={handleShowRegister}>Adicionar participante</Button>
+              
+              <AddAttendee slug={slug} fetchEvent={fetchEvent} />
             </div>
 
             {isCheck && 
@@ -464,13 +436,6 @@ export function EventDetails() {
               </div>
             }
 
-            {event.attendees &&
-               showRegister ? (
-                  <form onSubmit={handleRegisterEventAttendee} className="flex flex-col gap-2">
-                    <Input name="code" label="Código do participante" />
-                    <Button type="submit">Adicionar participante no evento</Button>
-                  </form> 
-              ) : (
                 <Table>
                   <thead>
                     <tr className="border-b border-white/10">
@@ -514,14 +479,14 @@ export function EventDetails() {
                           </TableCell>
 
                           <TableCell>
-                            <span className="text-white">{attendee.email}</span>
+                            {attendee.email}
                           </TableCell>
 
                           <TableCell>
                           {attendee.checkIn ? (
-                              <Button variant="tertiary" iconName="square-check" disabled>Confirmado</Button>
+                              <Button variant="checkInOn" iconName="circle-check" iconSize="default" disabled />
                             ) : (
-                              <Button variant="primary" iconName="square" onClick={() => handleCheckIn(attendee.id)}>Confirmar</Button>
+                              <Button variant="checkInOff" iconSize="default" iconName="circle" onClick={() => handleCheckIn(attendee.id)} />
                             )
                           }
                           </TableCell>
@@ -547,17 +512,12 @@ export function EventDetails() {
                     setPageIndex={changePageIndex}
                   />
                 </Table>
-              )
-            }
           </>
         ) : ( 
           <>
             <h1 className="text-2xl font-bold">Nenhum participante no evento</h1>
 
-            <form onSubmit={handleRegisterEventAttendee} className="flex flex-col gap-2">
-              <Input name="code" label="Código do participante" />
-              <Button type="submit">Adicionar participante no evento</Button>
-            </form> 
+            <AddAttendee slug={slug} fetchEvent={fetchEvent} />
           </>
         )
       }

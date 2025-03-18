@@ -14,7 +14,9 @@ const button = tv({
       icon: 'bg-transparent enabled:hover:text-orange-500 rounded-md p-1',
       iconBorder: 'text-white bg-zinc-950 border border-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500 rounded-md p-1',
       chevron: 'text-white p-1.5 border border-white/10 bg-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500',
-      close: 'text-zinc-400 hover:text-white'
+      close: 'text-zinc-400 hover:text-white',
+      checkInOn: 'text-[#9FF9CC] disabled:opacity-100 disabled:cursor-pointer',
+      checkInOff: 'text-[#F48F56]',
     },
 
     size: {
