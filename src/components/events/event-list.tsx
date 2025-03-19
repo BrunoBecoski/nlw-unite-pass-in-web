@@ -12,7 +12,7 @@ import { TableRow } from '../table/table-row'
 import { TableFoot } from '../table/table-foot'
 import { TableSearch } from '../table/table-search'
 import { Button } from '../button'
-import { EventModal } from './event-modal'
+import { CreateEvent } from './create-event'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -24,7 +24,7 @@ export function EventList() {
   const [events, setEvents] = useState<EventTypes[]>([])
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [createEventIsOpen, setCreateEventIsOpen] = useState(false)
 
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const name = e.target.name
@@ -126,7 +126,7 @@ export function EventList() {
           setSearch={changeSearch}
         />
 
-        <Button onClick={() => setModalIsOpen(true)}>
+        <Button onClick={() => setCreateEventIsOpen(true)}>
           Criar evento
         </Button>
       </div>
@@ -212,7 +212,7 @@ export function EventList() {
           </Table>
       }
 
-      <EventModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}  />
+      <CreateEvent isOpen={createEventIsOpen} setIsOpen={setCreateEventIsOpen}  />
     </div>
   )
 }

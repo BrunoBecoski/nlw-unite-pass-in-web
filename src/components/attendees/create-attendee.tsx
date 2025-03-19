@@ -35,12 +35,11 @@ const div = tv({
   }
 })
 
-
-interface AttendeeModalProps extends VariantProps<typeof div> {
+interface CreateAttendeeProps extends VariantProps<typeof div> {
   setIsOpen: (isOpen: boolean) => void
 }
 
-export function AttendeeModal({ isOpen, setIsOpen }: AttendeeModalProps) {
+export function CreateAttendee({ isOpen, setIsOpen }: CreateAttendeeProps) {
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
 

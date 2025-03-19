@@ -50,11 +50,11 @@ const div = tv({
   }
 })
 
-interface EventModalProps extends VariantProps<typeof div> {
+interface CreateEventProps extends VariantProps<typeof div> {
   setIsOpen: (isOpen: boolean) => void
 }
 
-export function EventModal({ isOpen, setIsOpen }: EventModalProps) {
+export function CreateEvent({ isOpen, setIsOpen }: CreateEventProps) {
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
 
