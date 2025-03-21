@@ -23,16 +23,12 @@ import { UpdateEvent } from "./update-event"
 
 export function EventDetails() {
   const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType)
-  const [showForm, setShowForm] = useState(false)
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
   const [updateEventIsOpen, setUpdateEventIsOpen] = useState(false)
 
   const { slug, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
-  function handleShowForm() {
-    setShowForm(!showForm)
-  }
 
   async function handleCheckIn(attendeeId: string) {
     const response = confirm('Confirmar participante no evento?')
@@ -206,137 +202,121 @@ export function EventDetails() {
       
 
         <div className="flex flex-col items-end gap-4">
-          <Button onClick={handleShowForm} iconName="pencil">Editar evento</Button>
           <Button onClick={handleDelete} variant="secondary" iconName="trash">Deletar evento</Button>
         </div>
       </div>
-    </div>
 
-    <div className="flex justify-between">
       <AddAttendee slug={slug} fetchEvent={fetchEvent} />
-
-      <Button onClick={() => setUpdateEventIsOpen(true)}>
-        Atualizar evento
-      </Button>
     </div>
-      {
-        event.attendees?.length >= 1 ? (
-          <>
-            <div className="flex justify-between">
-              <TableSearch
-                title="participantes"
-                search={search}
-                setSearch={changeSearch}
-              />
+      <div className="flex justify-between">
+        <TableSearch
+          title="participantes"
+          search={search}
+          setSearch={changeSearch}
+        />
+        
+        <Button onClick={() => setUpdateEventIsOpen(true)} iconName="pencil">Editar evento</Button>
+      </div>
 
+      {isCheck && 
+        <div className="flex gap-8">
+          <Button
+            iconName="square-check"
+            variant="primary"
+            onClick={handleCheckAll}
+          >
+            Confirmar
+          </Button>
 
-            </div>
-
-            {isCheck && 
-              <div className="flex gap-8">
-                <Button
-                  iconName="square-check"
-                  variant="primary"
-                  onClick={handleCheckAll}
-                >
-                  Confirmar
-                </Button>
-
-                <Button
-                  iconName="trash-2"
-                  variant="primary"
-                  onClick={handleDeleteAll}
-                >
-                  Remover
-                </Button>
-              </div>
-            }
-
-                <Table>
-                  <thead>
-                    <tr className="border-b border-white/10">
-                      <TableHeader style={{ width: 48 }} >
-                        <input
-                          name="checkbox"
-                          type="checkbox"
-                          className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
-                          checked={isCheck}
-                          onChange={handleCheck}
-                        />
-                      </TableHeader>
-                      <TableHeader>Código</TableHeader>
-                      <TableHeader>Nome</TableHeader>
-                      <TableHeader>Email</TableHeader>
-                      <TableHeader>Check-in</TableHeader>
-                      <TableHeader style={{ width: 64 }}></TableHeader>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {event.attendees.map((attendee) => {
-                      return (
-                        <TableRow key={attendee.id}>
-                          <TableCell>
-                            <input
-                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
-                              type="checkbox"
-                              name={attendee.id}
-                              onChange={handleCheck} 
-                              checked={isCheckArray.includes(attendee.id)}
-                            />
-                          </TableCell>
-
-                          <TableCell>
-                            {attendee.code}
-                          </TableCell>
-
-                          <TableCell>
-                            <span className="font-semibold text-white">{attendee.name}</span>
-                          </TableCell>
-
-                          <TableCell>
-                            {attendee.email}
-                          </TableCell>
-
-                          <TableCell>
-                          {attendee.checkIn ? (
-                              <Button variant="checkInOn" iconName="circle-check" iconSize="default" disabled />
-                            ) : (
-                              <Button variant="checkInOff" iconSize="default" iconName="circle" onClick={() => handleCheckIn(attendee.id)} />
-                            )
-                          }
-                          </TableCell>
-
-                          <TableCell>
-                            <div className="flex justify-center">
-                              <Button
-                                onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
-                                iconName="ellipsis"
-                                variant="iconBorder"
-                              />
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
-                  </tbody>
-
-                  <TableFoot
-                    length={event.attendees.length}
-                    total={event.total}
-                    pageIndex={pageIndex}
-                    setPageIndex={changePageIndex}
-                  />
-                </Table>
-          </>
-        ) : ( 
-          <>
-            <h1 className="text-2xl font-bold">Nenhum participante no evento</h1>
-
-            <AddAttendee slug={slug} fetchEvent={fetchEvent} />
-          </>
-        )
+          <Button
+            iconName="trash-2"
+            variant="primary"
+            onClick={handleDeleteAll}
+          >
+            Remover
+          </Button>
+        </div>
       }
+
+      <Table>
+        <thead>
+          <tr className="border-b border-white/10">
+            <TableHeader style={{ width: 48 }} >
+              <input
+                name="checkbox"
+                type="checkbox"
+                className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                checked={isCheck}
+                onChange={handleCheck}
+              />
+            </TableHeader>
+            <TableHeader>Código</TableHeader>
+            <TableHeader>Nome</TableHeader>
+            <TableHeader>Email</TableHeader>
+            <TableHeader>Check-in</TableHeader>
+            <TableHeader style={{ width: 64 }}></TableHeader>
+          </tr>
+        </thead>
+
+        { event.attendees?.length >= 1 && (
+          <>
+            <tbody>
+              {event.attendees.map((attendee) => (
+                <TableRow key={attendee.id}>
+                  <TableCell>
+                    <input
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                      type="checkbox"
+                      name={attendee.id}
+                      onChange={handleCheck} 
+                      checked={isCheckArray.includes(attendee.id)}
+                      />
+                  </TableCell>
+
+                  <TableCell>
+                    {attendee.code}
+                  </TableCell>
+
+                  <TableCell>
+                    <span className="font-semibold text-white">{attendee.name}</span>
+                  </TableCell>
+
+                  <TableCell>
+                    {attendee.email}
+                  </TableCell>
+
+                  <TableCell>
+                    {attendee.checkIn ? (
+                        <Button variant="checkInOn" iconName="circle-check" iconSize="default" disabled />
+                      ) : (
+                        <Button variant="checkInOff" iconSize="default" iconName="circle" onClick={() => handleCheckIn(attendee.id)} />
+                      )
+                    }
+                  </TableCell>
+
+                  <TableCell>
+                    <div className="flex justify-center">
+                      <Button
+                        onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
+                        iconName="ellipsis"
+                        variant="iconBorder"
+                        />
+                    </div>
+                  </TableCell>
+                </TableRow>
+                )
+              )}
+            </tbody>
+            
+            <TableFoot
+              length={event.attendees.length}
+              total={event.total}
+              pageIndex={pageIndex}
+              setPageIndex={changePageIndex}
+            />
+          </>
+        )}
+      </Table>
 
       <UpdateEvent isOpen={updateEventIsOpen}  setIsOpen={setUpdateEventIsOpen} event={event} setEvent={setEvent}/>
     </div>

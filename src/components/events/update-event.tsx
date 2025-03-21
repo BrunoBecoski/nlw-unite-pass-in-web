@@ -176,7 +176,7 @@ export function UpdateEvent({ isOpen, setIsOpen, event, setEvent }: UpdateEventP
 
       <form  onSubmit={handleSubmit} className="flex flex-col items-center justify-evenly py-30 h-full gap-4">
         <h2 className="text-2xl font-bold">
-          Atualize o evento
+          Edite o evento
         </h2>
   
         <div className="flex flex-col gap-8">
@@ -234,7 +234,7 @@ export function UpdateEvent({ isOpen, setIsOpen, event, setEvent }: UpdateEventP
           size="full"
           isLoading={isLoading}
         >
-          Atualizar evento
+          Editar evento
         </ Button>
       </form>
     </div>

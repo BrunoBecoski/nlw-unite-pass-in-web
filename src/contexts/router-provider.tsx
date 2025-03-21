@@ -68,11 +68,11 @@ export function RouterProvider({
         setRoute('attendees')
         break;
         
-      case '/evento':
+      case `/evento/${slug}`:
         setRoute('event')
         break;
 
-      case '/participante':
+      case `/participante/${code}`:
         setRoute('attendee')
         break;
         

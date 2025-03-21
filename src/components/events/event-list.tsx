@@ -159,7 +159,7 @@ export function EventList() {
             <tbody>
               {events.map((event) => {
                 return (
-                <TableRow key={event.id} onClick={() => confirm(event.title)}>
+                <TableRow key={event.id}>
                   <TableCell>
                     <input 
                       type="checkbox"
