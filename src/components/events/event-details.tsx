@@ -176,7 +176,7 @@ export function EventDetails() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between">
         <div className="flex items-start justify-between w-full">
           <div className="flex flex-col gap-4">
@@ -197,6 +197,7 @@ export function EventDetails() {
               <span>Participantes: {event.totalAttendees}</span>
               <span>Confirmado: {event.checkInAttendees}</span>
               <span>Máximo: {event.maximumAttendees}</span>
+              <AddAttendee slug={slug} fetchEvent={fetchEvent} />
             </div>
           </div>
       
@@ -206,8 +207,8 @@ export function EventDetails() {
         </div>
       </div>
 
-      <AddAttendee slug={slug} fetchEvent={fetchEvent} />
-    </div>
+      </div>
+
       <div className="flex justify-between">
         <TableSearch
           title="participantes"
@@ -215,21 +216,21 @@ export function EventDetails() {
           setSearch={changeSearch}
         />
         
-        <Button onClick={() => setUpdateEventIsOpen(true)} iconName="pencil">Editar evento</Button>
+        <Button onClick={() => setUpdateEventIsOpen(true)}>Editar evento</Button>
       </div>
 
-      {isCheck && 
-        <div className="flex gap-8">
+      {isCheck &&
+        <div className="flex gap-8 items-center">
+          <p className="font-semibold text-lg">O que deseja fazer com os participantes selecionados?</p>
+
           <Button
-            iconName="square-check"
             variant="primary"
             onClick={handleCheckAll}
           >
-            Confirmar
+            Check-in
           </Button>
 
           <Button
-            iconName="trash-2"
             variant="primary"
             onClick={handleDeleteAll}
           >
@@ -270,7 +271,7 @@ export function EventDetails() {
                       name={attendee.id}
                       onChange={handleCheck} 
                       checked={isCheckArray.includes(attendee.id)}
-                      />
+                    />
                   </TableCell>
 
                   <TableCell>
