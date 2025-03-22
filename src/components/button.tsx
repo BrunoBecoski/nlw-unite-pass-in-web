@@ -4,7 +4,7 @@ import { tv, type VariantProps } from 'tailwind-variants'
 import { Icon, IconName } from './icon'
 
 const button = tv({
-  base: 'flex items-center justify-center gap-4 px-4 py-2 rounded-lg text-zinc-950 font-semibold disabled:cursor-not-allowed disabled:opacity-50 transition',
+  base: 'flex items-center justify-center gap-4 px-4 py-2 h-fit rounded-lg text-zinc-950 font-semibold disabled:cursor-not-allowed disabled:opacity-50 transition',
 
   variants: {
     variant: { 

@@ -177,48 +177,47 @@ export function EventDetails() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between">
-        <div className="flex items-start justify-between w-full">
-          <div className="flex flex-col gap-4">
+      <div>
+        <div className="flex justify-between">
+          <div>
             <div className="flex items-center gap-10">
               <h1 className="text-5xl font-bold italic">{event.title}</h1>
-              <Button title="Copiar" iconName="copy" onClick={() => navigator.clipboard.writeText(event.slug)}> {event.slug}</Button>
+           
+              <div className="text-2xl">
+                <span className="italic">{dayjs(event.startDate).format("DD/MM/YYYY")}</span>
+                <span> - </span>
+                <span className="italic">{dayjs(event.endDate).format("DD/MM/YYYY")}</span>
+              </div>
             </div>
 
-            <div>
-              <span className="italic">{dayjs(event.startDate).format("DD/MM/YYYY")}</span>
-              <span> - </span>
-              <span className="italic">{dayjs(event.endDate).format("DD/MM/YYYY")}</span>
-            </div>
-            
-            <p className="text-lg">{event.details}</p>
-
-            <div className="flex flex-col gap-1 text-sm">
-              <span>Participantes: {event.totalAttendees}</span>
-              <span>Confirmado: {event.checkInAttendees}</span>
-              <span>Máximo: {event.maximumAttendees}</span>
-              <AddAttendee slug={slug} fetchEvent={fetchEvent} />
-            </div>
+            <Button variant="close" title="Copiar slug" onClick={() => navigator.clipboard.writeText(event.slug)}> {event.slug}</Button>
           </div>
-      
 
-        <div className="flex flex-col items-end gap-4">
-          <Button onClick={handleDelete} variant="secondary" iconName="trash">Deletar evento</Button>
+          <Button onClick={handleDelete} variant="secondary">Deletar evento</Button>
         </div>
-      </div>
+
+        <p className="text-xl">{event.details}</p>
+
+        <div className="flex gap-8 my-4 text-lg">
+          <span>Participantes {event.totalAttendees}/{event.maximumAttendees}</span>
+          <span>Check-in {event.checkInAttendees}/{event.totalAttendees}</span>
+        </div>
 
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <TableSearch
           title="participantes"
           search={search}
           setSearch={changeSearch}
         />
-        
-        <Button onClick={() => setUpdateEventIsOpen(true)}>Editar evento</Button>
-      </div>
 
+        <div className="flex gap-4">
+          <AddAttendee slug={event.slug} fetchEvent={fetchEvent} />
+          <Button onClick={() => setUpdateEventIsOpen(true)}>Editar evento</Button>
+        </div>
+      </div>
+      
       {isCheck &&
         <div className="flex gap-8 items-center">
           <p className="font-semibold text-lg">O que deseja fazer com os participantes selecionados?</p>

@@ -4,21 +4,21 @@ import { FormEvent } from 'react'
 import { createEventAttendee } from '../../fetches'
 
 interface AddAttendeeProps {
-  slug?: string
+  slug: string
   fetchEvent: () => void
 }
 
 export function AddAttendee({ slug, fetchEvent }: AddAttendeeProps) {
   async function handleRegisterEventAttendee(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
+    
     const form = new FormData(e.currentTarget)
     const code = form.get('code')?.toString()
-
+    
     if (code == null || slug == undefined) {
       return
     }
-
+    
     const { successfully, message } = await createEventAttendee({ code, slug })
 
     if (successfully == false) {
