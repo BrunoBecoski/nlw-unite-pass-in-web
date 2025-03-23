@@ -125,7 +125,7 @@ export function CreateAttendee({ isOpen, setIsOpen }: CreateAttendeeProps) {
           title='Fechar'
           onClick={() => setIsOpen(false)}
           iconName="arrow-right"
-          variant="close"
+          variant="icon"
           iconSize="default"
         />
       </div>
@@ -155,7 +155,6 @@ export function CreateAttendee({ isOpen, setIsOpen }: CreateAttendeeProps) {
 
         <Button
           type="submit"
-          variant="primary"
           size="full"
           isLoading={isLoading}
           >

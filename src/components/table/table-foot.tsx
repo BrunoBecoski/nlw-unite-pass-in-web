@@ -1,4 +1,4 @@
-import { Button } from '../button'
+import { Icon } from '../icon'
 import { TableCell } from './table-cell'
 
 interface TableFootProps {
@@ -47,37 +47,57 @@ export function TableFoot({
             <span>Página {pageIndex ? pageIndex : 1} de {totalPages}</span>
 
             <div className="flex gap-1.5">
-              <Button
-                variant="chevron"
-                iconName="chevrons-left"
+              <button
+                type="button"
+                className="p-1.5 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 transition text-white border border-white/10 bg-white/10 enabled:hover:border-orange enabled:hover:text-orange"
                 title="Ir para a primeira página"
                 onClick={goToFirstPage}
                 disabled={pageIndex === 1 || pageIndex === undefined}
-              />
+              >
+                <Icon
+                  size="sm"
+                  name="chevrons-left"
+                />
+              </button>
 
-              <Button
-                variant="chevron"
-                iconName="chevron-left"
+              <button
+                type="button"
+                className="p-1.5 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 transition text-white border border-white/10 bg-white/10 enabled:hover:border-orange enabled:hover:text-orange"
                 title="Ir para a página anterior"
                 onClick={goToPreviousPage}
                 disabled={pageIndex === 1 || pageIndex === undefined}
-              />
+              >
+                <Icon
+                  size="sm"
+                  name="chevron-left"
+                />
+              </button>
 
-              <Button
-                variant="chevron"
-                iconName="chevron-right"
+              <button
+                type="button"
+                className="p-1.5 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 transition text-white border border-white/10 bg-white/10 enabled:hover:border-orange enabled:hover:text-orange"
                 title="Ir para a próxima página"
                 onClick={goToNextPage}
                 disabled={currentPageIndex  >= totalPages}
-              />
-              
-              <Button
-                variant="chevron"
-                iconName="chevrons-right"
+              >
+                <Icon
+                  size="sm"
+                  name="chevron-right"
+                />
+              </button>
+
+              <button
+                type="button"
+                className="p-1.5 rounded-lg disabled:cursor-not-allowed disabled:opacity-50 transition text-white border border-white/10 bg-white/10 enabled:hover:border-orange enabled:hover:text-orange"
                 title="Ir para a última página"
                 onClick={goToLastPage}
                 disabled={currentPageIndex >= totalPages}
-              />
+              >
+                <Icon
+                  size="sm"
+                  name="chevrons-right"
+                />
+              </button>
             </div>
           </div>
         </TableCell>

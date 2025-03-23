@@ -340,7 +340,6 @@ export function AttendeeDetails() {
         
                 <Button
                   type="submit"
-                  variant="primary"
                   size="full"
                   isLoading={isLoading}
                 >
@@ -361,7 +360,7 @@ export function AttendeeDetails() {
           <div className="flex flex-col items-end gap-4 ">
             <Button onClick={handleShowForm} iconName="pencil">Editar participante</Button>
             <Button onClick={handleUpdateAttendeeCode} iconName="repeat">Gera novo código</Button>
-            <Button onClick={handleDelete} iconName="trash" variant="secondary">Deletar participante</Button>
+            <Button onClick={handleDelete} iconName="trash">Deletar participante</Button>
           </div>
         </div>
       </div>
@@ -383,7 +382,6 @@ export function AttendeeDetails() {
               <div className="flex gap-8">
                 <Button
                   iconName="square-check"
-                  variant="primary"
                   onClick={handleCheckAll}
                 >
                   Confirmar
@@ -391,7 +389,6 @@ export function AttendeeDetails() {
                 
                 <Button
                   iconName="trash-2"
-                  variant="primary"
                   onClick={handleDeleteAll}
                 >
                   Remover
@@ -413,7 +410,7 @@ export function AttendeeDetails() {
                         <input
                           type="checkbox"
                           name="checkbox"
-                          className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                          className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange"
                           checked={isCheck}
                           onChange={handleCheck}
                         />
@@ -433,7 +430,7 @@ export function AttendeeDetails() {
                         <TableRow key={event.id}>
                           <TableCell>
                             <input 
-                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                              className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange"
                               type="checkbox"
                               name={event.id}
                               onChange={handleCheck}
@@ -462,9 +459,9 @@ export function AttendeeDetails() {
 
                           <TableCell>
                             {event.checkIn ? (
-                                <Button variant="tertiary" iconName="square-check" disabled>Confirmado</Button>
+                                <Button iconName="square-check" disabled>Confirmado</Button>
                               ) : (
-                                <Button variant="primary" iconName="square" onClick={() => handleCheckIn(attendee.id)}>Confirmar</Button>
+                                <Button iconName="square" onClick={() => handleCheckIn(attendee.id)}>Confirmar</Button>
                               )
                             }
                           </TableCell>
@@ -474,7 +471,7 @@ export function AttendeeDetails() {
                               <Button
                                 onClick={() => changeRoute({ route: 'event', slug: event.slug })}
                                 iconName="ellipsis"
-                                variant="iconBorder"
+                                variant="border"
                               />
                             </div>
                           </TableCell>

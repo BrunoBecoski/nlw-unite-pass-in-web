@@ -169,7 +169,7 @@ export function UpdateEvent({ isOpen, setIsOpen, event, setEvent }: UpdateEventP
           title="Fechar"
           onClick={() => setIsOpen(false)}
           iconName="arrow-right"
-          variant="close"
+          variant="icon"
           iconSize="default"
         />
       </div>
@@ -230,7 +230,6 @@ export function UpdateEvent({ isOpen, setIsOpen, event, setEvent }: UpdateEventP
 
         <Button
           type="submit"
-          variant="primary"
           size="full"
           isLoading={isLoading}
         >

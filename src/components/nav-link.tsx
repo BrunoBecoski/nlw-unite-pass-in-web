@@ -11,8 +11,8 @@ const a = tv({
 
   variants: {
     selected: {
-      true: 'text-white border-orange-400',
-      false: 'text-gray-300 border-transparent'
+      true: 'text-white border-orange',
+      false: 'text-gray-200 border-transparent hover:border-orange/50'
     }
   },
 

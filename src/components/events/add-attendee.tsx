@@ -34,8 +34,8 @@ export function AddAttendee({ slug, fetchEvent }: AddAttendeeProps) {
   return (
     <form className="flex items-center gap-2" onSubmit={handleRegisterEventAttendee}>
       <label className="text-lg font-semibold">Adicione um participante</label>
-      <div className="px-3 py-2 border border-white/10 rounded-lg text-sm flex items-center gap-3 text-emerald-400 focus-within:border-orange-500">
-        <button type="submit" title="Adicionar participante" className="hover:text-orange-500">
+      <div className="px-3 py-2 border border-white/10 rounded-lg text-sm flex items-center gap-3 text-green focus-within:border-orange">
+        <button type="submit" title="Adicionar participante" className="hover:text-orange">
           <UserPlus size={18} />
         </button>
 

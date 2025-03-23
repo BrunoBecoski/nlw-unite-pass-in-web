@@ -8,15 +8,9 @@ const button = tv({
 
   variants: {
     variant: { 
-      primary: 'bg-orange-400 enabled:hover:bg-orange-500',
-      secondary: 'bg-zinc-400 enabled:hover:bg-zinc-500',
-      tertiary: 'bg-emerald-400 enabled:hover:bg-emerald-500',
-      icon: 'bg-transparent enabled:hover:text-orange-500 rounded-md p-1',
-      iconBorder: 'text-white bg-zinc-950 border border-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500 rounded-md p-1',
-      chevron: 'text-white p-1.5 border border-white/10 bg-white/10 enabled:hover:border-orange-500 enabled:hover:text-orange-500',
-      close: 'text-zinc-400 hover:text-white',
-      checkInOn: 'text-[#9FF9CC] disabled:opacity-100 disabled:cursor-pointer',
-      checkInOff: 'text-[#F48F56]',
+      default: 'bg-orange enabled:hover:bg-orange/80',
+      icon: 'text-white enabled:hover:text-orange',
+      border: 'text-white bg-zinc-950 border border-white/10 enable:hover:border-orange hover:text-orange rounded-md p-1',
     },
 
     size: {
@@ -31,7 +25,7 @@ const button = tv({
   },
 
   defaultVariants: {
-    variant: 'primary',
+    variant: 'default',
     size: 'default',
     iconSize: 'sm',
   }

@@ -12,9 +12,8 @@ const icon = tv({
       default: '',
       transparent: 'text-transparent',
       white: 'text-white',
-      emerald: 'text-emerald-500',
-      orange: 'text-orange-500',
-      red: 'text-red-500',
+      emerald: 'text-green',
+      orange: 'text-orange',
     },
 
     size: {
@@ -36,7 +35,7 @@ const icon = tv({
 })
 
 interface IconProps extends VariantProps<typeof icon> {
-  name?: IconName
+  name: IconName
 }
 
 export const Icon = ({ name = 'code-xml', color, size, animation }: IconProps) => {

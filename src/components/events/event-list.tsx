@@ -113,7 +113,6 @@ export function EventList() {
         {isCheck &&
           <Button
             iconName="trash-2"
-            variant="primary"
             onClick={handleDeleteAll}
           >
             Deletar eventos
@@ -142,7 +141,7 @@ export function EventList() {
                   <input
                     name="checkbox"
                     type="checkbox"
-                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange" 
                     checked={isCheck}
                     onChange={handleCheck}
                   />
@@ -163,7 +162,7 @@ export function EventList() {
                   <TableCell>
                     <input 
                       type="checkbox"
-                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange"
                       name={event.id}
                       onChange={handleCheck}
                       checked={isCheckArray.includes(event.id)}                  
@@ -195,7 +194,7 @@ export function EventList() {
                       title={`Navegar para o evento ${event.title}`}
                       onClick={() => changeRoute({ route: 'event', slug: event.slug })}
                       iconName="ellipsis"
-                      variant="iconBorder"
+                      variant="border"
                     />
                   </TableCell>
                 </TableRow>

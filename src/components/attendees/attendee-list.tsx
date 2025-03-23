@@ -114,7 +114,6 @@ export function AttendeeList() {
         {isCheck &&
           <Button
             iconName="trash-2"
-            variant="primary"
             onClick={handleDeleteAll}
           >
             Deletar participantes
@@ -143,7 +142,7 @@ export function AttendeeList() {
                   <input
                     name="checkbox"
                     type="checkbox"
-                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                    className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange"
                     checked={isCheck}
                     onChange={handleCheck}
                   />
@@ -163,7 +162,7 @@ export function AttendeeList() {
                   <TableCell>
                     <input 
                       type="checkbox"
-                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange"
                       name={attendee.id}
                       onChange={handleCheck}
                       checked={isCheckArray.includes(attendee.id)}
@@ -191,7 +190,7 @@ export function AttendeeList() {
                       title={`Navegar para o participante ${attendee.name}`}
                       onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
                       iconName="ellipsis"
-                      variant="iconBorder"
+                      variant="border"
                     />
                   </TableCell>
                 </TableRow>

@@ -165,7 +165,7 @@ export function CreateEvent({ isOpen, setIsOpen }: CreateEventProps) {
           title="Fechar"
           onClick={() => setIsOpen(false)}
           iconName="arrow-right"
-          variant="close"
+          variant="icon"
           iconSize="default"
         />
       </div>
@@ -221,7 +221,6 @@ export function CreateEvent({ isOpen, setIsOpen }: CreateEventProps) {
 
         <Button
           type="submit"
-          variant="primary"
           size="full"
           isLoading={isLoading}
         >

@@ -19,6 +19,7 @@ import { TableSearch } from "../table/table-search"
 import { TableFoot } from "../table/table-foot"
 import { AddAttendee } from "./add-attendee"
 import { UpdateEvent } from "./update-event"
+import { Icon } from "../icon"
 
 
 export function EventDetails() {
@@ -190,10 +191,10 @@ export function EventDetails() {
               </div>
             </div>
 
-            <Button variant="close" title="Copiar slug" onClick={() => navigator.clipboard.writeText(event.slug)}> {event.slug}</Button>
+            <Button variant="icon" title="Copiar slug" onClick={() => navigator.clipboard.writeText(event.slug)}> {event.slug}</Button>
           </div>
 
-          <Button onClick={handleDelete} variant="secondary">Deletar evento</Button>
+          <Button onClick={handleDelete} variant="icon">Deletar evento</Button>
         </div>
 
         <p className="text-xl">{event.details}</p>
@@ -205,7 +206,7 @@ export function EventDetails() {
 
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-12">
         <TableSearch
           title="participantes"
           search={search}
@@ -222,17 +223,11 @@ export function EventDetails() {
         <div className="flex gap-8 items-center">
           <p className="font-semibold text-lg">O que deseja fazer com os participantes selecionados?</p>
 
-          <Button
-            variant="primary"
-            onClick={handleCheckAll}
-          >
+          <Button onClick={handleCheckAll}>
             Check-in
           </Button>
 
-          <Button
-            variant="primary"
-            onClick={handleDeleteAll}
-          >
+          <Button onClick={handleDeleteAll}>
             Remover
           </Button>
         </div>
@@ -245,7 +240,7 @@ export function EventDetails() {
               <input
                 name="checkbox"
                 type="checkbox"
-                className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400" 
+                className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange" 
                 checked={isCheck}
                 onChange={handleCheck}
               />
@@ -265,7 +260,7 @@ export function EventDetails() {
                 <TableRow key={attendee.id}>
                   <TableCell>
                     <input
-                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange-400"
+                      className="size-4 bg-black/20 rounded border border-white/10 cursor-pointer checked:bg-orange"
                       type="checkbox"
                       name={attendee.id}
                       onChange={handleCheck} 
@@ -287,9 +282,13 @@ export function EventDetails() {
 
                   <TableCell>
                     {attendee.checkIn ? (
-                        <Button variant="checkInOn" iconName="circle-check" iconSize="default" disabled />
+                        <button className="text-green" disabled>
+                          <Icon name="circle-check" />
+                        </button>
                       ) : (
-                        <Button variant="checkInOff" iconSize="default" iconName="circle" onClick={() => handleCheckIn(attendee.id)} />
+                        <button className="text-orange hover:text-orange/80" title="Fazer Check-in" onClick={() => handleCheckIn(attendee.id)}>
+                          <Icon name="circle" />
+                        </button>
                       )
                     }
                   </TableCell>
@@ -299,7 +298,7 @@ export function EventDetails() {
                       <Button
                         onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
                         iconName="ellipsis"
-                        variant="iconBorder"
+                        variant="border"
                         />
                     </div>
                   </TableCell>
