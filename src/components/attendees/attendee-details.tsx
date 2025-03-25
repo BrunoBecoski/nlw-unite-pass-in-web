@@ -1,27 +1,29 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { z } from "zod";
-import dayjs from "dayjs";
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { z } from 'zod'
+import dayjs from 'dayjs'
 
-import { useRouter } from "../../contexts/router-provider";
+import { useRouter } from '../../contexts/router-provider'
 import {
-  AttendeeAndEventsType,
+  AttendeeTypes,
   checkInEventAttendee,
   createEventAttendee,
   deleteAttendee,
   deleteEventAttendee,
+  EventTypes,
   getAttendee,
   updateAttendee,
   updateAttendeeCode
-} from "../../fetches";
+} from '../../fetches'
 
-import { Input, InputVariants } from "../input";
-import { Table } from "../table/table";
-import { TableHeader } from "../table/table-header";
-import { TableCell } from "../table/table-cell";
-import { TableRow } from "../table/table-row";
-import { Button } from "../button";
-import { TableSearch } from "../table/table-search";
-import { TableFoot } from "../table/table-foot";
+import { Input, InputVariants } from '../input'
+import { Table } from '../table/table'
+import { TableHeader } from '../table/table-header'
+import { TableCell } from '../table/table-cell'
+import { TableRow } from '../table/table-row'
+import { Button } from '../button'
+import { TableSearch } from '../table/table-search'
+import { TableFoot } from '../table/table-foot'
+import { getAttendeeEvents } from '../../fetches/attendees/get-attendee-events'
 
 const schema = z.object({
   name: z.string({ message: 'Nome obrigatório' }).min(3, { message: 'Mínimo 3 caráteres' }),
@@ -40,13 +42,17 @@ interface FormStatusProps {
 }
 
 export function AttendeeDetails() {
-  const [attendee, setAttendee] = useState<AttendeeAndEventsType>({} as AttendeeAndEventsType)
+  const [attendee, setAttendee] = useState<AttendeeTypes>({} as AttendeeTypes)
+  const [attendeeEvents, setAttendeeEvents] = useState<EventTypes[]>([] as EventTypes[])
+  const [attendeeEventsTotal, setAttendeeEventsTotal] = useState(0)
+
   const [showForm, setShowForm] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [formStatus, setFormStatus] = useState<FormStatusProps>({} as FormStatusProps)
   const [isLoading, setIsLoading] = useState(false)
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
+
 
   const { code, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
@@ -206,7 +212,7 @@ export function AttendeeDetails() {
       let newIsCheckArray: string[] = []
 
       if (checked == true) {
-        newIsCheckArray = attendee.events.map(event => event.id)
+        newIsCheckArray = attendeeEvents.map(event => event.id)
       }
 
       setIsCheckArray(newIsCheckArray)
@@ -269,7 +275,7 @@ export function AttendeeDetails() {
     if (response == true) {
       isCheckArray.forEach(async (eventId) => {
 
-        const slug = attendee.events.find(event => event.id == eventId)?.slug
+        const slug = attendeeEvents.find(event => event.id == eventId)?.slug
 
         if (slug) {
           const { successfully, message } = await deleteEventAttendee({
@@ -291,16 +297,10 @@ export function AttendeeDetails() {
     }
   }
 
-  useEffect(() => {
-    setIsCheck(false) 
-    setIsCheckArray([])
-    fetchAttendee()
-  }, [pageIndex, search])
-
   async function fetchAttendee() {
     if (code != undefined) {
 
-      const { successfully, message, data } = await getAttendee({ code, pageIndex, search })
+      const { successfully, message, data } = await getAttendee({ code })
       
       if (successfully == false) {
         alert(message)
@@ -311,6 +311,33 @@ export function AttendeeDetails() {
       } 
     }
   }
+
+  async function fetchAttendeeEvents() {
+    if (code != undefined) {
+      const { successfully, message, data } = await getAttendeeEvents({ code, pageIndex, search })
+
+      if (successfully == false) {
+        alert(message)
+      }
+
+      if (successfully == true && data != undefined) {
+        setAttendeeEvents(data.events)
+        setAttendeeEventsTotal(data.total)
+      }
+    }
+  }
+
+  useEffect(() => {
+    setIsCheck(false) 
+    setIsCheckArray([])
+    fetchAttendee()
+  }, [pageIndex, search])
+
+
+  useEffect(() => {
+    fetchAttendee()
+    fetchAttendeeEvents()
+  }, [])
 
   return (
     <div className="space-y-6">
@@ -326,7 +353,7 @@ export function AttendeeDetails() {
                   iconName="user"
                   defaultValue={attendee.name}
                   message={formStatus.name?.message}
-                  variant={formStatus.name?.variant}
+                  variant={formStatus.name?.variant} 
                 />
         
                 <Input
@@ -366,7 +393,7 @@ export function AttendeeDetails() {
       </div>
 
       {
-        attendee.events?.length >= 1 ? (
+        attendeeEvents?.length >= 1 ? (
           <>
             <div className="flex justify-between">
               <TableSearch
@@ -425,7 +452,7 @@ export function AttendeeDetails() {
                   </thead>
 
                   <tbody>
-                    {attendee.events.map((event) => {
+                    {attendeeEvents.map((event) => {
                       return (
                         <TableRow key={event.id}>
                           <TableCell>
@@ -481,8 +508,8 @@ export function AttendeeDetails() {
                   </tbody>
 
                   <TableFoot
-                    length={attendee.events.length}
-                    total={attendee.total}
+                    length={attendeeEvents.length}
+                    total={attendeeEventsTotal}
                     pageIndex={pageIndex}
                     setPageIndex={changePageIndex}
                   />

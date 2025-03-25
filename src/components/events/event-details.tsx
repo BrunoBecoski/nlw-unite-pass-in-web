@@ -1,25 +1,25 @@
-import { ChangeEvent, useEffect, useState } from "react"
-import dayjs from "dayjs"
+import { ChangeEvent, useEffect, useState } from 'react'
+import dayjs from 'dayjs'
 
-import { useRouter } from "../../contexts/router-provider"
+import { useRouter } from '../../contexts/router-provider'
 import { 
   checkInEventAttendee,
   deleteEvent,
   deleteEventAttendee,
   EventAndAttendeesType,
   getEvent,
-} from "../../fetches"
+} from '../../fetches'
 
-import { Table } from "../table/table"
-import { TableHeader } from "../table/table-header"
-import { TableRow } from "../table/table-row"
-import { TableCell } from "../table/table-cell"
-import { Button } from "../button"
-import { TableSearch } from "../table/table-search"
-import { TableFoot } from "../table/table-foot"
-import { AddAttendee } from "./add-attendee"
-import { UpdateEvent } from "./update-event"
-import { Icon } from "../icon"
+import { Table } from '../table/table'
+import { TableHeader } from '../table/table-header'
+import { TableRow } from '../table/table-row'
+import { TableCell } from '../table/table-cell'
+import { Button } from '../button'
+import { TableSearch } from '../table/table-search'
+import { TableFoot } from '../table/table-foot'
+import { AddAttendee } from './add-attendee'
+import { UpdateEvent } from './update-event'
+import { Icon } from '../icon'
 
 
 export function EventDetails() {
@@ -29,7 +29,6 @@ export function EventDetails() {
   const [updateEventIsOpen, setUpdateEventIsOpen] = useState(false)
 
   const { slug, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
-
 
   async function handleCheckIn(attendeeId: string) {
     const response = confirm('Confirmar participante no evento?')
@@ -165,7 +164,7 @@ export function EventDetails() {
     if (slug != undefined) {
 
       const { successfully, message, data } = await getEvent({ slug, pageIndex, search })
-      
+
       if (successfully == false) {
         alert(message)
       }

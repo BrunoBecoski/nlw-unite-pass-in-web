@@ -1,23 +1,28 @@
-import { AttendeeTypes } from '..'
+import { EventTypes } from '..'
 import { CreateRequest } from '../../classes/createRequest'
 import { fetchApi } from '../fetchApi'
 
 interface RequestProps {
   code: string
+  pageIndex?: number
+  search?: string
 }
 
 interface ResponseProps {
-  successfully: boolean 
+  successfully: boolean
   message: string
   data?: {
-    attendee: AttendeeTypes
+    events: EventTypes[]
+    total: number
   }
 }
 
-export async function getAttendee({ code }: RequestProps): Promise<ResponseProps> {
+export async function getAttendeeEvents({ code, pageIndex, search }: RequestProps): Promise<ResponseProps> {
   const { url, init } = new CreateRequest({
     method: 'GET',
-    pathname: `/get/attendee/${code}`,
+    pathname: `/get/attendee/${code}/events`,
+    pageIndex,
+    search,
   })
 
   const { successfully, message, data } = await fetchApi({ url, init })
@@ -25,14 +30,15 @@ export async function getAttendee({ code }: RequestProps): Promise<ResponseProps
   if (successfully == true) {
     return {
       successfully,
-      message: 'Participante buscado com sucesso.',
+      message: 'Eventos do participante buscados com sucesso.',
       data: {
-        attendee: data.attendee,
+        events: data.events,
+        total: data.total,
       }
     }
   }
 
-  if (message != undefined) {
+  if (message != undefined)  {
     return {
       successfully: false,
       message: message,
@@ -42,7 +48,6 @@ export async function getAttendee({ code }: RequestProps): Promise<ResponseProps
 
   return {
     successfully: false,
-    message: 'Erro ao buscar o participante',
-    data: undefined,
+    message: 'Erro ao buscar os eventos do participante',
   }
 }

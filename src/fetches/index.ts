@@ -32,6 +32,7 @@ export type EventTypes = {
   maximumAttendees: number
   startDate: string,
   endDate: string,
+  checkIn: boolean,
 }
 
 export type EventAndAttendeesType = {
@@ -50,23 +51,6 @@ export type EventAndAttendeesType = {
     code: string
     name: string
     email: string
-    checkIn: boolean
-  }[]
-}
-
-export type AttendeeAndEventsType = {
-  id: string
-  code: string
-  name: string
-  email: string
-  total: number
-  events: {
-    id: string
-    slug: string
-    title: string
-    details: string
-    startDate: string 
-    endDate: string
     checkIn: boolean
   }[]
 }
