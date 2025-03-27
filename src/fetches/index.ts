@@ -8,6 +8,7 @@ import { createAttendee } from './attendees/create-attendee'
 import { deleteAttendee } from './attendees/delete-attendee'
 import { getAttendee } from './attendees/get-attendee'
 import { getAttendees } from './attendees/get-attendees'
+import { getAttendeeEvents } from './attendees/get-attendee-events'
 import { updateAttendeeCode } from './attendees/update-attendee-code'
 import { updateAttendee } from './attendees/update-attendee'
 
@@ -65,6 +66,7 @@ export {
   deleteAttendee,
   getAttendee,
   getAttendees,
+  getAttendeeEvents,
   updateAttendeeCode,
   updateAttendee,
   checkInEventAttendee,

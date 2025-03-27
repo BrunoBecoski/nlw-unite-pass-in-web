@@ -9,7 +9,8 @@ import {
   deleteEventAttendee,
   EventTypes,
   getAttendee,
-  updateAttendeeCode
+  updateAttendeeCode,
+  getAttendeeEvents
 } from '../../fetches'
 
 import { Table } from '../table/table'
@@ -19,8 +20,9 @@ import { TableRow } from '../table/table-row'
 import { Button } from '../button'
 import { TableSearch } from '../table/table-search'
 import { TableFoot } from '../table/table-foot'
-import { getAttendeeEvents } from '../../fetches/attendees/get-attendee-events'
 import { UpdateAttendee } from './update-attendee'
+import { AddEvent } from './add-event'
+import { Icon } from '../icon'
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeTypes>({} as AttendeeTypes)
@@ -81,28 +83,6 @@ export function AttendeeDetails() {
     }
   }  
 
-  // async function handleRegisterAttendeeEvent(e: FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()S
-
-  //   const form = new FormData(e.currentTarget)
-  //   const slug = form.get('slug')?.toString()
-
-  //   if (slug == null || code == undefined) {
-  //     return
-  //   }
-
-  //   const { successfully, message } = await createEventAttendee({ code, slug })
-
-  //   if (successfully == false) {
-  //     alert(message)
-  //   }
-
-  //   if (successfully == true) {
-  //     alert(message)
-  //     setShowRegister(false)
-  //     fetchAttendee()
-  //   }
-  // }
 
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const name = e.target.name
@@ -240,21 +220,28 @@ export function AttendeeDetails() {
   }, [])
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between">
-        <div className="flex items-start justify-between w-full">
+    <div className="flex flex-col gap-4">
+      <div>
+        <div className="flex justify-between">
           <div>
             <div className="flex items-center gap-10">
               <h1 className="text-5xl font-bold italic">{attendee.name}</h1>
-              <Button title="Copiar" iconName="copy" onClick={() => navigator.clipboard.writeText(attendee.code)}> {attendee.code}</Button>
             </div>
-            <p>{attendee.email}</p>
+            
+            <Button variant="icon" title="Copiar código" onClick={() => navigator.clipboard.writeText(attendee.code)}>{attendee.code}</Button>
           </div>
 
-          <div className="flex flex-col items-end gap-4 ">
-            <Button onClick={handleUpdateAttendeeCode} iconName="repeat">Gera novo código</Button>
-            <Button onClick={handleDelete} iconName="trash">Deletar participante</Button>
+          <div className="space-y-4">
+            <Button onClick={handleDelete} variant="icon">Deletar evento</Button>
+            <Button onClick={handleUpdateAttendeeCode}>Gera novo código</Button>
           </div>
+        </div>
+
+        <p className="text-xl">{attendee.email}</p>
+
+        <div className="flex gap-8 my-4 text-lg">
+          <span>Eventos {attendeeEventsTotal}</span>
+          <span>Check-in 0/{attendeeEventsTotal}</span>
         </div>
       </div>
 
@@ -266,6 +253,7 @@ export function AttendeeDetails() {
         />
 
         <div className="flex gap-4">
+          <AddEvent code={attendee.code} fetchAttendeeEvents={fetchAttendeeEvents} />
           <Button onClick={() => setUpdateAttendeeIsOpen(true)}>Editar participante</Button>
         </div>
       </div>
@@ -297,7 +285,7 @@ export function AttendeeDetails() {
               />
             </TableHeader>
             <TableHeader>Slug</TableHeader>
-            <TableHeader>Evento</TableHeader>
+            <TableHeader>Título</TableHeader>
             <TableHeader>Data de Início</TableHeader>
             <TableHeader>Data de Fim</TableHeader>
             <TableHeader>Check-in</TableHeader>
@@ -326,10 +314,7 @@ export function AttendeeDetails() {
                     </TableCell>
 
                     <TableCell>
-                      <div className="flex flex-col gap-1">
-                        <span className="font-semibold text-white">{event.title}</span>
-                        <span>{event.details}</span>
-                      </div>
+                      <span className="font-semibold text-white" title={event.details}>{event.title}</span>
                     </TableCell>
 
                     <TableCell>
@@ -342,9 +327,13 @@ export function AttendeeDetails() {
 
                     <TableCell>
                       {event.checkIn ? (
-                          <Button iconName="square-check" disabled>Confirmado</Button>
+                        <button className="text-green" disabled>
+                          <Icon name="circle-check"/>
+                        </button>
                         ) : (
-                          <Button iconName="square" onClick={() => handleCheckIn(attendee.id)}>Confirmar</Button>
+                          <button className="text-orange hover:text-orange/80" title="Fazer Check-in" onClick={() => handleCheckIn(attendee.id)}>
+                            <Icon name="circle" />
+                          </button>
                         )
                       }
                     </TableCell>

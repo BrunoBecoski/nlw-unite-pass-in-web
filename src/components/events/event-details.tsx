@@ -190,7 +190,7 @@ export function EventDetails() {
               </div>
             </div>
 
-            <Button variant="icon" title="Copiar slug" onClick={() => navigator.clipboard.writeText(event.slug)}> {event.slug}</Button>
+            <Button variant="icon" title="Copiar slug" onClick={() => navigator.clipboard.writeText(event.slug)}>{event.slug}</Button>
           </div>
 
           <Button onClick={handleDelete} variant="icon">Deletar evento</Button>
@@ -199,10 +199,9 @@ export function EventDetails() {
         <p className="text-xl">{event.details}</p>
 
         <div className="flex gap-8 my-4 text-lg">
-          <span>Participantes {event.totalAttendees}/{event.maximumAttendees}</span>
-          <span>Check-in {event.checkInAttendees}/{event.totalAttendees}</span>
+          <span>Participantes {event.total}/{event.maximumAttendees}</span>
+          <span>Check-in {event.checkInAttendees}/{event.total}</span>
         </div>
-
       </div>
 
       <div className="flex justify-between items-center gap-12">
@@ -316,7 +315,12 @@ export function EventDetails() {
         )}
       </Table>
 
-      <UpdateEvent isOpen={updateEventIsOpen}  setIsOpen={setUpdateEventIsOpen} event={event} setEvent={setEvent}/>
+      <UpdateEvent
+        isOpen={updateEventIsOpen}
+        setIsOpen={setUpdateEventIsOpen}
+        event={event}
+        setEvent={setEvent}
+      />
     </div>
   )
 }
