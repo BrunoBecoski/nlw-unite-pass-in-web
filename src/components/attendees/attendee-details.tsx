@@ -26,7 +26,7 @@ import { Icon } from '../icon'
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeTypes>({} as AttendeeTypes)
-  const [attendeeEvents, setAttendeeEvents] = useState<AttendeeEventsTypes>([] as AttendeeEventsTypes)
+  const [attendeeEvents, setAttendeeEvents] = useState<AttendeeEventsTypes[]>([] as AttendeeEventsTypes[])
   const [attendeeEventsTotal, setAttendeeEventsTotal] = useState(0)
   const [attendeeCheckInTotal, setAttendeeCheckInTotal] = useState(0)
   const [isCheck, setIsCheck] = useState(false)

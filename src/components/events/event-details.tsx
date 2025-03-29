@@ -6,7 +6,7 @@ import {
   checkInEventAttendee,
   deleteEvent,
   deleteEventAttendee,
-  EventAttendeesType,
+  EventAttendeesTypes,
   EventTypes,
   getEvent,
   getEventAttendees,
@@ -25,7 +25,7 @@ import { Icon } from '../icon'
 
 export function EventDetails() {
   const [event, setEvent] = useState<EventTypes>({} as EventTypes)
-  const [eventAttendees, setEventAttendees] = useState<EventAttendeesType>([] as EventAttendeesType)
+  const [eventAttendees, setEventAttendees] = useState<EventAttendeesTypes[]>([] as EventAttendeesTypes[])
   const [eventAttendeesTotal, setEventAttendeesTotal] = useState(0)
   const [eventCheckInTotal, setEventsCheckInTotal] = useState(0)
   const [isCheck, setIsCheck] = useState(false)

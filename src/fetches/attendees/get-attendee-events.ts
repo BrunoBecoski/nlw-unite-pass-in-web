@@ -12,7 +12,7 @@ interface ResponseProps {
   successfully: boolean
   message: string
   data?: {
-    events: AttendeeEventsTypes
+    events: AttendeeEventsTypes[]
     eventsTotal: number
     checkInTotal: number
   }

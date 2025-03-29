@@ -13,9 +13,6 @@ interface DeleteEventAttendeeResponse {
 
 export async function deleteEventAttendee({ slug, code }: DeleteEventAttendeeRequest): Promise<DeleteEventAttendeeResponse> {
   const { url, init } = new CreateRequest({
-    headers: {
-      'Content-Type': 'application/json'
-    },
     method: 'DELETE',
     pathname: `/delete/event/${slug}/attendee/${code}`,
   })
@@ -30,7 +27,7 @@ export async function deleteEventAttendee({ slug, code }: DeleteEventAttendeeReq
   }
 
   return {
-    successfully: false,
+    successfully,
     message,
   }
 }

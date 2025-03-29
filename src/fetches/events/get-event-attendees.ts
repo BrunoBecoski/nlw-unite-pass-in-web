@@ -1,4 +1,4 @@
-import { EventAttendeesType } from '..'
+import { EventAttendeesTypes } from '..'
 import { CreateRequest } from '../../classes/createRequest'
 import { fetchApi } from '../fetchApi'
 
@@ -12,7 +12,7 @@ interface ResponseProps {
   successfully: boolean
   message: string
   data?: {
-    attendees: EventAttendeesType
+    attendees: EventAttendeesTypes[]
     attendeesTotal: number
     checkInTotal: number
   }

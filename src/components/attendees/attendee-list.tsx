@@ -5,7 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 // import { attendees } from '../data/attendees'
 import { useRouter } from '../../contexts/router-provider'
-import { AttendeeTypes, deleteAttendee, getAttendees } from '../../fetches'
+import { AttendeesTypes, deleteAttendee, getAttendees } from '../../fetches'
 import { Table } from '../table/table'
 import { TableHeader } from '../table/table-header'
 import { TableCell } from '../table/table-cell'
@@ -22,7 +22,7 @@ export function AttendeeList() {
   const { changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   const [total, setTotal] = useState(0)
-  const [attendees, setAttendees] = useState<AttendeeTypes[]>([])
+  const [attendees, setAttendees] = useState<AttendeesTypes[]>([] as AttendeesTypes[])
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
   const [createAttendeeIsOpen, setCreateAttendeeIsOpen] = useState(false)
@@ -84,6 +84,8 @@ export function AttendeeList() {
           setIsCheck(false)
           setIsCheckArray([])
           fetchAttendees()
+          changePageIndex(1)
+          changeSearch('')
         }
       })
     }
@@ -111,15 +113,6 @@ export function AttendeeList() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-8 justify-between">
-        {isCheck &&
-          <Button
-            iconName="trash-2"
-            onClick={handleDeleteAll}
-          >
-            Deletar participantes
-          </Button>
-        }
-
         <TableSearch
           title="participantes"
           search={search}
@@ -130,6 +123,16 @@ export function AttendeeList() {
           Criar participante
         </Button>
       </div>
+
+      {isCheck &&
+      <div className="flex gap-8 items-center">
+          <p className="font-semibold text-lg">O que deseja fazer com os participantes selecionados?</p>
+
+          <Button onClick={handleDeleteAll}>
+            Deletar participantes
+          </Button>
+        </div>
+      }
 
       {attendees.length === 0
         ?

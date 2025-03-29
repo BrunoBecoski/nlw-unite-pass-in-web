@@ -11,7 +11,7 @@ interface GetAttendeeResponse {
   successfully: boolean 
   message: string
   data?: {
-    attendees: AttendeesTypes
+    attendees: AttendeesTypes[]
     total: number
   }
 }

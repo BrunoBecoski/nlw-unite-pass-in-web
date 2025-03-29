@@ -4,7 +4,7 @@ import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { useRouter } from '../../contexts/router-provider'
-import { deleteEvent, EventTypes, getEvents } from '../../fetches'
+import { deleteEvent, EventsTypes, getEvents } from '../../fetches'
 import { Table } from '../table/table'
 import { TableHeader } from '../table/table-header'
 import { TableCell } from '../table/table-cell'
@@ -21,7 +21,7 @@ export function EventList() {
   const { changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
   const [total, setTotal] = useState(0)
-  const [events, setEvents] = useState<EventTypes[]>([])
+  const [events, setEvents] = useState<EventsTypes[]>([] as EventsTypes[])
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
   const [createEventIsOpen, setCreateEventIsOpen] = useState(false)
@@ -83,16 +83,12 @@ export function EventList() {
           setIsCheck(false) 
           setIsCheckArray([])
           fetchEvents()
+          changePageIndex(1)
+          changeSearch('')
         }
       }
     )}
   }
-
-  useEffect(() => {
-    setIsCheck(false) 
-    setIsCheckArray([])
-    fetchEvents()
-  }, [pageIndex, search])
 
   async function fetchEvents() {
     const { successfully, message, data } = await getEvents({ pageIndex, search })
@@ -107,18 +103,15 @@ export function EventList() {
     } 
   }
 
+  useEffect(() => {
+    setIsCheck(false) 
+    setIsCheckArray([])
+    fetchEvents()
+  }, [pageIndex, search])
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-8 justify-between">
-        {isCheck &&
-          <Button
-            iconName="trash-2"
-            onClick={handleDeleteAll}
-          >
-            Deletar eventos
-          </Button>
-        }
-          
         <TableSearch 
           title="eventos"
           search={search}
@@ -129,6 +122,16 @@ export function EventList() {
           Criar evento
         </Button>
       </div>
+
+      {isCheck &&
+        <div className="flex gap-8 items-center">
+          <p className="font-semibold text-lg">O que deseja fazer com os eventos selecionados?</p>
+
+          <Button onClick={handleDeleteAll}>
+            Remover
+          </Button>
+        </div>
+      }
 
       {events.length === 0 
         ?

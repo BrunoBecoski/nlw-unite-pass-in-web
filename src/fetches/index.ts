@@ -18,10 +18,11 @@ import { createEventAttendee } from './eventAttendee/create-eventAttendee'
 import { deleteEventAttendee } from './eventAttendee/delete-eventAttendee'
 
 export type AttendeeTypes = {
-  id: string,
-  code: string,
-  name: string,
-  email: string,
+  id: string
+  code: string
+  name: string
+  email: string
+  total: number
 }
 
 export type AttendeesTypes = {
@@ -30,7 +31,7 @@ export type AttendeesTypes = {
   name: string
   email: string
   events: number
-}[]
+}
 
 export type AttendeeEventsTypes = {
   id: string
@@ -39,7 +40,7 @@ export type AttendeeEventsTypes = {
   startDate: string
   endDate: string
   checkIn: string 
-}[]
+}
 
 export type EventTypes = {
   id: string
@@ -47,11 +48,11 @@ export type EventTypes = {
   title: string
   details: string
   maximumAttendees: number
-  startDate: string,
-  endDate: string,
+  startDate: string
+  endDate: string
 }
 
-export type EventsType = {
+export type EventsTypes = {
   id: string
   slug: string
   title: string
@@ -59,15 +60,16 @@ export type EventsType = {
   maximumAttendees: number
   startDate: string
   endDate: string
-}[]
+  attendees: number
+}
 
-export type EventAttendeesType = {
+export type EventAttendeesTypes = {
   id: string
   code: string
   name: string
   email: string
   checkIn: boolean
-}[]
+}
 
 export {
   createEvent,
