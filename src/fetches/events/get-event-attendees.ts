@@ -1,27 +1,29 @@
+import { EventAttendeesType } from '..'
 import { CreateRequest } from '../../classes/createRequest'
-import { AttendeesTypes } from '../'
 import { fetchApi } from '../fetchApi'
 
-interface GetAttendeeRequest {
+interface RequestProps {
+  slug: string
   pageIndex?: number
   search?: string
 }
 
-interface GetAttendeeResponse {
-  successfully: boolean 
+interface ResponseProps {
+  successfully: boolean
   message: string
   data?: {
-    attendees: AttendeesTypes
-    total: number
+    attendees: EventAttendeesType
+    attendeesTotal: number
+    checkInTotal: number
   }
 }
 
-export async function getAttendees({ pageIndex, search }: GetAttendeeRequest): Promise<GetAttendeeResponse> {
+export async function getEventAttendees({ slug, pageIndex, search }: RequestProps): Promise<ResponseProps> {
   const { url, init } = new CreateRequest({
     method: 'GET',
-    pathname: '/get/attendees',
+    pathname: `/get/event/${slug}/attendees`,
     pageIndex,
-    search, 
+    search,
   })
 
   const { successfully, message, data } = await fetchApi({ url, init })
@@ -29,11 +31,12 @@ export async function getAttendees({ pageIndex, search }: GetAttendeeRequest): P
   if (successfully == true) {
     return {
       successfully,
-      message: 'Participantes buscados com sucesso.',
+      message: 'Participantes do evento buscados com sucesso.',
       data: {
         attendees: data.attendees,
-        total: data.total,
-       }
+        attendeesTotal: data.attendeesTotal,
+        checkInTotal: data.checkInTotal,
+      }
     }
   }
 
@@ -47,7 +50,6 @@ export async function getAttendees({ pageIndex, search }: GetAttendeeRequest): P
 
   return {
     successfully: false,
-    message: 'Erro ao buscar os participantes',
-    data: undefined,
+    message: 'Erro ao buscar os participantes do evento',
   }
-}
+} 

@@ -7,10 +7,10 @@ import {
   checkInEventAttendee,
   deleteAttendee,
   deleteEventAttendee,
-  EventTypes,
   getAttendee,
   updateAttendeeCode,
-  getAttendeeEvents
+  getAttendeeEvents,
+  AttendeeEventsTypes
 } from '../../fetches'
 
 import { Table } from '../table/table'
@@ -26,12 +26,12 @@ import { Icon } from '../icon'
 
 export function AttendeeDetails() {
   const [attendee, setAttendee] = useState<AttendeeTypes>({} as AttendeeTypes)
-  const [attendeeEvents, setAttendeeEvents] = useState<EventTypes[]>([] as EventTypes[])
+  const [attendeeEvents, setAttendeeEvents] = useState<AttendeeEventsTypes>([] as AttendeeEventsTypes)
   const [attendeeEventsTotal, setAttendeeEventsTotal] = useState(0)
+  const [attendeeCheckInTotal, setAttendeeCheckInTotal] = useState(0)
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
   const [updateAttendeeIsOpen, setUpdateAttendeeIsOpen] = useState(false)
-
 
   const { code, changeRoute, pageIndex, changePageIndex, search, changeSearch } = useRouter()
 
@@ -48,7 +48,7 @@ export function AttendeeDetails() {
         alert(message)
       }
 
-      fetchAttendee()
+      fetchAttendeeEvents()
     }
   }
 
@@ -82,7 +82,6 @@ export function AttendeeDetails() {
       }
     }
   }  
-
 
   function handleCheck(e: ChangeEvent<HTMLInputElement>) {
     const name = e.target.name
@@ -139,7 +138,7 @@ export function AttendeeDetails() {
         if (successfully == true) {
           setIsCheck(false)
           setIsCheckArray([])
-          fetchAttendee()
+          fetchAttendeeEvents()
         }
       })
     }
@@ -170,7 +169,7 @@ export function AttendeeDetails() {
           if (successfully == true) {
             setIsCheck(false)
             setIsCheckArray([])
-            fetchAttendee()
+            fetchAttendeeEvents()
           }
         }
       })
@@ -202,7 +201,8 @@ export function AttendeeDetails() {
       
       if (successfully == true && data != undefined) {
         setAttendeeEvents(data.events)
-        setAttendeeEventsTotal(data.total)
+        setAttendeeEventsTotal(data.eventsTotal)
+        setAttendeeCheckInTotal(data.checkInTotal)
       }
     }
   }
@@ -241,7 +241,7 @@ export function AttendeeDetails() {
 
         <div className="flex gap-8 my-4 text-lg">
           <span>Eventos {attendeeEventsTotal}</span>
-          <span>Check-in 0/{attendeeEventsTotal}</span>
+          <span>Check-in {attendeeCheckInTotal}/{attendeeEventsTotal}</span>
         </div>
       </div>
 
@@ -314,7 +314,7 @@ export function AttendeeDetails() {
                     </TableCell>
 
                     <TableCell>
-                      <span className="font-semibold text-white" title={event.details}>{event.title}</span>
+                      <span className="font-semibold text-white">{event.title}</span>
                     </TableCell>
 
                     <TableCell>

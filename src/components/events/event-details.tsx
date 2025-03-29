@@ -6,8 +6,10 @@ import {
   checkInEventAttendee,
   deleteEvent,
   deleteEventAttendee,
-  EventAndAttendeesType,
+  EventAttendeesType,
+  EventTypes,
   getEvent,
+  getEventAttendees,
 } from '../../fetches'
 
 import { Table } from '../table/table'
@@ -21,9 +23,11 @@ import { AddAttendee } from './add-attendee'
 import { UpdateEvent } from './update-event'
 import { Icon } from '../icon'
 
-
 export function EventDetails() {
-  const [event, setEvent] = useState<EventAndAttendeesType>({} as EventAndAttendeesType)
+  const [event, setEvent] = useState<EventTypes>({} as EventTypes)
+  const [eventAttendees, setEventAttendees] = useState<EventAttendeesType>([] as EventAttendeesType)
+  const [eventAttendeesTotal, setEventAttendeesTotal] = useState(0)
+  const [eventCheckInTotal, setEventsCheckInTotal] = useState(0)
   const [isCheck, setIsCheck] = useState(false)
   const [isCheckArray, setIsCheckArray] = useState<string[]>([])
   const [updateEventIsOpen, setUpdateEventIsOpen] = useState(false)
@@ -43,7 +47,7 @@ export function EventDetails() {
         alert(message)
       }
       
-      fetchEvent()
+      fetchEventAttendees()
     }
   }
 
@@ -70,7 +74,7 @@ export function EventDetails() {
       let newIsCheckArray: string[] = []
 
       if (checked == true) {
-         newIsCheckArray = event.attendees.map(attendee => attendee.id)
+         newIsCheckArray = eventAttendees.map(attendee => attendee.id)
       }
 
       setIsCheckArray(newIsCheckArray)
@@ -117,7 +121,7 @@ export function EventDetails() {
         if (successfully == true) {
           setIsCheck(false) 
           setIsCheckArray([])
-          fetchEvent()
+          fetchEventAttendees()
         }
       })
     }
@@ -132,7 +136,7 @@ export function EventDetails() {
 
     if (response == true) {
       isCheckArray.forEach(async (attendeeId)  => {
-        const code = event.attendees.find(attendee => attendee.id == attendeeId)?.code
+        const code = eventAttendees.find(attendee => attendee.id == attendeeId)?.code
 
         if (code) {
           const { successfully, message } = await deleteEventAttendee({
@@ -147,23 +151,17 @@ export function EventDetails() {
           if (successfully == true) {
             setIsCheck(false) 
             setIsCheckArray([])
-            fetchEvent()
+            fetchEventAttendees()
           }
         }
       })
     }
   }
 
-  useEffect(() => {
-    setIsCheck(false) 
-    setIsCheckArray([])
-    fetchEvent()
-  }, [pageIndex, search])
-  
   async function fetchEvent() {
     if (slug != undefined) {
 
-      const { successfully, message, data } = await getEvent({ slug, pageIndex, search })
+      const { successfully, message, data } = await getEvent({ slug })
 
       if (successfully == false) {
         alert(message)
@@ -174,6 +172,33 @@ export function EventDetails() {
       } 
     }
   }
+
+  async function fetchEventAttendees() {
+    if (slug != undefined) {
+      const { successfully, message, data } = await getEventAttendees({ slug, pageIndex, search })
+
+      if (successfully == false) {
+        alert(message)
+      }
+
+      if (successfully == true && data != undefined) {
+        setEventAttendees(data.attendees)
+        setEventAttendeesTotal(data.attendeesTotal)
+        setEventsCheckInTotal(data.checkInTotal)
+      }
+    }
+  }
+
+  useEffect(() => {
+    setIsCheck(false) 
+    setIsCheckArray([])
+    fetchEventAttendees()
+  }, [pageIndex, search])
+  
+  useEffect(() => {
+    fetchEvent()
+    fetchEventAttendees()
+  }, [])
 
   return (
     <div className="flex flex-col gap-4">
@@ -199,8 +224,8 @@ export function EventDetails() {
         <p className="text-xl">{event.details}</p>
 
         <div className="flex gap-8 my-4 text-lg">
-          <span>Participantes {event.total}/{event.maximumAttendees}</span>
-          <span>Check-in {event.checkInAttendees}/{event.total}</span>
+          <span>Participantes {eventAttendeesTotal}/{event.maximumAttendees}</span>
+          <span>Check-in {eventCheckInTotal}/{eventAttendeesTotal}</span>
         </div>
       </div>
 
@@ -251,10 +276,10 @@ export function EventDetails() {
           </tr>
         </thead>
 
-        { event.attendees?.length >= 1 && (
+        { eventAttendees?.length >= 1 && (
           <>
             <tbody>
-              {event.attendees.map((attendee) => (
+              {eventAttendees.map((attendee) => (
                 <TableRow key={attendee.id}>
                   <TableCell>
                     <input
@@ -306,8 +331,8 @@ export function EventDetails() {
             </tbody>
             
             <TableFoot
-              length={event.attendees.length}
-              total={event.total}
+              length={eventAttendees.length}
+              total={eventAttendeesTotal}
               pageIndex={pageIndex}
               setPageIndex={changePageIndex}
             />

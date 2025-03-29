@@ -1,27 +1,23 @@
-import { EventAndAttendeesType } from ".."
+import { EventTypes } from ".."
 import { CreateRequest } from "../../classes/createRequest"
 import { fetchApi } from "../fetchApi"
 
 interface RequestProps {
   slug: string
-  pageIndex?: number
-  search?: string
 }
 
 interface ResponseProps {
   successfully: boolean 
   message: string
   data?: {
-    event: EventAndAttendeesType
+    event: EventTypes
   }
 }
 
-export async function getEvent({ slug, pageIndex, search }: RequestProps): Promise<ResponseProps> {
+export async function getEvent({ slug }: RequestProps): Promise<ResponseProps> {
   const { url, init } = new CreateRequest({
     method: 'GET',
     pathname: `/get/event/${slug}`,
-    pageIndex,
-    search,
   })
 
   const { successfully, message, data } = await fetchApi({ url, init })

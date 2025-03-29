@@ -1,4 +1,4 @@
-import { EventTypes } from '..'
+import { AttendeeEventsTypes } from '..'
 import { CreateRequest } from '../../classes/createRequest'
 import { fetchApi } from '../fetchApi'
 
@@ -12,8 +12,9 @@ interface ResponseProps {
   successfully: boolean
   message: string
   data?: {
-    events: EventTypes[]
-    total: number
+    events: AttendeeEventsTypes
+    eventsTotal: number
+    checkInTotal: number
   }
 }
 
@@ -33,12 +34,13 @@ export async function getAttendeeEvents({ code, pageIndex, search }: RequestProp
       message: 'Eventos do participante buscados com sucesso.',
       data: {
         events: data.events,
-        total: data.total,
+        eventsTotal: data.eventsTotal,
+        checkInTotal: data.checkInTotal,
       }
     }
   }
 
-  if (message != undefined)  {
+  if (message != undefined) {
     return {
       successfully: false,
       message: message,

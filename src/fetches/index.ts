@@ -1,7 +1,8 @@
 import { createEvent } from './events/create-event'
 import { deleteEvent } from './events/delete-event'
-import { getEvents } from './events/get-events'
 import { getEvent } from './events/get-event'
+import { getEvents } from './events/get-events'
+import { getEventAttendees } from './events/get-event-attendees'
 import { updateEvent } from './events/update-event'
 
 import { createAttendee } from './attendees/create-attendee'
@@ -17,50 +18,63 @@ import { createEventAttendee } from './eventAttendee/create-eventAttendee'
 import { deleteEventAttendee } from './eventAttendee/delete-eventAttendee'
 
 export type AttendeeTypes = {
+  id: string,
+  code: string,
+  name: string,
+  email: string,
+}
+
+export type AttendeesTypes = {
   id: string
   code: string
   name: string
   email: string
   events: number
-}
-  
+}[]
+
+export type AttendeeEventsTypes = {
+  id: string
+  slug: string
+  title: string
+  startDate: string
+  endDate: string
+  checkIn: string 
+}[]
+
 export type EventTypes = {
   id: string
   slug: string
   title: string
   details: string
-  attendees: number
   maximumAttendees: number
   startDate: string,
   endDate: string,
-  checkIn: boolean,
 }
 
-export type EventAndAttendeesType = {
+export type EventsType = {
   id: string
   slug: string
   title: string
   details: string
   maximumAttendees: number
-  totalAttendees: number
-  checkInAttendees: number
   startDate: string
   endDate: string
-  total: number
-  attendees: {
-    id: string
-    code: string
-    name: string
-    email: string
-    checkIn: boolean
-  }[]
-}
+}[]
+
+export type EventAttendeesType = {
+  id: string
+  code: string
+  name: string
+  email: string
+  checkIn: boolean
+}[]
 
 export {
   createEvent,
   deleteEvent,
   getEvents,
   getEvent,
+  getEventAttendees,
   updateEvent,
   createAttendee,
   deleteAttendee,
