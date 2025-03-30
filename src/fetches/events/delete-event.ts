@@ -1,5 +1,5 @@
-import { CreateRequest } from "../../classes/createRequest"
-import { fetchApi } from "../fetchApi"
+import { CreateRequest } from '../../classes/createRequest'
+import { fetchApi } from '../fetchApi'
 
 interface DeleteEventRequest {
   id: string

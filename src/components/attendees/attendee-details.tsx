@@ -124,6 +124,10 @@ export function AttendeeDetails() {
   async function handleCheckAll() {
     const response = confirm('Confirmar todos os eventos marcados?')
 
+    if (response == false) {
+      return
+    }
+
     if (response == true) {
       isCheckArray.forEach(async (eventId) => {
         const { successfully, message } = await checkInEventAttendee({
@@ -139,6 +143,8 @@ export function AttendeeDetails() {
           setIsCheck(false)
           setIsCheckArray([])
           fetchAttendeeEvents()
+          changePageIndex(1)
+          changeSearch('')
         }
       })
     }
@@ -152,10 +158,9 @@ export function AttendeeDetails() {
     }
 
     if (response == true) {
-      isCheckArray.forEach(async (eventId) => {
+      const slugs = attendeeEvents.map(event => isCheckArray.includes(event.id) && event.slug)
 
-        const slug = attendeeEvents.find(event => event.id == eventId)?.slug
-
+      slugs.forEach(async (slug) => {
         if (slug) {
           const { successfully, message } = await deleteEventAttendee({
             slug,
@@ -170,6 +175,8 @@ export function AttendeeDetails() {
             setIsCheck(false)
             setIsCheckArray([])
             fetchAttendeeEvents()
+            changePageIndex(1)
+            changeSearch('')
           }
         }
       })
@@ -260,7 +267,7 @@ export function AttendeeDetails() {
 
       {isCheck &&
         <div className="flex gap-8 items-center">
-          <p className="font-semibold text-lg">O que deseja fazer com os eventos selecionados?</p>
+          <p className="font-semibold text-lg">O que deseja fazer com os {isCheckArray.length} eventos selecionados?</p>
 
           <Button onClick={handleCheckAll}>
             Check-in

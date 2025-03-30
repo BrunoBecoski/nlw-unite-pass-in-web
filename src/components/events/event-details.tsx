@@ -107,13 +107,17 @@ export function EventDetails() {
   async function handleCheckAll() {
     const response = confirm('Confirmar todos os participantes marcados?')
 
+    if (response == false) {
+      return
+    }
+
     if (response == true) {
-      isCheckArray.forEach(async (attendeeId)  => {
-        const { successfully, message } = await checkInEventAttendee({
+      isCheckArray.forEach(async (attendeeId) => {
+        const { successfully, message } = await  checkInEventAttendee({
           attendeeId,
           eventId: event.id,
         })
-    
+
         if (successfully == false) {
           alert(message)
         }
@@ -122,36 +126,40 @@ export function EventDetails() {
           setIsCheck(false) 
           setIsCheckArray([])
           fetchEventAttendees()
+          changePageIndex(1)
+          changeSearch('')
         }
       })
-    }
+    }                                           
   }
 
   async function handleDeleteAll() {
     const response = confirm('Remover todos os participantes marcados?')
-
+    
     if (response == false || slug == undefined ) {
       return
     }
-
+    
     if (response == true) {
-      isCheckArray.forEach(async (attendeeId)  => {
-        const code = eventAttendees.find(attendee => attendee.id == attendeeId)?.code
+      const codes = eventAttendees.map(attendee => isCheckArray.includes(attendee.id) && attendee.code)
 
+      codes.forEach(async (code)  => {
         if (code) {
           const { successfully, message } = await deleteEventAttendee({
             slug,
             code,
           })
-
+          
           if (successfully == false) {
             alert(message)
           }
-  
+
           if (successfully == true) {
             setIsCheck(false) 
             setIsCheckArray([])
             fetchEventAttendees()
+            changePageIndex(1)
+            changeSearch('')
           }
         }
       })
@@ -244,7 +252,7 @@ export function EventDetails() {
       
       {isCheck &&
         <div className="flex gap-8 items-center">
-          <p className="font-semibold text-lg">O que deseja fazer com os participantes selecionados?</p>
+          <p className="font-semibold text-lg">O que deseja fazer com os {isCheckArray.length} participantes selecionados?</p>
 
           <Button onClick={handleCheckAll}>
             Check-in
@@ -322,7 +330,7 @@ export function EventDetails() {
                         onClick={() => changeRoute({ route: 'attendee', code: attendee.code })}
                         iconName="ellipsis"
                         variant="border"
-                        />
+                      />
                     </div>
                   </TableCell>
                 </TableRow>

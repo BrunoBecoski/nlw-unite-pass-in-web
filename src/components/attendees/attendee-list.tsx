@@ -91,12 +91,6 @@ export function AttendeeList() {
     }
   }
 
-  useEffect(() => {
-    setIsCheck(false) 
-    setIsCheckArray([])
-    fetchAttendees()
-  }, [pageIndex, search])
-
   async function fetchAttendees() {
     const { successfully, message, data } = await getAttendees({ pageIndex, search })
 
@@ -109,6 +103,12 @@ export function AttendeeList() {
       setTotal(data.total)
     } 
   }
+
+  useEffect(() => {
+    setIsCheck(false) 
+    setIsCheckArray([])
+    fetchAttendees()
+  }, [pageIndex, search])
 
   return (
     <div className="flex flex-col gap-4">
@@ -126,7 +126,7 @@ export function AttendeeList() {
 
       {isCheck &&
       <div className="flex gap-8 items-center">
-          <p className="font-semibold text-lg">O que deseja fazer com os participantes selecionados?</p>
+          <p className="font-semibold text-lg">O que deseja fazer com {isCheckArray.length} os participantes selecionados?</p>
 
           <Button onClick={handleDeleteAll}>
             Deletar participantes

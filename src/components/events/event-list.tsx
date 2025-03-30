@@ -125,7 +125,7 @@ export function EventList() {
 
       {isCheck &&
         <div className="flex gap-8 items-center">
-          <p className="font-semibold text-lg">O que deseja fazer com os eventos selecionados?</p>
+          <p className="font-semibold text-lg">O que deseja fazer com os {isCheckArray.length} eventos selecionados?</p>
 
           <Button onClick={handleDeleteAll}>
             Remover
