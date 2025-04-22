@@ -4,7 +4,7 @@
   <h2>pass.in é uma aplicação de <i>gestão de participantes e eventos</i>.</h2>
 </div>
 
-<img src=".github/cover.png" alt="pass.in web" />
+<img src=".github/cover.png" alt="pass.in" />
 
 ## Versões
 
